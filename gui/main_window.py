@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Optional
+import logging
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Set, cast
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QIcon
@@ -11,8 +13,19 @@ from PyQt6.QtWidgets import (
     QMessageBox,
     QTabWidget,
     QToolBar,
+    QMenu,
+    QMenuBar,
+    QStatusBar,
     QWidget,
 )
+
+from algorithms import get_registered_scheduler
+from core.excel_loader import process_excel
+from core.models import Course, CourseGroup, build_course_groups
+from utils.schedule_metrics import SchedulerPrefs
+
+
+logger = logging.getLogger(__name__)
 
 
 class MainWindow(QMainWindow):
@@ -21,11 +34,24 @@ class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self._current_theme = "light"
+        self._courses: List[Course] = []
+        self._course_groups: Dict[str, CourseGroup] = {}
+        self._mandatory_codes: Set[str] = set()
+        self._optional_codes: Set[str] = set()
+        self._selected_algorithm: str = ""
+        self._algorithm_params: Dict[str, Any] = {}
+        self._scheduler_prefs = SchedulerPrefs()
+        self._loaded_file: Optional[Path] = None
         self._setup_ui()
         self._create_menubar()
         self._create_toolbar()
         self._create_statusbar()
         self._apply_theme()
+        self._wire_tab_signals()
+
+        initial_algorithm, initial_params = self.file_tab.get_algorithm_config()
+        self._selected_algorithm = initial_algorithm
+        self._algorithm_params = initial_params
 
     def _setup_ui(self) -> None:
         """Initialize main UI structure."""
@@ -37,11 +63,16 @@ class MainWindow(QMainWindow):
         self.tab_widget.setTabPosition(QTabWidget.TabPosition.North)
         self.tab_widget.setMovable(False)
         
-        # Placeholder tabs (will be replaced with actual implementations)
-        self.file_tab = QWidget()
-        self.browser_tab = QWidget()
-        self.selector_tab = QWidget()
-        self.viewer_tab = QWidget()
+        # Import and create actual tabs
+        from gui.tabs.file_settings_tab import FileSettingsTab
+        from gui.tabs.course_browser_tab import CourseBrowserTab
+        from gui.tabs.course_selector_tab import CourseSelectorTab
+        from gui.tabs.schedule_viewer_tab import ScheduleViewerTab
+
+        self.file_tab = FileSettingsTab()
+        self.browser_tab = CourseBrowserTab()
+        self.selector_tab = CourseSelectorTab()
+        self.viewer_tab = ScheduleViewerTab()
 
         self.tab_widget.addTab(self.file_tab, "📁 File & Settings")
         self.tab_widget.addTab(self.browser_tab, "📚 Course Browser")
@@ -50,12 +81,23 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(self.tab_widget)
 
+    def _wire_tab_signals(self) -> None:
+        """Connect cross-tab signals for data sharing."""
+        self.file_tab.file_selected.connect(self._on_course_file_selected)
+        self.file_tab.algorithm_configured.connect(self._on_algorithm_configured)
+        self.browser_tab.course_selected.connect(self._on_course_selected)
+        self.selector_tab.selection_changed.connect(self._on_selection_changed)
+
+    def _status_bar(self) -> QStatusBar:
+        """Return the main window status bar with proper typing."""
+        return cast(QStatusBar, self.statusBar())
+
     def _create_menubar(self) -> None:
         """Create application menu bar."""
-        menubar = self.menuBar()
+        menubar = cast(QMenuBar, self.menuBar())
 
         # File menu
-        file_menu = menubar.addMenu("&File")
+        file_menu = cast(QMenu, menubar.addMenu("&File"))
 
         open_action = QAction("&Open Excel...", self)
         open_action.setShortcut("Ctrl+O")
@@ -71,7 +113,7 @@ class MainWindow(QMainWindow):
 
         file_menu.addSeparator()
 
-        export_menu = file_menu.addMenu("📤 Export")
+        export_menu = cast(QMenu, file_menu.addMenu("📤 Export"))
         
         export_pdf = QAction("Export as PDF...", self)
         export_pdf.triggered.connect(lambda: self._on_export("pdf"))
@@ -94,7 +136,7 @@ class MainWindow(QMainWindow):
         file_menu.addAction(exit_action)
 
         # Edit menu
-        edit_menu = menubar.addMenu("&Edit")
+        edit_menu = cast(QMenu, menubar.addMenu("&Edit"))
 
         preferences_action = QAction("&Preferences...", self)
         preferences_action.setShortcut("Ctrl+,")
@@ -103,7 +145,7 @@ class MainWindow(QMainWindow):
         edit_menu.addAction(preferences_action)
 
         # View menu
-        view_menu = menubar.addMenu("&View")
+        view_menu = cast(QMenu, menubar.addMenu("&View"))
 
         self.theme_action = QAction("🌙 Dark Theme", self)
         self.theme_action.setCheckable(True)
@@ -112,7 +154,7 @@ class MainWindow(QMainWindow):
         view_menu.addAction(self.theme_action)
 
         # Tools menu
-        tools_menu = menubar.addMenu("&Tools")
+        tools_menu = cast(QMenu, menubar.addMenu("&Tools"))
 
         generate_action = QAction("⚡ Generate Schedules", self)
         generate_action.setShortcut("F5")
@@ -133,7 +175,7 @@ class MainWindow(QMainWindow):
         tools_menu.addAction(benchmark_action)
 
         # Help menu
-        help_menu = menubar.addMenu("&Help")
+        help_menu = cast(QMenu, menubar.addMenu("&Help"))
 
         about_action = QAction("&About", self)
         about_action.setStatusTip("About SchedularV3")
@@ -182,7 +224,7 @@ class MainWindow(QMainWindow):
 
     def _create_statusbar(self) -> None:
         """Create status bar."""
-        self.statusBar().showMessage("Ready")
+        self._status_bar().showMessage("Ready")
 
     def _apply_theme(self) -> None:
         """Apply current theme stylesheet."""
@@ -192,7 +234,17 @@ class MainWindow(QMainWindow):
             self._apply_light_theme()
 
     def _apply_light_theme(self) -> None:
-        """Apply light theme stylesheet."""
+        """Apply light theme stylesheet from QSS file."""
+        qss_path = Path(__file__).parent.parent / "resources" / "styles" / "light_theme.qss"
+        if qss_path.exists():
+            with open(qss_path, 'r', encoding='utf-8') as f:
+                self.setStyleSheet(f.read())
+        else:
+            logger.warning(f"Light theme QSS not found: {qss_path}")
+            self._apply_light_theme_fallback()
+
+    def _apply_light_theme_fallback(self) -> None:
+        """Apply light theme fallback when QSS file not found."""
         self.setStyleSheet(
             """
             QMainWindow {
@@ -244,7 +296,17 @@ class MainWindow(QMainWindow):
         )
 
     def _apply_dark_theme(self) -> None:
-        """Apply dark theme stylesheet."""
+        """Apply dark theme stylesheet from QSS file."""
+        qss_path = Path(__file__).parent.parent / "resources" / "styles" / "dark_theme.qss"
+        if qss_path.exists():
+            with open(qss_path, 'r', encoding='utf-8') as f:
+                self.setStyleSheet(f.read())
+        else:
+            logger.warning(f"Dark theme QSS not found: {qss_path}")
+            self._apply_dark_theme_fallback()
+
+    def _apply_dark_theme_fallback(self) -> None:
+        """Apply dark theme fallback when QSS file not found."""
         self.setStyleSheet(
             """
             QMainWindow {
@@ -302,19 +364,19 @@ class MainWindow(QMainWindow):
     # Event handlers (to be implemented)
     def _on_open_file(self) -> None:
         """Handle open file action."""
-        self.statusBar().showMessage("Open file - To be implemented")
+        self.file_tab.browse_button.click()
 
     def _on_save_schedule(self) -> None:
         """Handle save schedule action."""
-        self.statusBar().showMessage("Save schedule - To be implemented")
+        self._status_bar().showMessage("Save schedule - To be implemented")
 
     def _on_export(self, format: str) -> None:
         """Handle export action."""
-        self.statusBar().showMessage(f"Export as {format} - To be implemented")
+        self._status_bar().showMessage(f"Export as {format} - To be implemented")
 
     def _on_preferences(self) -> None:
         """Handle preferences action."""
-        self.statusBar().showMessage("Preferences - To be implemented")
+        self._status_bar().showMessage("Preferences - To be implemented")
 
     def _on_toggle_theme(self, checked: bool) -> None:
         """Handle theme toggle."""
@@ -325,19 +387,91 @@ class MainWindow(QMainWindow):
             self._current_theme = "light"
             self.theme_action.setText("🌙 Dark Theme")
         self._apply_theme()
-        self.statusBar().showMessage(f"Switched to {self._current_theme} theme")
+        self._status_bar().showMessage(f"Switched to {self._current_theme} theme")
 
     def _on_generate_schedules(self) -> None:
         """Handle generate schedules action."""
-        self.statusBar().showMessage("Generate schedules - To be implemented")
+        if not self._course_groups:
+            QMessageBox.warning(
+                self,
+                "No Course Data",
+                "Please load an Excel course data file before generating schedules.",
+            )
+            return
+
+        mandatory_codes, optional_codes = self.selector_tab.get_selected_courses()
+        if not mandatory_codes:
+            QMessageBox.warning(
+                self,
+                "No Mandatory Courses",
+                "Select at least one course as mandatory in the Course Selector tab.",
+            )
+            self.tab_widget.setCurrentWidget(self.selector_tab)
+            return
+
+        scheduler_cls = get_registered_scheduler(self._selected_algorithm)
+        if scheduler_cls is None:
+            QMessageBox.critical(
+                self,
+                "Algorithm Error",
+                f"Algorithm '{self._selected_algorithm}' is not registered.",
+            )
+            return
+
+        params = dict(self._algorithm_params)
+        max_ects = int(params.pop("max_ects", 31))
+        allow_conflicts = bool(params.pop("allow_conflicts", False))
+
+        try:
+            scheduler = scheduler_cls(
+                max_ects=max_ects,
+                allow_conflicts=allow_conflicts,
+                scheduler_prefs=self._scheduler_prefs,
+                **params,
+            )
+        except Exception as exc:  # pragma: no cover - defensive guard
+            logger.exception("Failed to instantiate scheduler %s", self._selected_algorithm)
+            self._show_error("Algorithm Error", str(exc))
+            return
+
+        try:
+            schedules = scheduler.generate_schedules(
+                self._course_groups,
+                mandatory_codes,
+                optional_codes if optional_codes else None,
+            )
+        except Exception as exc:  # pragma: no cover - defensive guard
+            logger.exception("Scheduler execution failed")
+            self._show_error("Generation Failed", str(exc))
+            return
+
+        stats = scheduler.get_search_statistics()
+
+        if not schedules:
+            message = "No valid schedules found. Consider relaxing constraints or selections."
+            self._status_bar().showMessage(message)
+            QMessageBox.information(self, "No Schedules", message)
+            return
+
+        self.viewer_tab.set_schedules(schedules, algorithm=self._selected_algorithm)
+        self.tab_widget.setCurrentWidget(self.viewer_tab)
+
+        total_time = stats.get("total_time") if isinstance(stats, dict) else None
+        if isinstance(total_time, (int, float)):
+            status = (
+                f"{self._selected_algorithm}: generated {len(schedules)} schedules in {total_time:.2f}s"
+            )
+        else:
+            status = f"{self._selected_algorithm}: generated {len(schedules)} schedules"
+        self._status_bar().showMessage(status)
 
     def _on_compare_algorithms(self) -> None:
         """Handle compare algorithms action."""
-        self.statusBar().showMessage("Compare algorithms - To be implemented")
+        self._status_bar().showMessage("Compare algorithms - To be implemented")
 
     def _on_benchmark(self) -> None:
         """Handle benchmark action."""
-        self.statusBar().showMessage("Benchmark - To be implemented")
+        self._status_bar().showMessage("Benchmark - To be implemented")
 
     def _on_about(self) -> None:
         """Show about dialog."""
@@ -355,7 +489,96 @@ class MainWindow(QMainWindow):
 
     def _on_documentation(self) -> None:
         """Open documentation."""
-        self.statusBar().showMessage("Documentation - To be implemented")
+        self._status_bar().showMessage("Documentation - To be implemented")
+
+    def _on_course_file_selected(self, file_path: str) -> None:
+        """React when the user picks a course data file."""
+        self._loaded_file = Path(file_path)
+        self._status_bar().showMessage(f"Loading courses from {self._loaded_file.name}...")
+        self._load_courses_from_file(self._loaded_file)
+
+    def _on_algorithm_configured(self, algorithm_name: str, params: dict) -> None:
+        """Remember the active algorithm configuration."""
+        self._selected_algorithm = algorithm_name
+        self._algorithm_params = params
+        allow_conflicts = "Yes" if params.get("allow_conflicts") else "No"
+        self._status_bar().showMessage(
+            f"Configured {algorithm_name} | Allow conflicts: {allow_conflicts}"
+        )
+
+    def _on_course_selected(self, course: Course) -> None:
+        """Surface quick info about the highlighted course."""
+        self._status_bar().showMessage(f"Selected {course.code} - {course.name}")
+
+    def _on_selection_changed(self, mandatory: Set[str], optional: Set[str]) -> None:
+        """Track selection summary and update status bar."""
+        self._mandatory_codes = set(mandatory)
+        self._optional_codes = set(optional)
+        self._status_bar().showMessage(
+            f"Selection updated | mandatory: {len(mandatory)} | optional: {len(optional)}"
+        )
+
+    def _load_courses_from_file(self, file_path: Path) -> None:
+        """Load courses from Excel and propagate them to tabs."""
+        try:
+            courses = process_excel(str(file_path))
+        except FileNotFoundError:
+            self._reset_loaded_data()
+            self.file_tab.update_file_status("❌ Excel file not found")
+            self._show_error("File Not Found", f"Could not locate {file_path}.")
+            return
+        except ValueError as exc:
+            self._reset_loaded_data()
+            self.file_tab.update_file_status("❌ Invalid Excel format")
+            self._show_error("Invalid Excel Format", str(exc))
+            return
+        except Exception as exc:  # pragma: no cover - defensive guard
+            logger.exception("Unexpected error while loading courses")
+            self._reset_loaded_data()
+            self.file_tab.update_file_status("❌ Failed to load courses")
+            self._show_error("Load Failed", str(exc))
+            return
+
+        if not courses:
+            self._reset_loaded_data()
+            self.file_tab.update_file_status("⚠️ File loaded but no courses detected")
+            QMessageBox.information(
+                self,
+                "No Courses",
+                "The selected Excel file did not contain any courses.",
+            )
+            return
+
+        self._courses = courses
+        self._course_groups = build_course_groups(courses)
+        self.browser_tab.set_courses(courses)
+        self.selector_tab.set_course_groups(self._course_groups)
+        self.viewer_tab.clear()
+
+        summary = (
+            f"📄 File: {file_path.name} | Courses: {len(courses)} | "
+            f"Groups: {len(self._course_groups)}"
+        )
+        self.file_tab.update_file_status(summary)
+        self._status_bar().showMessage(
+            f"Loaded {len(courses)} courses across {len(self._course_groups)} groups"
+        )
+        self.tab_widget.setCurrentWidget(self.browser_tab)
+
+    def _reset_loaded_data(self) -> None:
+        """Clear cached course data and refresh dependent tabs."""
+        self._courses.clear()
+        self._course_groups.clear()
+        self._mandatory_codes.clear()
+        self._optional_codes.clear()
+        self.browser_tab.set_courses([])
+        self.selector_tab.set_course_groups({})
+        self.viewer_tab.clear()
+
+    def _show_error(self, title: str, message: str) -> None:
+        """Show an error dialog and mirror the message in the status bar."""
+        QMessageBox.critical(self, title, message)
+        self._status_bar().showMessage(message)
 
 
 __all__ = ["MainWindow"]

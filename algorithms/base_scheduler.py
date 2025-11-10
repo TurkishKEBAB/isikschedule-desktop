@@ -91,18 +91,21 @@ class BaseScheduler(ABC):
         max_results: int = 10,
         max_ects: int = 31,
         allow_conflicts: bool = False,
+        max_conflicts: int = 1,
         scheduler_prefs: Optional[SchedulerPrefs] = None,
         timeout_seconds: int = 120,
     ) -> None:
         self.max_results = max_results
         self.max_ects = max_ects
         self.allow_conflicts = allow_conflicts
+        self.max_conflicts = max_conflicts
         self.scheduler_prefs = scheduler_prefs or SchedulerPrefs()
         self.timeout_seconds = timeout_seconds
 
         self._performance_history: List[Dict[str, Any]] = []
         self._last_run_stats: Dict[str, Any] = {}
         self._results: List[Schedule] = []
+        self._active_mandatory_codes: Set[str] = set()
 
     # ------------------------------------------------------------------
     # Abstract behaviour
@@ -178,6 +181,8 @@ class BaseScheduler(ABC):
 
         mandatory_keys.sort(key=lambda k: len(group_options.get(k, [])))
         optional_keys.sort(key=lambda k: len(group_options.get(k, [])))
+
+        self._active_mandatory_codes = set(mandatory_codes)
 
         return PreparedSearch(
             group_keys=mandatory_keys + optional_keys,
@@ -256,6 +261,11 @@ class BaseScheduler(ABC):
         if not self.allow_conflicts and schedule.conflict_count > 0:
             return False
 
+        if self._active_mandatory_codes:
+            included_main_codes = {course.main_code for course in schedule.courses}
+            if not self._active_mandatory_codes.issubset(included_main_codes):
+                return False
+
         # Respect strict free day constraints if configured
         if (
             self.scheduler_prefs
@@ -281,6 +291,37 @@ class BaseScheduler(ABC):
     @property
     def performance_history(self) -> List[Dict[str, Any]]:
         return list(self._performance_history)
+
+    @property
+    def results(self) -> List[Schedule]:
+        return list(self._results)
+
+    def get_search_statistics(self) -> Dict[str, Any]:
+        return self.last_run_stats
+
+    def get_optimization_report(self) -> Dict[str, Any]:
+        total = len(self._results)
+        credits = [schedule.total_credits for schedule in self._results]
+        conflicts = [schedule.conflict_count for schedule in self._results]
+        preference_scores: List[float] = []
+        if self.scheduler_prefs:
+            preference_scores = [score_schedule(schedule, self.scheduler_prefs) for schedule in self._results]
+
+        def _summary(values: List[float]) -> Dict[str, float]:
+            if not values:
+                return {"min": 0.0, "max": 0.0, "average": 0.0}
+            return {
+                "min": float(min(values)),
+                "max": float(max(values)),
+                "average": float(sum(values) / len(values)),
+            }
+
+        return {
+            "total_schedules": total,
+            "credit_analysis": _summary([float(value) for value in credits]),
+            "conflict_analysis": _summary([float(value) for value in conflicts]),
+            "preference_scores": preference_scores,
+        }
 
     def analyze_failure(self, course_groups: Dict[str, CourseGroup]) -> List[str]:
         """Provide generic failure diagnostics for subclasses to extend."""

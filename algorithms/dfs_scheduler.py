@@ -5,20 +5,22 @@ This module provides a comprehensive DFS-based scheduling algorithm that systema
 explores all possible course combinations to find valid schedules while respecting
 constraints and user preferences.
 """
-from typing import List, Dict, Set, Optional, Any
+from typing import Any, Dict, List, Optional, Set
 import logging
 import time
 from collections import defaultdict
 
 from core.models import Course, Schedule, CourseGroup
-from algorithms.constraints import ConstraintUtils
 from utils.schedule_metrics import SchedulerPrefs, score_schedule
+from .base_scheduler import AlgorithmMetadata, BaseScheduler, PreparedSearch
+from . import register_scheduler
 
 # Set up logging
 logger = logging.getLogger(__name__)
 
 
-class DFSScheduler:
+@register_scheduler
+class DFSScheduler(BaseScheduler):
     """
     Advanced Depth-First Search scheduler for generating course schedules.
 
@@ -34,12 +36,25 @@ class DFSScheduler:
     - Progress tracking and statistics
     """
 
-    def __init__(self,
-                 max_results: int = 10,
-                 max_ects: int = 31,
-                 allow_conflicts: bool = False,
-                 scheduler_prefs: Optional[SchedulerPrefs] = None,
-                 timeout_seconds: int = 300):
+    metadata = AlgorithmMetadata(
+        name="DFS",
+        category="complete-search",
+        complexity="O(b^d)",
+        description="Depth-first search with pruning and preference scoring",
+        optimal=False,
+        supports_preferences=True,
+        supports_constraints=True,
+    )
+
+    def __init__(
+        self,
+        max_results: int = 10,
+        max_ects: int = 31,
+        allow_conflicts: bool = False,
+        max_conflicts: int = 1,
+        scheduler_prefs: Optional[SchedulerPrefs] = None,
+        timeout_seconds: int = 300,
+    ):
         """
         Initialize the DFS scheduler.
 
@@ -47,197 +62,122 @@ class DFSScheduler:
             max_results: Maximum number of schedules to generate
             max_ects: Maximum ECTS credits allowed
             allow_conflicts: Whether to allow schedule conflicts
+            max_conflicts: Maximum number of conflicts allowed
             scheduler_prefs: Advanced scheduler preferences for optimization
             timeout_seconds: Maximum time to spend searching (in seconds)
         """
-        self.max_results = max_results
-        self.max_ects = max_ects
-        self.allow_conflicts = allow_conflicts
-        self.scheduler_prefs = scheduler_prefs or SchedulerPrefs()
-        self.timeout_seconds = timeout_seconds
-
-        # Internal state
-        self.results = []
-        self.start_time = 0
-        self.nodes_explored = 0
-        self.pruned_branches = 0
-        self.best_score = float('-inf')
-        self.search_statistics = {}
-
-    def generate_schedules(self,
-                          course_groups: Dict[str, CourseGroup],
-                          mandatory_codes: Set[str],
-                          optional_codes: Optional[Set[str]] = None) -> List[Schedule]:
-        """
-        Generate schedules using depth-first search.
-
-        Args:
-            course_groups: Dictionary mapping main codes to CourseGroup objects
-            mandatory_codes: Set of mandatory course codes
-            optional_codes: Set of optional course codes (if None, all non-mandatory are optional)
-
-        Returns:
-            List of valid Schedule objects sorted by quality
-        """
-        logger.info(f"Starting DFS scheduling with {len(course_groups)} course groups")
-        logger.info(f"Mandatory courses: {len(mandatory_codes)}, Max results: {self.max_results}")
-
-        self.start_time = time.time()
-        self.results = []
-        self.nodes_explored = 0
-        self.pruned_branches = 0
-        self.best_score = float('-inf')
-
-        # Validate input
-        if not course_groups:
-            logger.warning("No course groups provided")
-            return []
-
-        if not mandatory_codes:
-            logger.warning("No mandatory courses specified")
-            return []
-
-        # Build group options with constraints
-        group_valid_selections, group_options = ConstraintUtils.build_group_options(
-            course_groups, mandatory_codes, "sections"
+        super().__init__(
+            max_results=max_results,
+            max_ects=max_ects,
+            allow_conflicts=allow_conflicts,
+            max_conflicts=max_conflicts,
+            scheduler_prefs=scheduler_prefs,
+            timeout_seconds=timeout_seconds,
         )
 
-        # Validate mandatory courses have valid selections
-        invalid_mandatory = []
-        for code in mandatory_codes:
-            if not group_valid_selections.get(code):
-                invalid_mandatory.append(code)
+        self._start_time = 0.0
+        self._nodes_explored = 0
+        self._pruned_branches = 0
+        self._best_score = float("-inf")
+        self._active_mandatory_codes: Set[str] = set()
 
-        if invalid_mandatory:
-            logger.error(f"Invalid mandatory courses (no valid selections): {invalid_mandatory}")
-            return []
+    # ------------------------------------------------------------------
+    # BaseScheduler contract
+    # ------------------------------------------------------------------
+    def _run_algorithm(self, search: PreparedSearch) -> List[Schedule]:
+        self._start_time = time.time()
+        self._nodes_explored = 0
+        self._pruned_branches = 0
+        self._best_score = float("-inf")
+        self._active_mandatory_codes = set(search.mandatory_codes)
 
-        # Prepare search parameters
-        all_group_keys = list(course_groups.keys())
-        mandatory_keys = [key for key in all_group_keys if key in mandatory_codes]
-        optional_keys = [key for key in all_group_keys if key not in mandatory_codes]
+        results: List[Schedule] = []
 
-        # Sort groups by complexity (fewer options first for better pruning)
-        mandatory_keys.sort(key=lambda k: len(group_options.get(k, [])))
-        optional_keys.sort(key=lambda k: len(group_options.get(k, [])))
-
-        # Combine with mandatory first for better early constraint checking
-        search_order = mandatory_keys + optional_keys
-
-        logger.info(f"Search order: {len(mandatory_keys)} mandatory + {len(optional_keys)} optional")
-
-        # Start DFS search
         self._dfs_search(
-            search_order,
-            group_options,
-            group_valid_selections,
-            mandatory_codes,
-            [],  # current_courses
-            0,   # current_ects
-            0    # group_index
+            search,
+            current_courses=[],
+            current_ects=0,
+            group_index=0,
+            results=results,
         )
 
-        # Calculate search statistics
-        elapsed_time = time.time() - self.start_time
-        self.search_statistics = {
-            "total_time": elapsed_time,
-            "nodes_explored": self.nodes_explored,
-            "pruned_branches": self.pruned_branches,
-            "schedules_found": len(self.results),
-            "best_score": self.best_score if self.results else 0,
-            "timeout_reached": elapsed_time >= self.timeout_seconds
-        }
+        elapsed_time = time.time() - self._start_time
+        self._last_run_stats.update(
+            {
+                "total_time": elapsed_time,
+                "nodes_explored": self._nodes_explored,
+                "pruned_branches": self._pruned_branches,
+                "best_score": self._best_score if results else 0,
+                "timeout_reached": elapsed_time >= self.timeout_seconds,
+            }
+        )
 
-        logger.info(f"DFS search completed in {elapsed_time:.2f}s")
-        logger.info(f"Explored {self.nodes_explored} nodes, pruned {self.pruned_branches} branches")
-        logger.info(f"Found {len(self.results)} valid schedules")
+        return results
 
-        # Sort results by quality
-        if self.scheduler_prefs and self.results:
-            self.results.sort(key=lambda s: score_schedule(s, self.scheduler_prefs), reverse=True)
-        else:
-            # Default sorting: least conflicts, then highest credits
-            self.results.sort(key=lambda s: (s.conflict_count, -s.total_credits))
+    # ------------------------------------------------------------------
+    # DFS implementation
+    # ------------------------------------------------------------------
+    def _dfs_search(
+        self,
+        search: PreparedSearch,
+        current_courses: List[Course],
+        current_ects: int,
+        group_index: int,
+        results: List[Schedule],
+    ) -> None:
+        self._nodes_explored += 1
 
-        return self.results
-
-    def _dfs_search(self,
-                   group_keys: List[str],
-                   group_options: Dict[str, List[Optional[List[Course]]]],
-                   group_valid_selections: Dict[str, List[List[Course]]],
-                   mandatory_codes: Set[str],
-                   current_courses: List[Course],
-                   current_ects: int,
-                   group_index: int) -> None:
-        """
-        Recursive depth-first search implementation.
-
-        Args:
-            group_keys: Ordered list of course group keys to process
-            group_options: Dictionary of available options for each group
-            group_valid_selections: Dictionary of valid selections for each group
-            mandatory_codes: Set of mandatory course codes
-            current_courses: Current course selection
-            current_ects: Current total ECTS
-            group_index: Current group being processed
-        """
-        self.nodes_explored += 1
-
-        # Check timeout
-        if time.time() - self.start_time >= self.timeout_seconds:
+        if time.time() - self._start_time >= self.timeout_seconds:
             logger.warning("DFS search timeout reached")
             return
 
-        # Base case: processed all groups
-        if group_index >= len(group_keys):
-            if current_courses:  # Only add non-empty schedules
+        if group_index >= len(search.group_keys):
+            if current_courses:
                 schedule = Schedule(current_courses.copy())
-
-                # Validate and score the schedule
-                if self._is_valid_final_schedule(schedule, current_ects, mandatory_codes):
-                    self._add_schedule_if_good(schedule)
+                if self._is_valid_final_schedule(schedule):
+                    if self.scheduler_prefs:
+                        score = score_schedule(schedule, self.scheduler_prefs)
+                        self._best_score = max(self._best_score, score)
+                    results.append(schedule)
             return
 
-        # Early termination if we have enough good results
-        if len(self.results) >= self.max_results:
+        if len(results) >= self.max_results:
             return
 
-        # Get current group
-        group_key = group_keys[group_index]
-        options = group_options.get(group_key, [])
+        group_key = search.group_keys[group_index]
+        options = search.group_options.get(group_key, [])
 
-        # Try each option for this group
         for option in options:
-            # Check if we should prune this branch
-            if self._should_prune_branch(option, current_courses, current_ects, group_key, mandatory_codes):
-                self.pruned_branches += 1
+            if self._should_prune_branch(option, current_courses, current_ects, group_key):
+                self._pruned_branches += 1
                 continue
 
             if option is None:
-                # Skip this group (don't take any courses from it)
-                # Only allowed if not mandatory
-                if group_key not in mandatory_codes:
-                    self._dfs_search(
-                        group_keys, group_options, group_valid_selections,
-                        mandatory_codes, current_courses, current_ects, group_index + 1
-                    )
+                self._dfs_search(
+                    search,
+                    current_courses=current_courses,
+                    current_ects=current_ects,
+                    group_index=group_index + 1,
+                    results=results,
+                )
             else:
-                # Try this course selection
                 new_courses = current_courses + option
                 new_ects = current_ects + sum(course.ects for course in option)
-
-                # Continue search with this selection
                 self._dfs_search(
-                    group_keys, group_options, group_valid_selections,
-                    mandatory_codes, new_courses, new_ects, group_index + 1
+                    search,
+                    current_courses=new_courses,
+                    current_ects=new_ects,
+                    group_index=group_index + 1,
+                    results=results,
                 )
 
-    def _should_prune_branch(self,
-                           option: Optional[List[Course]],
-                           current_courses: List[Course],
-                           current_ects: int,
-                           group_key: str,
-                           mandatory_codes: Set[str]) -> bool:
+    def _should_prune_branch(
+        self,
+        option: Optional[List[Course]],
+        current_courses: List[Course],
+        current_ects: int,
+        group_key: str,
+    ) -> bool:
         """
         Determine if a branch should be pruned for efficiency.
 
@@ -252,8 +192,7 @@ class DFSScheduler:
             True if branch should be pruned
         """
         if option is None:
-            # Pruning for skipping mandatory courses
-            return group_key in mandatory_codes
+            return group_key in self._active_mandatory_codes
 
         # Calculate new ECTS total
         new_ects = current_ects + sum(course.ects for course in option)
@@ -294,98 +233,20 @@ class DFSScheduler:
 
         return False
 
-    def _is_valid_final_schedule(self,
-                               schedule: Schedule,
-                               ects: int,
-                               mandatory_codes: Set[str]) -> bool:
-        """
-        Check if a complete schedule is valid.
+    # ------------------------------------------------------------------
+    # Reporting helpers
+    # ------------------------------------------------------------------
+    def get_search_statistics(self) -> Dict[str, float]:
+        """Maintain backwards-compatible statistics accessor."""
 
-        Args:
-            schedule: Schedule to validate
-            ects: Total ECTS credits
-            mandatory_codes: Set of mandatory course codes
-
-        Returns:
-            True if schedule is valid
-        """
-        # Check ECTS limit
-        if ects > self.max_ects:
-            return False
-
-        # Check if all mandatory courses are included
-        included_main_codes = set(course.main_code for course in schedule.courses)
-        if not mandatory_codes.issubset(included_main_codes):
-            return False
-
-        # Check conflicts if not allowed
-        if not self.allow_conflicts and schedule.conflict_count > 0:
-            return False
-
-        # Advanced validation based on preferences
-        if self.scheduler_prefs:
-            # Check strict free day constraints
-            if (self.scheduler_prefs.strict_free_days and
-                self.scheduler_prefs.desired_free_days):
-
-                from utils.schedule_metrics import meets_free_day_constraint
-                if not meets_free_day_constraint(
-                    schedule,
-                    self.scheduler_prefs.desired_free_days,
-                    strict=True
-                ):
-                    return False
-
-        return True
-
-    def _add_schedule_if_good(self, schedule: Schedule) -> None:
-        """
-        Add a schedule to results if it's good enough.
-
-        Args:
-            schedule: Schedule to potentially add
-        """
-        # Calculate score if preferences are set
-        if self.scheduler_prefs:
-            current_score = score_schedule(schedule, self.scheduler_prefs)
-
-            # Update best score
-            if current_score > self.best_score:
-                self.best_score = current_score
-
-            # Only add if score is reasonable (above a threshold)
-            # This helps filter out poor quality schedules
-            if len(self.results) >= self.max_results:
-                # Replace worst schedule if this one is better
-                worst_schedule = min(self.results, key=lambda s: score_schedule(s, self.scheduler_prefs))
-                worst_score = score_schedule(worst_schedule, self.scheduler_prefs)
-
-                if current_score > worst_score:
-                    self.results.remove(worst_schedule)
-                    self.results.append(schedule)
-            else:
-                self.results.append(schedule)
-        else:
-            # Default behavior: add if under limit
-            if len(self.results) < self.max_results:
-                self.results.append(schedule)
-            else:
-                # Replace schedule with more conflicts or fewer credits
-                worst_schedule = max(self.results, key=lambda s: (s.conflict_count, -s.total_credits))
-                if (schedule.conflict_count < worst_schedule.conflict_count or
-                    (schedule.conflict_count == worst_schedule.conflict_count and
-                     schedule.total_credits > worst_schedule.total_credits)):
-                    self.results.remove(worst_schedule)
-                    self.results.append(schedule)
-
-    def get_search_statistics(self) -> Dict[str, Any]:
-        """
-        Get detailed statistics about the search process.
-
-        Returns:
-            Dictionary with search statistics
-        """
-        return self.search_statistics.copy()
+        return {
+            "total_time": self._last_run_stats.get("total_time", 0.0),
+            "nodes_explored": self._last_run_stats.get("nodes_explored", 0),
+            "pruned_branches": self._last_run_stats.get("pruned_branches", 0),
+            "schedules_found": self._last_run_stats.get("generated", 0),
+            "best_score": self._last_run_stats.get("best_score", 0.0),
+            "timeout_reached": self._last_run_stats.get("timeout_reached", False),
+        }
 
     def get_optimization_report(self) -> Dict[str, Any]:
         """
@@ -394,15 +255,15 @@ class DFSScheduler:
         Returns:
             Dictionary with optimization analysis
         """
-        if not self.results:
+        if not self._results:
             return {"status": "No schedules generated"}
 
         # Analyze results
-        total_credits = [s.total_credits for s in self.results]
-        conflict_counts = [s.conflict_count for s in self.results]
+        total_credits = [s.total_credits for s in self._results]
+        conflict_counts = [s.conflict_count for s in self._results]
 
         report = {
-            "total_schedules": len(self.results),
+            "total_schedules": len(self._results),
             "search_statistics": self.get_search_statistics(),
             "credit_analysis": {
                 "min_credits": min(total_credits),
@@ -420,7 +281,7 @@ class DFSScheduler:
 
         # Add preference-based analysis if available
         if self.scheduler_prefs:
-            scores = [score_schedule(s, self.scheduler_prefs) for s in self.results]
+            scores = [score_schedule(s, self.scheduler_prefs) for s in self._results]
             report["score_analysis"] = {
                 "best_score": max(scores),
                 "worst_score": min(scores),
@@ -430,9 +291,11 @@ class DFSScheduler:
 
         return report
 
-    def analyze_schedule_failure(self,
-                                course_groups: Dict[str, CourseGroup],
-                                mandatory_codes: Set[str]) -> List[str]:
+    def analyze_schedule_failure(
+        self,
+        course_groups: Dict[str, CourseGroup],
+        mandatory_codes: Set[str],
+    ) -> List[str]:
         """
         Analyze why schedule generation might have failed.
 
@@ -471,7 +334,7 @@ class DFSScheduler:
                 reasons.append("Weekly hour limit too restrictive for mandatory courses")
 
         # Check timeout issues
-        if self.search_statistics.get("timeout_reached"):
+        if self._last_run_stats.get("timeout_reached"):
             reasons.append("Search timeout reached - try increasing time limit or reducing course options")
 
         if not reasons:

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Dict, List, Optional, Tuple
 
 from PyQt6.QtCore import Qt, QRect, pyqtSignal
@@ -9,6 +10,8 @@ from PyQt6.QtGui import QColor, QFont, QPainter, QPen
 from PyQt6.QtWidgets import QWidget
 
 from core.models import Course, Schedule
+
+logger = logging.getLogger(__name__)
 
 
 class ScheduleGrid(QWidget):
@@ -68,17 +71,23 @@ class ScheduleGrid(QWidget):
     def paintEvent(self, event) -> None:
         """Paint the schedule grid."""
         painter = QPainter(self)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        try:
+            painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-        # Draw background
-        painter.fillRect(self.rect(), QColor("#FAFAFA"))
+            # Draw background
+            painter.fillRect(self.rect(), QColor("#FAFAFA"))
 
-        # Draw grid
-        self._draw_grid(painter)
+            # Draw grid
+            self._draw_grid(painter)
 
-        # Draw courses
-        if self.schedule:
-            self._draw_courses(painter)
+            # Draw courses
+            if self.schedule:
+                self._draw_courses(painter)
+        except Exception as e:
+            logger.error(f"Paint error: {e}")
+        finally:
+            # Always end the painter properly
+            painter.end()
 
     def _draw_grid(self, painter: QPainter) -> None:
         """Draw the grid structure."""
@@ -119,9 +128,42 @@ class ScheduleGrid(QWidget):
         font = QFont("Segoe UI", 8)
         painter.setFont(font)
 
+        # Detect conflicts first
+        conflict_slots = self._find_conflict_slots()
+
         for course in self.schedule.courses:
-            color = self.color_map.get(course.main_code, self.colors[0])
+            # Check if this course has conflicts
+            has_conflict = any(
+                slot in conflict_slots 
+                for slot in course.schedule
+            )
+            
+            # Use red for conflicting courses, normal color otherwise
+            if has_conflict:
+                color = QColor("#F44336")  # Red for conflicts
+            else:
+                color = self.color_map.get(course.main_code, self.colors[0])
+            
             self._draw_course(painter, course, color)
+    
+    def _find_conflict_slots(self) -> set:
+        """Find all time slots that have conflicts."""
+        from collections import defaultdict
+        
+        slot_courses = defaultdict(list)
+        
+        # Map slots to courses
+        for course in self.schedule.courses:
+            for slot in course.schedule:
+                slot_courses[slot].append(course)
+        
+        # Find slots with more than one course
+        conflict_slots = set()
+        for slot, courses in slot_courses.items():
+            if len(courses) > 1:
+                conflict_slots.add(slot)
+        
+        return conflict_slots
 
     def _draw_course(self, painter: QPainter, course: Course, color: QColor) -> None:
         """Draw a single course on the grid."""

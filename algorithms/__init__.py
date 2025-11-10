@@ -1,53 +1,67 @@
-"""Scheduling algorithms package for SchedularV3."""
+"""Scheduling algorithms package for SchedularV3.
 
-# Algorithm registry
-_ALGORITHMS = {}
+Exposes a lightweight registry so algorithms can advertise themselves and be
+retrieved dynamically by the benchmarking and auto-selection utilities.
+"""
 
-def register_scheduler(name: str):
-    """Decorator to register a scheduler algorithm."""
-    def decorator(cls):
-        _ALGORITHMS[name] = cls
-        return cls
-    return decorator
+from __future__ import annotations
 
-def get_algorithm(name: str):
-    """Get a registered algorithm by name."""
-    return _ALGORITHMS.get(name)
+from typing import Dict, Iterable, Optional, Type
 
-def list_algorithms():
-    """List all registered algorithm names."""
-    return list(_ALGORITHMS.keys())
+from .base_scheduler import AlgorithmMetadata, BaseScheduler
 
-# Import all algorithms to trigger registration
-from .greedy_scheduler import GreedyScheduler
-from .bfs_scheduler import BFSScheduler
-from .dfs_scheduler import DFSScheduler
-from .iddfs_scheduler import IDDFSScheduler
-from .a_star_scheduler import AStarScheduler
-from .dijkstra_scheduler import DijkstraScheduler
-from .simulated_annealing_scheduler import SimulatedAnnealingScheduler
-from .genetic_algorithm import GeneticAlgorithmScheduler
-from .hill_climbing import HillClimbingScheduler
-from .tabu_search import TabuSearchScheduler
-from .particle_swarm import ParticleSwarmScheduler
-from .hybrid_ga_sa import HybridGASAScheduler
-from .constraint_programming import ConstraintProgrammingScheduler
+
+_ALGORITHM_REGISTRY: Dict[str, Type[BaseScheduler]] = {}
+
+
+def register_scheduler(cls: Type[BaseScheduler]) -> Type[BaseScheduler]:
+	"""Class decorator used by scheduler implementations to self-register."""
+
+	metadata = getattr(cls, "metadata", None)
+	if not isinstance(metadata, AlgorithmMetadata):
+		raise ValueError(
+			f"Scheduler {cls.__name__} must define 'metadata' of type AlgorithmMetadata"
+		)
+
+	_ALGORITHM_REGISTRY[metadata.name] = cls
+	return cls
+
+
+def get_registered_scheduler(name: str) -> Optional[Type[BaseScheduler]]:
+	"""Return the scheduler class associated with the given name."""
+
+	return _ALGORITHM_REGISTRY.get(name)
+
+
+def iter_registered_schedulers() -> Iterable[Type[BaseScheduler]]:
+	"""Yield all registered scheduler classes."""
+
+	return _ALGORITHM_REGISTRY.values()
+
 
 __all__ = [
-    'register_scheduler',
-    'get_algorithm',
-    'list_algorithms',
-    'GreedyScheduler',
-    'BFSScheduler',
-    'DFSScheduler',
-    'IDDFSScheduler',
-    'AStarScheduler',
-    'DijkstraScheduler',
-    'SimulatedAnnealingScheduler',
-    'GeneticAlgorithmScheduler',
-    'HillClimbingScheduler',
-    'TabuSearchScheduler',
-    'ParticleSwarmScheduler',
-    'HybridGASAScheduler',
-    'ConstraintProgrammingScheduler',
+	"AlgorithmMetadata",
+	"BaseScheduler",
+	"get_registered_scheduler",
+	"iter_registered_schedulers",
+	"register_scheduler",
 ]
+
+
+# Eagerly import core algorithms so they self-register with the registry.
+from . import (  # noqa: E402,F401
+	a_star_scheduler,
+	bfs_scheduler,
+	constraint_programming,
+	dfs_scheduler,
+	dijkstra_scheduler,
+	genetic_algorithm,
+	greedy_scheduler,
+	hill_climbing,
+	hybrid_ga_sa,
+	iddfs_scheduler,
+	particle_swarm,
+	simulated_annealing_scheduler,
+	tabu_search,
+)
+

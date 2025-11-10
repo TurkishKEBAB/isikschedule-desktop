@@ -141,11 +141,15 @@ class AlgorithmSelector(QWidget):
         self.max_ects_spin.setSuffix(" ECTS")
         self.max_ects_spin.valueChanged.connect(self._emit_parameters)
 
-        self.allow_conflicts_check = QCheckBox("Allow schedule conflicts")
-        self.allow_conflicts_check.stateChanged.connect(self._emit_parameters)
+        self.max_conflicts_spin = QSpinBox()
+        self.max_conflicts_spin.setRange(0, 10)
+        self.max_conflicts_spin.setValue(1)
+        self.max_conflicts_spin.setSuffix(" conflict(s)")
+        self.max_conflicts_spin.setToolTip("Maximum allowed time slot conflicts (0 = no conflicts allowed)")
+        self.max_conflicts_spin.valueChanged.connect(self._emit_parameters)
 
         common_layout.addRow("Max ECTS:", self.max_ects_spin)
-        common_layout.addRow("", self.allow_conflicts_check)
+        common_layout.addRow("Max Conflicts:", self.max_conflicts_spin)
 
         # Add all groups
         layout.addWidget(selection_group)
@@ -235,7 +239,8 @@ class AlgorithmSelector(QWidget):
         """Emit current parameter configuration."""
         params = {
             "max_ects": self.max_ects_spin.value(),
-            "allow_conflicts": self.allow_conflicts_check.isChecked(),
+            "allow_conflicts": self.max_conflicts_spin.value() > 0,
+            "max_conflicts": self.max_conflicts_spin.value(),
         }
 
         # Add algorithm-specific parameters

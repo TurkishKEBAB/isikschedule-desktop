@@ -44,7 +44,7 @@ class Course:
     ects: int
     course_type: CourseType
     schedule: List[TimeSlot]
-    teacher: str
+    teacher: Optional[str] = None
     has_lecture: bool = False
     faculty: str = "Unknown Faculty"
     department: str = "Unknown Department"
@@ -116,6 +116,16 @@ class Course:
 
     def __repr__(self) -> str:
         return f"Course(code='{self.code}', name='{self.name}', ects={self.ects})"
+    
+    def __hash__(self) -> int:
+        """Make Course hashable for use in sets and as dict keys."""
+        return hash(self.code)
+    
+    def __eq__(self, other: object) -> bool:
+        """Compare courses by their code."""
+        if not isinstance(other, Course):
+            return NotImplemented
+        return self.code == other.code
 
 
 @dataclass
@@ -411,7 +421,7 @@ def get_courses_by_teacher(courses: List[Course], teacher: str) -> List[Course]:
     Returns:
         List of courses taught by the teacher
     """
-    return [c for c in courses if c.teacher.lower() == teacher.lower()]
+    return [c for c in courses if c.teacher and c.teacher.lower() == teacher.lower()]
 
 
 def calculate_total_credits(courses: List[Course]) -> int:

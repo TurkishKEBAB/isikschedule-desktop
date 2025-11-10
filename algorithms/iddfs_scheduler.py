@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import time
-from typing import List
+from typing import List, Optional
 
 from core.models import Course, Schedule
 from utils.schedule_metrics import SchedulerPrefs
@@ -27,8 +27,9 @@ class IDDFSScheduler(BaseScheduler):
         self,
         max_results: int = 10,
         max_ects: int = 31,
-    allow_conflicts: bool = False,
-    scheduler_prefs: Optional[SchedulerPrefs] = None,
+        allow_conflicts: bool = False,
+        max_conflicts: int = 1,
+        scheduler_prefs: Optional[SchedulerPrefs] = None,
         timeout_seconds: int = 240,
         depth_increment: int = 1,
     ) -> None:
@@ -36,6 +37,7 @@ class IDDFSScheduler(BaseScheduler):
             max_results=max_results,
             max_ects=max_ects,
             allow_conflicts=allow_conflicts,
+            max_conflicts=max_conflicts,
             scheduler_prefs=scheduler_prefs,
             timeout_seconds=timeout_seconds,
         )

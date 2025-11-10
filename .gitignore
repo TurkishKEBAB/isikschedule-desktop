@@ -1,99 +1,51 @@
-# Python# Python
-
-__pycache__/__pycache__/
-
-*.py[cod]*.py[cod]
-
-*$py.class*$py.class
-
-*.so*.so
-
-.Python.Python
-
-*.egg-info/build/
-
-dist/develop-eggs/
-
-build/dist/
-
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
 downloads/
-
-# Virtual Environmenteggs/
-
-venv/.eggs/
-
-.venv/lib/
-
-env/lib64/
-
-ENV/parts/
-
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
 sdist/
-
-# IDEvar/
-
-.vscode/wheels/
-
-.idea/*.egg-info/
-
-*.swp.installed.cfg
-
-*.swo*.egg
-
-*~
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
 # Virtual Environment
+venv/
+ENV/
+env/
+.venv
 
-# Testingvenv/
-
-.pytest_cache/ENV/
-
-.coverageenv/
-
-htmlcov/.venv
-
-.tox/
-
-*.cover# IDE
-
+# IDE
 .vscode/
-
-# Logs.idea/
-
-logs/*.swp
-
-*.log*.swo
-
+.idea/
+*.swp
+*.swo
 *~
 
-# Database
-
-*.db# OS
-
-*.sqlite.DS_Store
-
-*.sqlite3Thumbs.db
-
+# OS
+.DS_Store
+Thumbs.db
 desktop.ini
 
-# OS
-
-.DS_Store# Application specific
-
-Thumbs.dblogs/*.log
-
-desktop.ini*.db
-
+# Application specific
+logs/*.log
+*.db
 *.sqlite
+*.sqlite3
 
-# Project specific*.sqlite3
-
-course_scheduler.db
-
-sample_courses.csv# Reports
-
-sample_courses.xlsx*.pdf
-
+# Reports
+*.pdf
 *.jpg
 *.png
 conflict_report.txt

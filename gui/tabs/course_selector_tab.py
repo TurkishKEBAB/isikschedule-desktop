@@ -88,8 +88,9 @@ class CourseSelectorTab(QWidget):
         # Clear existing
         while self.selection_layout.count():
             item = self.selection_layout.takeAt(0)
-            if item.widget():
-                item.widget().deleteLater()
+            widget = item.widget() if item else None
+            if widget:
+                widget.deleteLater()
 
         self._checkboxes.clear()
 

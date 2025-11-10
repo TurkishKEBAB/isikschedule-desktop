@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import Any, List, Optional, cast
 
 from core.models import Schedule
 from utils.schedule_metrics import SchedulerPrefs
@@ -29,26 +29,31 @@ class HybridGASAScheduler(BaseScheduler):
 
     def __init__(
         self,
-        max_results: int = 3,
+        max_results: int = 10,
         max_ects: int = 31,
         allow_conflicts: bool = False,
+        max_conflicts: int = 1,
         scheduler_prefs: Optional[SchedulerPrefs] = None,
         timeout_seconds: int = 240,
-        population_size: int = 20,
-        generations: int = 20,
+        population_size: int = 30,
+        generations: int = 50,
+        annealing_iterations: int = 20,
     ) -> None:
         super().__init__(
             max_results=max_results,
             max_ects=max_ects,
             allow_conflicts=allow_conflicts,
+            max_conflicts=max_conflicts,
             scheduler_prefs=scheduler_prefs,
             timeout_seconds=timeout_seconds,
         )
         self.population_size = population_size
         self.generations = generations
+        self.annealing_iterations = annealing_iterations
 
     def _run_algorithm(self, search: PreparedSearch) -> List[Schedule]:
-        ga = GeneticAlgorithmScheduler(
+        ga_ctor = cast(Any, GeneticAlgorithmScheduler)
+        ga = ga_ctor(
             max_results=self.max_results,
             max_ects=self.max_ects,
             allow_conflicts=self.allow_conflicts,
@@ -66,7 +71,7 @@ class HybridGASAScheduler(BaseScheduler):
         optimizer = AnnealingOptimizer(
             max_ects=self.max_ects,
             scheduler_prefs=self.scheduler_prefs,
-            iterations=300,
+            iterations=self.annealing_iterations,
         )
 
         optimized_results: List[Schedule] = []

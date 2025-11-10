@@ -25,21 +25,28 @@ class SimulatedAnnealingScheduler(BaseScheduler):
 
     def __init__(
         self,
-        max_results: int = 1,
+        max_results: int = 10,
         max_ects: int = 31,
         allow_conflicts: bool = False,
+        max_conflicts: int = 1,
         scheduler_prefs: Optional[SchedulerPrefs] = None,
         timeout_seconds: int = 180,
-        annealing_iterations: int = 400,
+        iterations: int = 500,
+        annealing_iterations: Optional[int] = None,  # Eski parametre için backward compatibility
     ) -> None:
         super().__init__(
             max_results=max_results,
             max_ects=max_ects,
             allow_conflicts=allow_conflicts,
+            max_conflicts=max_conflicts,
             scheduler_prefs=scheduler_prefs,
             timeout_seconds=timeout_seconds,
         )
-        self.annealing_iterations = annealing_iterations
+        # annealing_iterations parametresi verilmişse onu kullan
+        if annealing_iterations is not None:
+            self.annealing_iterations = annealing_iterations
+        else:
+            self.annealing_iterations = iterations
 
     def _run_algorithm(self, search: PreparedSearch) -> List[Schedule]:
         initial_schedule = self._initial_schedule(search)

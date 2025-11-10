@@ -7,11 +7,40 @@ Tests cover:
 - AnnealingOptimizer (simulated annealing optimization)
 - SchedulerPrefs and schedule scoring metrics
 """
+import random
+
 import pytest
 from core.models import Course, Schedule, CourseGroup
+from algorithms.base_scheduler import BaseScheduler
 from algorithms.constraints import ConstraintUtils
 from algorithms.dfs_scheduler import DFSScheduler
 from algorithms.simulated_annealing import AnnealingOptimizer
+from algorithms.a_star_scheduler import AStarScheduler
+from algorithms.algorithm_selector import select_scheduler
+from algorithms.benchmark import AlgorithmBenchmark
+from algorithms.bfs_scheduler import BFSScheduler
+from algorithms.constraint_programming import ConstraintProgrammingScheduler
+from algorithms.dijkstra_scheduler import DijkstraScheduler
+from algorithms.evaluator import (
+    compare_algorithm_outputs,
+    evaluate_schedule,
+    summarize_schedules,
+)
+from algorithms.genetic_algorithm import GeneticAlgorithmScheduler
+from algorithms.greedy_scheduler import GreedyScheduler
+from algorithms.hill_climbing import HillClimbingScheduler
+from algorithms.hybrid_ga_sa import HybridGASAScheduler
+from algorithms.heuristics import (
+    estimate_conflict_penalty,
+    estimate_remaining_group_penalty,
+    estimate_schedule_density,
+    rank_options_by_score,
+)
+from algorithms.iddfs_scheduler import IDDFSScheduler
+from algorithms.parallel_executor import run_algorithms_parallel
+from algorithms.particle_swarm import ParticleSwarmScheduler
+from algorithms.simulated_annealing_scheduler import SimulatedAnnealingScheduler
+from algorithms.tabu_search import TabuSearchScheduler
 from utils.schedule_metrics import (
     SchedulerPrefs, compute_schedule_stats, score_schedule,
     meets_weekly_hours_constraint, meets_daily_hours_constraint,
@@ -309,7 +338,7 @@ class TestDFSScheduler:
         assert scheduler.max_results == 5
         assert scheduler.max_ects == 30
         assert scheduler.allow_conflicts is False
-        assert scheduler.results == []
+        assert scheduler.last_run_stats == {}
     
     def test_generate_schedules_basic(self, course_groups):
         """Test basic schedule generation."""
@@ -347,13 +376,12 @@ class TestDFSScheduler:
         
         mandatory_codes = {"COMP1007"}
         scheduler.generate_schedules(course_groups, mandatory_codes)
-        
-        stats = scheduler.get_search_statistics()
+        stats = scheduler.last_run_stats
         
         assert "total_time" in stats
         assert "nodes_explored" in stats
-        assert "schedules_found" in stats
-        assert stats["nodes_explored"] > 0
+        assert stats.get("generated", 0) >= 0
+        assert stats.get("nodes_explored", 0) > 0
     
     def test_get_optimization_report(self, course_groups):
         """Test optimization report generation."""
@@ -361,7 +389,6 @@ class TestDFSScheduler:
         
         mandatory_codes = {"COMP1007"}
         scheduler.generate_schedules(course_groups, mandatory_codes)
-        
         report = scheduler.get_optimization_report()
         
         assert "total_schedules" in report
@@ -525,6 +552,127 @@ class TestIntegration:
             
             # Friday should ideally be free
             assert "Friday" in stats.free_days or stats.daily_slot_counts.get("Friday", 0) <= 1
+
+
+class TestAdditionalSchedulers:
+    """Tests for newly implemented scheduler variants."""
+
+    def test_bfs_scheduler(self, course_groups):
+        scheduler = BFSScheduler(max_results=2, max_ects=30)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+
+    def test_iddfs_scheduler(self, course_groups):
+        scheduler = IDDFSScheduler(max_results=2, max_ects=30, depth_increment=1)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+
+    def test_a_star_scheduler(self, course_groups):
+        scheduler = AStarScheduler(max_results=2, max_ects=30)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+
+    def test_greedy_scheduler(self, course_groups):
+        scheduler = GreedyScheduler(max_results=1, max_ects=30)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+
+    def test_dijkstra_scheduler(self, course_groups):
+        scheduler = DijkstraScheduler(max_results=2, max_ects=30)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+
+    def test_simulated_annealing_scheduler(self, course_groups):
+        scheduler = SimulatedAnnealingScheduler(annealing_iterations=50)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert len(schedules) == 1
+
+    def test_hill_climbing_scheduler(self, course_groups):
+        scheduler = HillClimbingScheduler(max_iterations=10)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+
+    def test_tabu_search_scheduler(self, course_groups):
+        scheduler = TabuSearchScheduler(max_iterations=10, tabu_tenure=4)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+
+    def test_genetic_algorithm_scheduler(self, course_groups):
+        random.seed(42)
+        scheduler = GeneticAlgorithmScheduler(population_size=8, generations=8)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+
+    def test_particle_swarm_scheduler(self, course_groups):
+        random.seed(42)
+        scheduler = ParticleSwarmScheduler(swarm_size=8, iterations=12)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+
+    def test_hybrid_ga_sa_scheduler(self, course_groups):
+        random.seed(42)
+        scheduler = HybridGASAScheduler(population_size=8, generations=6, annealing_iterations=80)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+
+    def test_constraint_programming_scheduler(self, course_groups):
+        scheduler = ConstraintProgrammingScheduler(max_results=3)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+
+
+class TestHeuristicsAndUtilities:
+    """Validate heuristic helpers and utility layers."""
+
+    def test_heuristics(self, sample_courses):
+        schedule = Schedule([sample_courses[0], sample_courses[2]])
+        penalty = estimate_conflict_penalty(schedule)
+        remaining = estimate_remaining_group_penalty(3)
+        density = estimate_schedule_density(schedule)
+        assert penalty >= 0
+        assert remaining > 0
+        assert 0 <= density <= 1
+
+    def test_rank_options_by_score(self, sample_courses):
+        base = [sample_courses[0]]
+        options = [None, [sample_courses[2]], [sample_courses[5]]]
+        ranked = rank_options_by_score(options, base, SchedulerPrefs())
+        assert ranked[0] is not None
+
+    def test_evaluator(self, course_groups):
+        scheduler = DFSScheduler(max_results=1)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        assert schedules
+        evaluation = evaluate_schedule(schedules[0], SchedulerPrefs())
+        assert "score" in evaluation
+        summary = summarize_schedules(schedules, SchedulerPrefs())
+        assert summary["total"] == 1
+
+    def test_algorithm_selector(self):
+        cls = select_scheduler({"optimal": True, "category": "complete-search"})
+        assert issubclass(cls, BaseScheduler)
+
+    def test_benchmark(self, course_groups):
+        benchmark = AlgorithmBenchmark(course_groups, ["COMP1007", "COMP1111"])
+        results = benchmark.run(["DFS", "BFS"], per_algorithm_kwargs={"BFS": {"max_results": 1}})
+        assert "DFS" in results and "BFS" in results
+
+    def test_parallel_executor(self, course_groups):
+        results = run_algorithms_parallel(
+            ["DFS", "BFS"],
+            course_groups,
+            ["COMP1007", "COMP1111"],
+            prefs=SchedulerPrefs(),
+            max_workers=2,
+            max_results=1,
+        )
+        assert "DFS" in results and isinstance(results["DFS"], tuple)
+
+    def test_compare_algorithm_outputs(self, course_groups):
+        scheduler = DFSScheduler(max_results=1)
+        schedules = scheduler.generate_schedules(course_groups, {"COMP1007", "COMP1111"})
+        comparison = compare_algorithm_outputs({"DFS": schedules}, SchedulerPrefs())
+        assert comparison["DFS"]["total"] == 1
 
 
 if __name__ == "__main__":

@@ -6,9 +6,11 @@ from typing import Dict, List, Optional
 
 from PyQt6.QtWidgets import (
     QComboBox,
+    QFileDialog,
     QGroupBox,
     QHBoxLayout,
     QLabel,
+    QMessageBox,
     QPushButton,
     QScrollArea,
     QTextEdit,
@@ -17,7 +19,9 @@ from PyQt6.QtWidgets import (
 )
 
 from core.models import Schedule
+from gui.dialogs import AlgorithmComparisonDialog
 from gui.widgets import ScheduleGrid
+import reporting
 
 
 class ScheduleViewerTab(QWidget):
@@ -73,15 +77,30 @@ class ScheduleViewerTab(QWidget):
     def _create_display_section(self) -> QGroupBox:
         """Create schedule display area."""
         group = QGroupBox("📅 Weekly Schedule")
-        layout = QVBoxLayout(group)
+        layout = QHBoxLayout(group)  # Changed to horizontal layout
 
-        # Schedule grid
+        # Schedule grid (left side)
         scroll = QScrollArea()
         self.schedule_grid = ScheduleGrid()
+        self.schedule_grid.course_clicked.connect(self._on_course_clicked)
         scroll.setWidget(self.schedule_grid)
         scroll.setWidgetResizable(True)
 
-        layout.addWidget(scroll)
+        # Course details panel (right side)
+        details_widget = QWidget()
+        details_layout = QVBoxLayout(details_widget)
+        
+        details_label = QLabel("<b>📚 Course Details</b>")
+        details_layout.addWidget(details_label)
+        
+        self.course_details = QTextEdit()
+        self.course_details.setReadOnly(True)
+        self.course_details.setMaximumWidth(300)
+        self.course_details.setPlainText("Click on a course to view details")
+        details_layout.addWidget(self.course_details)
+
+        layout.addWidget(scroll, stretch=3)
+        layout.addWidget(details_widget, stretch=1)
 
         return group
 
@@ -140,6 +159,16 @@ class ScheduleViewerTab(QWidget):
 
         self._update_schedule_list()
 
+    def clear(self) -> None:
+        """Reset viewer state."""
+        self._schedules = []
+        self._algorithm_results.clear()
+        self.schedule_combo.clear()
+        self.algorithm_combo.clear()
+        self.algorithm_combo.addItem("All Algorithms")
+        self.schedule_grid.set_schedule(None)
+        self.stats_text.setPlainText("No schedule selected")
+
     def _update_schedule_list(self) -> None:
         """Update schedule combo box."""
         self.schedule_combo.clear()
@@ -157,6 +186,50 @@ class ScheduleViewerTab(QWidget):
             schedule = self._schedules[index]
             self.schedule_grid.set_schedule(schedule)
             self._update_stats(schedule)
+    
+    def _on_course_clicked(self, course) -> None:
+        """Handle course click event to show details."""
+        # Format schedule times
+        schedule_text = ""
+        if course.schedule:
+            from collections import defaultdict
+            day_slots = defaultdict(list)
+            for day, slot in course.schedule:
+                day_slots[day].append(slot)
+            
+            for day, slots in sorted(day_slots.items()):
+                slots_str = ", ".join(map(str, sorted(slots)))
+                schedule_text += f"  {day}: Slot(s) {slots_str}\n"
+        else:
+            schedule_text = "  No schedule information\n"
+        
+        details = f"""<b>📚 {course.main_code}</b>
+
+<b>Course Name:</b>
+{course.name}
+
+<b>Course Code:</b> {course.code}
+
+<b>Type:</b> {course.course_type.upper()}
+
+<b>ECTS:</b> {course.ects}
+
+<b>Instructor:</b>
+{course.teacher or 'Not assigned'}
+
+<b>Faculty:</b>
+{course.faculty}
+
+<b>Department:</b>
+{course.department}
+
+<b>Campus:</b>
+{course.campus}
+
+<b>Schedule:</b>
+{schedule_text}
+"""
+        self.course_details.setHtml(details)
 
     def _filter_by_algorithm(self, algorithm: str) -> None:
         """Filter schedules by algorithm."""
@@ -189,13 +262,78 @@ class ScheduleViewerTab(QWidget):
 
     def _export(self, format: str) -> None:
         """Export current schedule."""
-        # Placeholder - will be implemented in Phase 5
-        print(f"Export as {format} - To be implemented")
+        current_index = self.schedule_combo.currentIndex()
+        if current_index < 0 or current_index >= len(self._schedules):
+            QMessageBox.warning(self, "No Schedule", "Please select a schedule to export.")
+            return
+
+        schedule = self._schedules[current_index]
+
+        if format == "pdf":
+            self._export_pdf([schedule])
+        elif format == "jpeg":
+            self._export_jpeg([schedule])
+        elif format == "excel":
+            self._export_excel([schedule])
+
+    def _export_pdf(self, schedules: List[Schedule]) -> None:
+        """Export schedules as PDF."""
+        filepath, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save PDF",
+            "schedules.pdf",
+            "PDF Files (*.pdf)"
+        )
+
+        if filepath:
+            try:
+                reporting.save_schedules_as_pdf(schedules, filepath)
+                QMessageBox.information(self, "Success", f"Exported to {filepath}")
+            except Exception as e:
+                QMessageBox.critical(self, "Export Error", f"Failed to export PDF: {e}")
+
+    def _export_jpeg(self, schedules: List[Schedule]) -> None:
+        """Export schedules as JPEG images."""
+        dirpath = QFileDialog.getExistingDirectory(
+            self,
+            "Select Directory for JPEG Export"
+        )
+
+        if dirpath:
+            try:
+                created_files = reporting.save_schedules_as_jpegs(schedules, dirpath)
+                QMessageBox.information(
+                    self,
+                    "Success",
+                    f"Exported {len(created_files)} images to {dirpath}"
+                )
+            except Exception as e:
+                QMessageBox.critical(self, "Export Error", f"Failed to export JPEG: {e}")
+
+    def _export_excel(self, schedules: List[Schedule]) -> None:
+        """Export schedules as Excel file."""
+        filepath, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save Excel",
+            "schedules.xlsx",
+            "Excel Files (*.xlsx)"
+        )
+
+        if filepath:
+            try:
+                reporting.export_to_excel(schedules, filepath)
+                QMessageBox.information(self, "Success", f"Exported to {filepath}")
+            except Exception as e:
+                QMessageBox.critical(self, "Export Error", f"Failed to export Excel: {e}")
 
     def _show_comparison(self) -> None:
         """Show algorithm comparison dialog."""
-        # Placeholder - will be implemented
-        print("Algorithm comparison - To be implemented")
+        if not self._algorithm_results:
+            print("No algorithm results to compare")
+            return
+        
+        dialog = AlgorithmComparisonDialog(self._algorithm_results, self)
+        dialog.exec()
 
 
 __all__ = ["ScheduleViewerTab"]

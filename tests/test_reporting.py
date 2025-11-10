@@ -15,7 +15,7 @@ def sample_course():
         faculty="Engineering",
         department="Computer Engineering",
         campus="Maslak",
-        course_type="compulsory",
+        course_type="lecture",
         ects=6,
         teacher="Dr. John Doe",
         schedule=[("Monday", 1), ("Wednesday", 1)]
@@ -31,7 +31,7 @@ def sample_schedule(sample_course):
         faculty="Engineering",
         department="Mathematics",
         campus="Maslak",
-        course_type="compulsory",
+        course_type="lecture",
         ects=6,
         teacher="Dr. Jane Smith",
         schedule=[("Tuesday", 2), ("Thursday", 2)]

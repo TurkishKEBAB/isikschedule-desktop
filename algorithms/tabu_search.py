@@ -27,18 +27,20 @@ class TabuSearchScheduler(BaseScheduler):
 
     def __init__(
         self,
-        max_results: int = 1,
+        max_results: int = 10,
         max_ects: int = 31,
         allow_conflicts: bool = False,
+        max_conflicts: int = 1,
         scheduler_prefs: Optional[SchedulerPrefs] = None,
         timeout_seconds: int = 180,
-        max_iterations: int = 40,
-        tabu_tenure: int = 7,
+        max_iterations: int = 100,
+        tabu_tenure: int = 10,
     ) -> None:
         super().__init__(
             max_results=max_results,
             max_ects=max_ects,
             allow_conflicts=allow_conflicts,
+            max_conflicts=max_conflicts,
             scheduler_prefs=scheduler_prefs,
             timeout_seconds=timeout_seconds,
         )

@@ -140,18 +140,23 @@ class FileSettingsTab(QWidget):
 
     def _on_load_sample(self) -> None:
         """Load sample data file."""
-        # Look for sample file in project
-        sample_file = Path(__file__).parent.parent.parent / "SchedularV2" / "sample_turkish_courses.csv"
-        
-        if sample_file.exists():
-            self._load_file(str(sample_file))
-        else:
-            # Try alternative location
-            alt_sample = Path(__file__).parent.parent.parent / "data" / "sample_courses.xlsx"
-            if alt_sample.exists():
-                self._load_file(str(alt_sample))
-            else:
-                self.file_info_label.setText("❌ Sample file not found")
+        project_root = Path(__file__).resolve().parents[2]
+
+        candidate_files = [
+            project_root / "data" / "sample_isik_courses.xlsx",
+            project_root / "data" / "sample_isik_courses.csv",
+            project_root / "data" / "sample_courses.xlsx",
+            project_root / "resources" / "sample_isik_courses.xlsx",
+            project_root.parent / "SchedularV2" / "sample_turkish_courses.csv",
+        ]
+
+        for sample_path in candidate_files:
+            if sample_path.exists():
+                self._load_file(str(sample_path))
+                return
+
+        attempted = " | ".join(str(path.relative_to(project_root.parent)) for path in candidate_files)
+        self.file_info_label.setText(f"❌ Sample file not found (looked in: {attempted})")
 
     def _on_reload_file(self) -> None:
         """Reload current file."""
@@ -177,6 +182,10 @@ class FileSettingsTab(QWidget):
         algorithm = self.algorithm_selector.get_selected_algorithm()
         params = self.algorithm_selector.get_parameters()
         return algorithm, params
+
+    def update_file_status(self, message: str) -> None:
+        """Update the informational label under the file picker."""
+        self.file_info_label.setText(message)
 
 
 __all__ = ["FileSettingsTab"]

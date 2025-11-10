@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import heapq
+import itertools
 import time
 from typing import Dict, List, Optional, Tuple
 
@@ -31,6 +32,7 @@ class DijkstraScheduler(BaseScheduler):
         max_results: int = 5,
         max_ects: int = 31,
         allow_conflicts: bool = False,
+        max_conflicts: int = 1,
         scheduler_prefs: Optional[SchedulerPrefs] = None,
         timeout_seconds: int = 180,
     ) -> None:
@@ -38,13 +40,15 @@ class DijkstraScheduler(BaseScheduler):
             max_results=max_results,
             max_ects=max_ects,
             allow_conflicts=allow_conflicts,
+            max_conflicts=max_conflicts,
             scheduler_prefs=scheduler_prefs,
             timeout_seconds=timeout_seconds,
         )
 
     def _run_algorithm(self, search: PreparedSearch) -> List[Schedule]:
+        counter = itertools.count()
         queue: List[Tuple[float, int, int, List[Course], int]] = []
-        heapq.heappush(queue, (0.0, 0, 0, [], 0))
+        heapq.heappush(queue, (0.0, next(counter), 0, [], 0))
 
         results: List[Schedule] = []
         distances: Dict[Tuple[int, Tuple[str, ...]], float] = {}
@@ -92,7 +96,10 @@ class DijkstraScheduler(BaseScheduler):
                 schedule = Schedule(new_courses)
                 new_cost = cost + estimate_conflict_penalty(schedule)
 
-                heapq.heappush(queue, (new_cost, group_index + 1, group_index + 1, new_courses, new_ects))
+                heapq.heappush(
+                    queue,
+                    (new_cost, next(counter), group_index + 1, new_courses, new_ects),
+                )
 
         return results
 

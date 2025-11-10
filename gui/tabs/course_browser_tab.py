@@ -110,12 +110,13 @@ class CourseBrowserTab(QWidget):
 
         # Resize columns
         header = self.course_table.horizontalHeader()
-        header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
-        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
+        if header:
+            header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
+            header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+            header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+            header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+            header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
+            header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
 
         # Info label
         self.info_label = QLabel("No courses loaded")
@@ -143,10 +144,11 @@ class CourseBrowserTab(QWidget):
         for course in self._courses:
             # Search filter
             if search_text:
+                teacher_text = course.teacher.lower() if course.teacher else ""
                 if not (
                     search_text in course.code.lower()
                     or search_text in course.name.lower()
-                    or search_text in course.teacher.lower()
+                    or search_text in teacher_text
                 ):
                     continue
 
@@ -194,12 +196,13 @@ class CourseBrowserTab(QWidget):
             self.course_table.setItem(row, 3, ects_item)
 
             # Teacher
-            self.course_table.setItem(row, 4, QTableWidgetItem(course.teacher))
+            teacher_text = str(course.teacher) if course.teacher else "—"
+            self.course_table.setItem(row, 4, QTableWidgetItem(teacher_text))
 
             # Schedule
             schedule_text = ", ".join(
                 f"{day} {slot}" for day, slot in course.schedule
-            )
+            ) if course.schedule else "—"
             self.course_table.setItem(row, 5, QTableWidgetItem(schedule_text))
 
         # Update info

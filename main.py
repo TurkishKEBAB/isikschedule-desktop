@@ -7,6 +7,7 @@ initializing the GUI with PyQt6 and setting up logging.
 import sys
 import logging
 import argparse
+import traceback as tb_module
 from pathlib import Path
 from datetime import datetime
 from PyQt6.QtWidgets import QApplication, QMessageBox
@@ -27,6 +28,7 @@ from config.settings import (
     LOG_FILE_MAX_BYTES,
     LOG_FILE_BACKUP_COUNT,
 )
+from utils import ErrorHandler
 
 
 def setup_logging(verbose: bool = False) -> Path:
@@ -102,16 +104,16 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def exception_hook(exctype, value, traceback):
+def exception_hook(exctype, value, tb):
     """
     Global exception handler for uncaught exceptions.
     
     Args:
         exctype: Exception type
         value: Exception value
-        traceback: Exception traceback
+        tb: Exception traceback
     """
-    logging.critical("Uncaught exception", exc_info=(exctype, value, traceback))
+    logging.critical("Uncaught exception", exc_info=(exctype, value, tb))
     
     # Show error dialog to user
     msg = QMessageBox()
@@ -119,11 +121,11 @@ def exception_hook(exctype, value, traceback):
     msg.setWindowTitle("Critical Error")
     msg.setText("An unexpected error occurred.")
     msg.setInformativeText(str(value))
-    msg.setDetailedText(''.join(traceback.format_exception(exctype, value, traceback)))
+    msg.setDetailedText(''.join(tb_module.format_exception(exctype, value, tb)))
     msg.exec()
     
     # Call the default exception handler
-    sys.__excepthook__(exctype, value, traceback)
+    sys.__excepthook__(exctype, value, tb)
 
 
 def main():
@@ -147,8 +149,9 @@ def main():
     logging.info(f"Python version: {sys.version}")
     logging.info(f"Platform: {sys.platform}")
     
-    # Install global exception handler
+    # Install global exception handlers
     sys.excepthook = exception_hook
+    ErrorHandler.setup_exception_hook()
     
     # Create QApplication
     try:
@@ -164,34 +167,17 @@ def main():
         
         logging.info("QApplication initialized successfully")
         
-        # TODO: Show splash screen if not disabled
-        # if not args.no_splash:
-        #     from gui.splash import SplashScreen
-        #     splash = SplashScreen()
-        #     splash.show()
-        
-        # TODO: Create and show main window
-        # from gui.main_window import MainWindow
-        # main_window = MainWindow()
-        # main_window.show()
-        
-        # For now, show a simple message box to confirm everything works
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Icon.Information)
-        msg.setWindowTitle(APP_NAME)
-        msg.setText(f"Welcome to {APP_NAME} v{APP_VERSION}!")
-        msg.setInformativeText("Foundation setup complete.\nGUI components will be added in Phase 4.")
-        msg.exec()
+        # Create and show main window
+        from gui.main_window import MainWindow
+        main_window = MainWindow()
+        main_window.show()
         
         logging.info("Application initialized successfully")
         
         # Start event loop
-        # return_code = app.exec()
-        # logging.info(f"Application exiting with code {return_code}")
-        # return return_code
-        
-        logging.info("Phase 1 complete - exiting")
-        return 0
+        return_code = app.exec()
+        logging.info(f"Application exiting with code {return_code}")
+        return return_code
         
     except Exception as e:
         logging.critical(f"Failed to start application: {e}", exc_info=True)

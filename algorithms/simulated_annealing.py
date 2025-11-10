@@ -175,6 +175,7 @@ class AnnealingOptimizer:
 
         return Schedule(best_schedule)
 
+
     def repair_schedule_with_priority(self,
                                      schedule: Schedule,
                                      group_valid_selections: Dict[str, List[List[Course]]],

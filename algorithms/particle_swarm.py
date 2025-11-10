@@ -39,6 +39,7 @@ class ParticleSwarmScheduler(BaseScheduler):
         max_results: int = 1,
         max_ects: int = 31,
         allow_conflicts: bool = False,
+        max_conflicts: int = 1,
         scheduler_prefs: Optional[SchedulerPrefs] = None,
         timeout_seconds: int = 120,
         swarm_size: int = 15,
@@ -51,6 +52,7 @@ class ParticleSwarmScheduler(BaseScheduler):
             max_results=max_results,
             max_ects=max_ects,
             allow_conflicts=allow_conflicts,
+            max_conflicts=max_conflicts,
             scheduler_prefs=scheduler_prefs,
             timeout_seconds=timeout_seconds,
         )

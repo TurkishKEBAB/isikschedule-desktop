@@ -1,10 +1,11 @@
+# filepath: SchedularV3/tests/conftest.py
 import pytest
 import sys
 from pathlib import Path
 
-# Add the parent directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
+# Add the SchedularV3 directory to the path (parent of tests)
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
 
 @pytest.fixture
 def sample_course_data():

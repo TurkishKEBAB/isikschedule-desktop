@@ -4,7 +4,7 @@ Constraint generation and handling for the course scheduler.
 This module provides functionality for generating and managing course constraints,
 such as mandatory PS/lab sections and dependencies between course sections.
 """
-from typing import Dict, List, Set, Optional
+from typing import Dict, List, Set, Optional, Any
 from core.models import Course, CourseGroup
 
 
@@ -157,7 +157,7 @@ class ConstraintUtils:
         return reasons
 
     @staticmethod
-    def validate_course_group(course_group: CourseGroup) -> Dict[str, any]:
+    def validate_course_group(course_group: CourseGroup) -> Dict[str, Any]:
         """
         Validate a course group for completeness and consistency.
 

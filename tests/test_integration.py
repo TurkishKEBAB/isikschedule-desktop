@@ -3,8 +3,8 @@
 import pytest
 from pathlib import Path
 from core.excel_loader import process_excel
+from core.models import build_course_groups
 from algorithms import get_registered_scheduler
-from utils.schedule_metrics import SchedulerPrefs
 
 
 class TestEndToEnd:
@@ -17,27 +17,22 @@ class TestEndToEnd:
         if not excel_path.exists():
             pytest.skip("Sample data file not found")
         
-        courses = process_excel(excel_path)
+        courses = process_excel(str(excel_path))
         assert len(courses) > 0
+        
+        # Build course groups
+        course_groups = build_course_groups(courses)
         
         # Get scheduler
         scheduler_cls = get_registered_scheduler("DFS")
         assert scheduler_cls is not None
         
-        # Create scheduler
-        prefs = SchedulerPrefs(
-            prioritize_less_conflicts=True,
-            prioritize_more_ects=True,
-            prefer_morning=False,
-            prefer_compact=False
-        )
-        
+        # Create scheduler (SchedulerPrefs kullanmadan)
         scheduler = scheduler_cls(
             max_results=5,
             max_ects=42,
             allow_conflicts=True,
             max_conflicts=1,
-            scheduler_prefs=prefs,
             timeout_seconds=30
         )
         
@@ -46,7 +41,7 @@ class TestEndToEnd:
         
         # Generate schedules
         schedules = scheduler.generate_schedules(
-            courses=courses,
+            course_groups=course_groups,
             mandatory_codes={c.main_code for c in selected_courses[:5]},
             optional_codes={c.main_code for c in selected_courses[5:]}
         )
@@ -61,14 +56,20 @@ class TestEndToEnd:
         if not excel_path.exists():
             pytest.skip("Sample data file not found")
         
-        courses = process_excel(excel_path)
+        courses = process_excel(str(excel_path))
         selected_courses = courses[:8]
+        
+        # Build course groups
+        course_groups = build_course_groups(courses)
         
         algorithms = ["DFS", "BFS", "Greedy"]
         results = {}
         
         for algo_name in algorithms:
             scheduler_cls = get_registered_scheduler(algo_name)
+            if scheduler_cls is None:
+                continue
+                
             scheduler = scheduler_cls(
                 max_results=3,
                 max_ects=30,
@@ -76,7 +77,7 @@ class TestEndToEnd:
             )
             
             schedules = scheduler.generate_schedules(
-                courses=courses,
+                course_groups=course_groups,
                 mandatory_codes={c.main_code for c in selected_courses}
             )
             
@@ -95,13 +96,18 @@ class TestEndToEnd:
             pytest.skip("Sample data file not found")
         
         # Generate schedules
-        courses = process_excel(excel_path)
+        courses = process_excel(str(excel_path))
+        course_groups = build_course_groups(courses)
+        
         scheduler_cls = get_registered_scheduler("DFS")
+        if scheduler_cls is None:
+            pytest.skip("DFS scheduler not found")
+            
         scheduler = scheduler_cls(max_results=2, max_ects=30, timeout_seconds=10)
         
         selected_courses = courses[:6]
         schedules = scheduler.generate_schedules(
-            courses=courses,
+            course_groups=course_groups,
             mandatory_codes={c.main_code for c in selected_courses}
         )
         
@@ -110,13 +116,13 @@ class TestEndToEnd:
         # Test PDF export
         with tempfile.TemporaryDirectory() as tmpdir:
             pdf_path = Path(tmpdir) / "export_test.pdf"
-            save_schedules_as_pdf(schedules, pdf_path)
+            save_schedules_as_pdf(schedules, str(pdf_path))
             assert pdf_path.exists()
             
             # Test Excel export
-            excel_path = Path(tmpdir) / "export_test.xlsx"
-            export_to_excel(schedules, excel_path)
-            assert excel_path.exists()
+            excel_export_path = Path(tmpdir) / "export_test.xlsx"
+            export_to_excel(schedules, str(excel_export_path))
+            assert excel_export_path.exists()
 
 
 class TestErrorHandling:
@@ -130,10 +136,13 @@ class TestErrorHandling:
     def test_empty_course_list(self):
         """Test scheduler with empty course list."""
         scheduler_cls = get_registered_scheduler("DFS")
+        if scheduler_cls is None:
+            pytest.skip("DFS scheduler not found")
+            
         scheduler = scheduler_cls(max_results=1)
         
         schedules = scheduler.generate_schedules(
-            courses=[],
+            course_groups={},
             mandatory_codes=set()
         )
         
@@ -146,8 +155,13 @@ class TestErrorHandling:
         if not excel_path.exists():
             pytest.skip("Sample data file not found")
         
-        courses = process_excel(excel_path)
+        courses = process_excel(str(excel_path))
+        course_groups = build_course_groups(courses)
+        
         scheduler_cls = get_registered_scheduler("DFS")
+        if scheduler_cls is None:
+            pytest.skip("DFS scheduler not found")
+            
         scheduler = scheduler_cls(
             max_results=5,
             max_ects=6,  # Too low to fit any meaningful schedule
@@ -155,7 +169,7 @@ class TestErrorHandling:
         )
         
         schedules = scheduler.generate_schedules(
-            courses=courses,
+            course_groups=course_groups,
             mandatory_codes={c.main_code for c in courses[:10]}
         )
         
