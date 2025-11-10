@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import List, Optional, Set, Tuple
 
+import pandas as pd
+
 from PyQt6.QtCore import Qt, pyqtSignal, QTimer
 from PyQt6.QtWidgets import (
     QCheckBox,
@@ -22,6 +24,8 @@ from PyQt6.QtWidgets import (
     QWidget,
     QFrame,
     QProgressBar,
+    QMessageBox,
+    QFileDialog,
 )
 
 from core.models import Course
@@ -100,8 +104,15 @@ class CourseBrowserTab(QWidget):
         self.sort_combo.currentTextChanged.connect(self._on_quick_filter_changed)
         self.sort_combo.setMaximumWidth(200)
 
+        # Export CSV button
+        self.export_csv_btn = QPushButton("📤 Export CSV")
+        self.export_csv_btn.clicked.connect(self._export_to_csv)
+        self.export_csv_btn.setToolTip("Export filtered courses to CSV")
+        self.export_csv_btn.setMaximumWidth(130)
+
         layout.addWidget(search_icon)
         layout.addWidget(self.search_edit, stretch=1)
+        layout.addWidget(self.export_csv_btn)
         layout.addWidget(self.toggle_filters_btn)
         layout.addWidget(sort_label)
         layout.addWidget(self.sort_combo)
@@ -365,7 +376,7 @@ class CourseBrowserTab(QWidget):
             QTableWidget.SelectionBehavior.SelectRows
         )
         self.course_table.setSelectionMode(
-            QTableWidget.SelectionMode.SingleSelection
+            QTableWidget.SelectionMode.ExtendedSelection  # Multi-select with Ctrl/Shift
         )
         self.course_table.setAlternatingRowColors(True)
         self.course_table.itemSelectionChanged.connect(self._on_selection_changed)
@@ -386,8 +397,30 @@ class CourseBrowserTab(QWidget):
         self.info_label = QLabel("No courses loaded")
         self.info_label.setStyleSheet("color: #757575; font-style: italic;")
 
+        # Selection controls
+        selection_layout = QHBoxLayout()
+        
+        self.select_all_btn = QPushButton("✅ Select All")
+        self.select_all_btn.clicked.connect(self.course_table.selectAll)
+        self.select_all_btn.setMaximumWidth(120)
+        
+        self.deselect_all_btn = QPushButton("❌ Deselect All")
+        self.deselect_all_btn.clicked.connect(self.course_table.clearSelection)
+        self.deselect_all_btn.setMaximumWidth(120)
+        
+        self.delete_selected_btn = QPushButton("🗑️ Delete Selected")
+        self.delete_selected_btn.clicked.connect(self._delete_selected_courses)
+        self.delete_selected_btn.setMaximumWidth(150)
+        self.delete_selected_btn.setStyleSheet("QPushButton { color: #d32f2f; font-weight: bold; }")
+        
+        selection_layout.addWidget(self.select_all_btn)
+        selection_layout.addWidget(self.deselect_all_btn)
+        selection_layout.addStretch()
+        selection_layout.addWidget(self.delete_selected_btn)
+
         layout.addWidget(self.course_table)
         layout.addWidget(self.info_label)
+        layout.addLayout(selection_layout)
 
         return group
 
@@ -895,6 +928,160 @@ class CourseBrowserTab(QWidget):
     def get_courses(self) -> List[Course]:
         """Get current course list (after deletions)."""
         return self._courses.copy()
+
+    def _export_to_csv(self) -> None:
+        """Export filtered courses to CSV file."""
+        if not self._filtered_courses:
+            QMessageBox.warning(
+                self,
+                "No Data",
+                "No courses to export! Please load courses first."
+            )
+            return
+        
+        # Open file dialog
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Export to CSV",
+            "courses_export.csv",
+            "CSV Files (*.csv);;All Files (*)"
+        )
+        
+        if not file_path:
+            return  # User canceled
+        
+        try:
+            # Create DataFrame from filtered courses
+            data = []
+            for course in self._filtered_courses:
+                # Format schedule for CSV
+                schedule_str = ""
+                if course.schedule:
+                    schedule_parts = [f"{day[:3]}{period}" for day, period in course.schedule]
+                    schedule_str = ", ".join(schedule_parts)
+                
+                data.append({
+                    'Course Code': course.code,
+                    'Main Code': course.main_code,
+                    'Course Name': course.name,
+                    'Type': course.course_type,
+                    'ECTS': course.ects,
+                    'Teacher': course.teacher,
+                    'Faculty': course.faculty,
+                    'Department': course.department,
+                    'Campus': course.campus,
+                    'Schedule': schedule_str
+                })
+            
+            df = pd.DataFrame(data)
+            
+            # Save to CSV
+            df.to_csv(file_path, index=False, encoding='utf-8-sig')  # utf-8-sig for Excel compatibility
+            
+            QMessageBox.information(
+                self,
+                "Export Successful",
+                f"Exported {len(self._filtered_courses)} courses to:\n{file_path}"
+            )
+        
+        except Exception as e:
+            QMessageBox.critical(
+                self,
+                "Export Failed",
+                f"Failed to export courses:\n{str(e)}"
+            )
+
+    def _delete_selected_courses(self) -> None:
+        """Delete all selected courses from the table."""
+        selected_rows = sorted(set(item.row() for item in self.course_table.selectedItems()), reverse=True)
+        
+        if not selected_rows:
+            QMessageBox.warning(
+                self,
+                "No Selection",
+                "Please select courses to delete using Ctrl+Click or Shift+Click."
+            )
+            return
+        
+        count = len(selected_rows)
+        
+        # Confirmation dialog
+        reply = QMessageBox.question(
+            self,
+            "Confirm Bulk Deletion",
+            f"Delete {count} selected course(s)?\n\nThis action cannot be undone.",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No
+        )
+        
+        if reply != QMessageBox.StandardButton.Yes:
+            return
+        
+        # Collect courses to delete
+        courses_to_delete = []
+        for row in selected_rows:
+            if 0 <= row < len(self._filtered_courses):
+                courses_to_delete.append(self._filtered_courses[row])
+        
+        # Delete courses (optimized - no immediate table updates)
+        for course in courses_to_delete:
+            if course in self._courses:
+                self._courses.remove(course)
+            if course in self._filtered_courses:
+                self._filtered_courses.remove(course)
+        
+        # Single table update at the end
+        self._update_table()
+        
+        # Emit signal to notify other tabs
+        self.courses_updated.emit(self._courses.copy())
+        
+        QMessageBox.information(
+            self,
+            "Deletion Complete",
+            f"Successfully deleted {count} course(s)."
+        )
+
+    def keyPressEvent(self, event):
+        """Handle keyboard shortcuts."""
+        from PyQt6.QtCore import Qt
+        from PyQt6.QtGui import QKeyEvent
+        
+        if event.modifiers() == Qt.KeyboardModifier.ControlModifier:
+            if event.key() == Qt.Key.Key_F:
+                # Ctrl+F: Focus search box
+                self.search_edit.setFocus()
+                self.search_edit.selectAll()
+                event.accept()
+                return
+            elif event.key() == Qt.Key.Key_A:
+                # Ctrl+A: Select all
+                self.course_table.selectAll()
+                event.accept()
+                return
+            elif event.key() == Qt.Key.Key_E:
+                # Ctrl+E: Export CSV
+                self._export_to_csv()
+                event.accept()
+                return
+        elif event.key() == Qt.Key.Key_Delete:
+            # Delete: Delete selected
+            self._delete_selected_courses()
+            event.accept()
+            return
+        elif event.key() == Qt.Key.Key_F5:
+            # F5: Refresh
+            self._apply_filters()
+            event.accept()
+            return
+        elif event.key() == Qt.Key.Key_Escape:
+            # Escape: Deselect all
+            self.course_table.clearSelection()
+            event.accept()
+            return
+        
+        # Call parent implementation for other keys
+        super().keyPressEvent(event)
 
 
 __all__ = ["CourseBrowserTab"]
