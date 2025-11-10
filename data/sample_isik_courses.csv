@@ -1,0 +1,11 @@
+Ders Kodu,Başlık,Yerel Kredi,AKTS Kredisi,Kampüs,Eğitmen Adı,Eğitmen Soyadı,Fakülte Adı,Ders Saati(leri)
+COMP1007.1,Bilgisayar ve Yazılım Mühendisliğine Giriş (1),1,1,Şile,EMİNE,EKİN,Mühendislik ve Doğa Bilimleri Fakültesi,T4
+COMP1111.1,Programlama Temelleri (4),4,6,Şile,MUSTAFA TANER,ESKİL,Mühendislik ve Doğa Bilimleri Fakültesi,"T6, T7, T8"
+COMP1111-L.1,Programlama Temelleri,0,0,Şile,GİZEM,GÜMÜŞÇEKİÇCİ,Mühendislik ve Doğa Bilimleri Fakültesi,"Th5, Th6"
+COMP2112.1,Veri Yapıları ve Algoritmalar (4),4,7,Şile,BERKE,ÖZENÇ,Mühendislik ve Doğa Bilimleri Fakültesi,"T1, T2, T3"
+COMP2112-L.1,Veri Yapıları ve Algoritmalar,0,0,Şile,ELİF,DURMAZ,Mühendislik ve Doğa Bilimleri Fakültesi,"W3, W4"
+MATH1101.1,Matematik I (4),4,6,Şile,AHMET,YILMAZ,Mühendislik ve Doğa Bilimleri Fakültesi,"M1, M2, W1, W2"
+PHYS1101.1,Fizik I (3),3,5,Şile,MEHMET,DEMIR,Mühendislik ve Doğa Bilimleri Fakültesi,"T5, Th4, F3"
+ENGL1102.1,Akademik İngilizce 2 (3),3,4,Şile,ARMIN,HEDAYATI,Yabancı Diller Okulu,"T7, T8, Th7, Th8"
+ARCH2210.1,Betonarme Yapılar (3),3,4,Online,SELÇUK,DOĞRU,Sanat Tasarım ve Mimarlık Fakültesi,"T1, T2, T3"
+ARCH2210-PS.1,Betonarme Yapılar,0,0,Online,SELÇUK,DOĞRU,Sanat Tasarım ve Mimarlık Fakültesi,T4
