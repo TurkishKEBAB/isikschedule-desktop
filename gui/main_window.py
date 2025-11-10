@@ -68,16 +68,19 @@ class MainWindow(QMainWindow):
         from gui.tabs.course_browser_tab import CourseBrowserTab
         from gui.tabs.course_selector_tab import CourseSelectorTab
         from gui.tabs.schedule_viewer_tab import ScheduleViewerTab
+        from gui.tabs.academic_tab import AcademicTab
 
         self.file_tab = FileSettingsTab()
         self.browser_tab = CourseBrowserTab()
         self.selector_tab = CourseSelectorTab()
         self.viewer_tab = ScheduleViewerTab()
+        self.academic_tab = AcademicTab()
 
         self.tab_widget.addTab(self.file_tab, "📁 File & Settings")
         self.tab_widget.addTab(self.browser_tab, "📚 Course Browser")
         self.tab_widget.addTab(self.selector_tab, "✅ Course Selector")
         self.tab_widget.addTab(self.viewer_tab, "📊 Schedule Viewer")
+        self.tab_widget.addTab(self.academic_tab, "🎓 Academic")
 
         self.setCentralWidget(self.tab_widget)
 

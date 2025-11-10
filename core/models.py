@@ -37,6 +37,8 @@ class Course:
         faculty: Faculty offering the course
         department: Department offering the course
         campus: Campus where the course is held
+        prerequisites: List of prerequisite course codes (Phase 7)
+        corequisites: List of corequisite course codes (Phase 7)
     """
     code: str
     main_code: str
@@ -48,6 +50,9 @@ class Course:
     has_lecture: bool = False
     faculty: str = "Unknown Faculty"
     department: str = "Unknown Department"
+    campus: str = "Main"
+    prerequisites: List[str] = field(default_factory=list)
+    corequisites: List[str] = field(default_factory=list)
     campus: str = "Main"
 
     @classmethod
@@ -435,3 +440,125 @@ def calculate_total_credits(courses: List[Course]) -> int:
         Total ECTS credits
     """
     return sum(c.ects for c in courses)
+
+
+# ============================================================================
+# Phase 7: Academic Models
+# ============================================================================
+
+@dataclass
+class Grade:
+    """
+    Represents a grade for a completed course.
+    
+    Attributes:
+        course_code: Course code
+        course_name: Course name
+        ects: ECTS credits
+        letter_grade: Letter grade (AA, BA, BB, CB, CC, DC, DD, FF, FD)
+        numeric_grade: Numeric grade (0.0-4.0)
+        semester: Semester when course was taken
+    """
+    course_code: str
+    course_name: str
+    ects: int
+    letter_grade: str
+    numeric_grade: float
+    semester: str
+    
+    def is_passing(self) -> bool:
+        """Check if grade is passing (>= DD/2.0)."""
+        return self.numeric_grade >= 2.0
+
+
+@dataclass
+class Transcript:
+    """
+    Student transcript with all completed courses.
+    
+    Attributes:
+        student_id: Student ID
+        student_name: Student name
+        program: Program/major name
+        grades: List of grades
+    """
+    student_id: str
+    student_name: str
+    program: str
+    grades: List[Grade] = field(default_factory=list)
+    
+    def add_grade(self, grade: Grade) -> None:
+        """Add a grade to transcript."""
+        self.grades.append(grade)
+    
+    def get_gpa(self) -> float:
+        """Calculate current GPA."""
+        if not self.grades:
+            return 0.0
+        total_points = sum(g.numeric_grade * g.ects for g in self.grades)
+        total_ects = sum(g.ects for g in self.grades)
+        return total_points / total_ects if total_ects > 0 else 0.0
+    
+    def get_total_ects(self) -> int:
+        """Get total ECTS earned."""
+        return sum(g.ects for g in self.grades if g.is_passing())
+    
+    def get_completed_courses(self) -> List[str]:
+        """Get list of completed course codes."""
+        return [g.course_code for g in self.grades if g.is_passing()]
+    
+    def get_ects_limit(self) -> int:
+        """Get ECTS limit based on current GPA."""
+        gpa = self.get_gpa()
+        if gpa >= 3.0:
+            return 42
+        elif gpa >= 2.5:
+            return 37
+        else:
+            return 31
+
+
+@dataclass
+class GraduationRequirement:
+    """
+    Graduation requirements for a program.
+    
+    Attributes:
+        program: Program name
+        total_ects: Required total ECTS
+        min_gpa: Minimum GPA requirement
+        core_courses: Required core course codes
+    """
+    program: str
+    total_ects: int
+    min_gpa: float
+    core_courses: List[str] = field(default_factory=list)
+    
+    def check_completion(self, transcript: Transcript) -> Tuple[bool, Dict[str, Any]]:
+        """
+        Check if graduation requirements are met.
+        
+        Returns:
+            Tuple of (is_complete, progress_dict)
+        """
+        completed_ects = transcript.get_total_ects()
+        current_gpa = transcript.get_gpa()
+        completed_courses = set(transcript.get_completed_courses())
+        missing_cores = [c for c in self.core_courses if c not in completed_courses]
+        
+        progress = {
+            "ects_complete": completed_ects >= self.total_ects,
+            "ects_progress": f"{completed_ects}/{self.total_ects}",
+            "gpa_complete": current_gpa >= self.min_gpa,
+            "gpa_progress": f"{current_gpa:.2f}/{self.min_gpa:.2f}",
+            "cores_complete": len(missing_cores) == 0,
+            "missing_cores": missing_cores,
+        }
+        
+        is_complete = (
+            progress["ects_complete"] and
+            progress["gpa_complete"] and
+            progress["cores_complete"]
+        )
+        
+        return is_complete, progress
