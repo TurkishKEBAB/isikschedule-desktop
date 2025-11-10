@@ -165,7 +165,7 @@ class CourseSelectorTab(QWidget):
             # Optional - show X mark
             self._mandatory.discard(main_code)
             self._optional.add(main_code)
-            checkbox.setText(f"❌ {main_code} - {name_part}")
+            checkbox.setText(f"❓ {main_code} - {name_part}")
             checkbox.setStyleSheet("font-weight: normal; color: #F57C00;")
         else:
             # Excluded - no mark

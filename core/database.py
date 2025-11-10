@@ -11,7 +11,7 @@ from typing import List, Dict, Any, Optional
 from pathlib import Path
 from datetime import datetime
 
-from .models import Course, Schedule, Program
+from .models import Course, Schedule, Program, Transcript, Grade
 from config.settings import DATABASE_PATH
 
 # Set up logging
@@ -36,7 +36,7 @@ class Database:
         try:
             # Ensure parent directory exists
             self.db_path.parent.mkdir(parents=True, exist_ok=True)
-            
+
             self.conn = sqlite3.connect(str(self.db_path))
             self.conn.row_factory = sqlite3.Row
             logger.info(f"Connected to database: {self.db_path}")
@@ -120,6 +120,34 @@ class Database:
                 FOREIGN KEY (program_id) REFERENCES programs (id) ON DELETE CASCADE,
                 FOREIGN KEY (schedule_id) REFERENCES schedules (id) ON DELETE CASCADE,
                 PRIMARY KEY (program_id, schedule_id)
+            )
+            ''')
+            
+            # Create transcripts table (Phase 7.5)
+            cursor.execute('''
+            CREATE TABLE IF NOT EXISTS transcripts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                student_id TEXT UNIQUE NOT NULL,
+                student_name TEXT NOT NULL,
+                program TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            ''')
+            
+            # Create grades table (Phase 7.5)
+            cursor.execute('''
+            CREATE TABLE IF NOT EXISTS grades (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                transcript_id INTEGER NOT NULL,
+                course_code TEXT NOT NULL,
+                course_name TEXT NOT NULL,
+                ects INTEGER NOT NULL,
+                letter_grade TEXT NOT NULL,
+                numeric_grade REAL NOT NULL,
+                semester TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (transcript_id) REFERENCES transcripts (id) ON DELETE CASCADE
             )
             ''')
 
@@ -557,4 +585,195 @@ class Database:
             return programs
         except sqlite3.Error as e:
             logger.error(f"Error retrieving all programs: {e}")
+            raise
+    
+    # ========================================================================
+    # Phase 7.5: Transcript Management Methods
+    # ========================================================================
+    
+    def save_transcript(self, transcript: Transcript) -> int:
+        """
+        Save or update a transcript in the database.
+        
+        Args:
+            transcript: Transcript object to save
+            
+        Returns:
+            Transcript ID
+        """
+        if not self.conn:
+            self.connect()
+        
+        try:
+            cursor = self.conn.cursor()
+            
+            # Check if transcript already exists
+            cursor.execute('''
+            SELECT id FROM transcripts WHERE student_id = ?
+            ''', (transcript.student_id,))
+            
+            row = cursor.fetchone()
+            
+            if row:
+                # Update existing transcript
+                transcript_id = row[0]
+                cursor.execute('''
+                UPDATE transcripts
+                SET student_name = ?, program = ?, updated_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+                ''', (transcript.student_name, transcript.program, transcript_id))
+                
+                # Delete existing grades
+                cursor.execute('DELETE FROM grades WHERE transcript_id = ?', (transcript_id,))
+            else:
+                # Insert new transcript
+                cursor.execute('''
+                INSERT INTO transcripts (student_id, student_name, program)
+                VALUES (?, ?, ?)
+                ''', (transcript.student_id, transcript.student_name, transcript.program))
+                
+                transcript_id = cursor.lastrowid
+            
+            # Insert grades
+            for grade in transcript.grades:
+                cursor.execute('''
+                INSERT INTO grades (
+                    transcript_id, course_code, course_name, ects,
+                    letter_grade, numeric_grade, semester
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                ''', (
+                    transcript_id, grade.course_code, grade.course_name,
+                    grade.ects, grade.letter_grade, grade.numeric_grade,
+                    grade.semester
+                ))
+            
+            self.conn.commit()
+            logger.info(f"Saved transcript for student {transcript.student_id}")
+            
+            return transcript_id
+        
+        except sqlite3.Error as e:
+            logger.error(f"Error saving transcript: {e}")
+            raise
+    
+    def load_transcript(self, student_id: str) -> Optional[Transcript]:
+        """
+        Load a transcript from the database.
+        
+        Args:
+            student_id: Student ID to load
+            
+        Returns:
+            Transcript object if found, None otherwise
+        """
+        if not self.conn:
+            self.connect()
+        
+        try:
+            cursor = self.conn.cursor()
+            
+            # Get transcript
+            cursor.execute('''
+            SELECT id, student_id, student_name, program
+            FROM transcripts
+            WHERE student_id = ?
+            ''', (student_id,))
+            
+            row = cursor.fetchone()
+            if not row:
+                logger.warning(f"Transcript not found for student {student_id}")
+                return None
+            
+            transcript_id = row[0]
+            student_name = row[2]
+            program = row[3]
+            
+            # Get grades
+            cursor.execute('''
+            SELECT course_code, course_name, ects, letter_grade, numeric_grade, semester
+            FROM grades
+            WHERE transcript_id = ?
+            ORDER BY created_at
+            ''', (transcript_id,))
+            
+            grades = []
+            for grade_row in cursor.fetchall():
+                grade = Grade(
+                    course_code=grade_row[0],
+                    course_name=grade_row[1],
+                    ects=grade_row[2],
+                    letter_grade=grade_row[3],
+                    numeric_grade=grade_row[4],
+                    semester=grade_row[5]
+                )
+                grades.append(grade)
+            
+            return Transcript(
+                student_id=student_id,
+                student_name=student_name,
+                program=program,
+                grades=grades
+            )
+        
+        except sqlite3.Error as e:
+            logger.error(f"Error loading transcript: {e}")
+            raise
+    
+    def get_all_transcripts(self) -> List[Transcript]:
+        """
+        Get all transcripts from database.
+        
+        Returns:
+            List of Transcript objects
+        """
+        if not self.conn:
+            self.connect()
+        
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute('SELECT student_id FROM transcripts ORDER BY created_at DESC')
+            
+            transcripts = []
+            for row in cursor.fetchall():
+                student_id = row[0]
+                transcript = self.load_transcript(student_id)
+                if transcript:
+                    transcripts.append(transcript)
+            
+            return transcripts
+        
+        except sqlite3.Error as e:
+            logger.error(f"Error retrieving all transcripts: {e}")
+            raise
+    
+    def delete_transcript(self, student_id: str) -> bool:
+        """
+        Delete a transcript from database.
+        
+        Args:
+            student_id: Student ID to delete
+            
+        Returns:
+            True if deleted, False if not found
+        """
+        if not self.conn:
+            self.connect()
+        
+        try:
+            cursor = self.conn.cursor()
+            
+            cursor.execute('DELETE FROM transcripts WHERE student_id = ?', (student_id,))
+            self.conn.commit()
+            
+            deleted = cursor.rowcount > 0
+            if deleted:
+                logger.info(f"Deleted transcript for student {student_id}")
+            else:
+                logger.warning(f"Transcript not found for student {student_id}")
+            
+            return deleted
+        
+        except sqlite3.Error as e:
+            logger.error(f"Error deleting transcript: {e}")
             raise

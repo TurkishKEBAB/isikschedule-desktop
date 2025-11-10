@@ -20,6 +20,7 @@ from typing import List, Optional, Dict, Any, Tuple
 from core.models import Course, Transcript, GraduationRequirement, Grade
 from core.academic import PrerequisiteChecker, GPACalculator, GraduationPlanner
 from gui.tabs.graduation_planner_widget import GraduationPlannerWidget
+from gui.dialogs.transcript_import_dialog import TranscriptImportWidget
 
 
 class PrerequisiteViewer(QWidget):
@@ -367,11 +368,14 @@ class GPACalculatorWidget(QWidget):
         if not self.transcript:
             return
         
-        self.current_gpa_label.setText(f"{self.transcript.gpa:.2f}")
-        self.ects_earned_label.setText(
-            f"{self.transcript.total_ects_earned} / {self.transcript.total_ects_taken}"
-        )
-        self.ects_limit_label.setText(f"{self.transcript.get_ects_limit()} ECTS")
+        gpa = self.transcript.get_gpa()
+        total_ects = self.transcript.get_total_ects()
+        total_taken = sum(g.ects for g in self.transcript.grades)
+        ects_limit = self.transcript.get_ects_limit()
+        
+        self.current_gpa_label.setText(f"{gpa:.2f}")
+        self.ects_earned_label.setText(f"{total_ects} / {total_taken}")
+        self.ects_limit_label.setText(f"{ects_limit} ECTS")
     
     def _add_simulated_course(self):
         """Add a simulated course."""
@@ -492,13 +496,28 @@ class AcademicTab(QWidget):
         self.grad_planner = GraduationPlannerWidget()
         self.tab_widget.addTab(self.grad_planner, "🎓 Graduation")
         
-        # Transcript Import tab (placeholder)
-        import_widget = QLabel("📥 Transcript Import\n\nComing soon in Phase 7.4...")
-        import_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        import_widget.setFont(QFont("Segoe UI", 12))
-        self.tab_widget.addTab(import_widget, "📥 Import")
+        # Transcript Import tab
+        self.transcript_import = TranscriptImportWidget()
+        self.transcript_import.transcript_imported.connect(self._on_transcript_imported)
+        self.tab_widget.addTab(self.transcript_import, "📥 Import")
         
         layout.addWidget(self.tab_widget)
+    
+    def _on_transcript_imported(self, transcript: Transcript):
+        """Handle transcript import."""
+        # Update GPA calculator and graduation planner
+        self.gpa_calculator.set_transcript(transcript)
+        self.grad_planner.set_transcript(transcript)
+        
+        # Show success message
+        QMessageBox.information(
+            self,
+            "Transcript Loaded",
+            f"✅ Transcript loaded for {transcript.student_name}!\n\n"
+            f"GPA: {transcript.get_gpa():.2f}\n"
+            f"ECTS: {transcript.get_total_ects()}\n"
+            f"Courses: {len(transcript.grades)}"
+        )
     
     def set_courses(self, courses: List[Course]):
         """Set courses for prerequisite viewer."""
