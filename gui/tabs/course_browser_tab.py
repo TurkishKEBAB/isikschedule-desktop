@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Set, Tuple
 
-from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt, pyqtSignal, QTimer
 from PyQt6.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -21,6 +21,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
     QFrame,
+    QProgressBar,
 )
 
 from core.models import Course
@@ -30,6 +31,7 @@ class CourseBrowserTab(QWidget):
     """Tab for browsing and searching courses with advanced filters."""
 
     course_selected = pyqtSignal(Course)
+    courses_updated = pyqtSignal(list)  # Emitted when courses are deleted
 
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
@@ -38,6 +40,12 @@ class CourseBrowserTab(QWidget):
         self._selected_courses: Set[str] = set()  # For conflict detection
         self._favorites: Set[str] = set()  # Favorite course codes
         self._filters_visible = False
+
+        # Debouncing timer for search/sort (quick filters)
+        self._filter_timer = QTimer()
+        self._filter_timer.setSingleShot(True)
+        self._filter_timer.timeout.connect(self._apply_filters_delayed)
+
         self._setup_ui()
 
     def _setup_ui(self) -> None:
@@ -69,7 +77,7 @@ class CourseBrowserTab(QWidget):
         search_icon = QLabel("🔍")
         self.search_edit = QLineEdit()
         self.search_edit.setPlaceholderText("Search by course code, name, or teacher...")
-        self.search_edit.textChanged.connect(self._apply_filters)
+        self.search_edit.textChanged.connect(self._on_quick_filter_changed)
 
         # Toggle filters button
         self.toggle_filters_btn = QPushButton("🔽 Show Filters")
@@ -89,7 +97,7 @@ class CourseBrowserTab(QWidget):
             "ECTS (High-Low)",
             "Capacity (Most Available)",
         ])
-        self.sort_combo.currentTextChanged.connect(self._apply_filters)
+        self.sort_combo.currentTextChanged.connect(self._on_quick_filter_changed)
         self.sort_combo.setMaximumWidth(200)
 
         layout.addWidget(search_icon)
@@ -134,7 +142,7 @@ class CourseBrowserTab(QWidget):
         grid.addWidget(QLabel("🎓 <b>Faculty:</b>"), row, 2, Qt.AlignmentFlag.AlignTop)
         self.faculty_combo = QComboBox()
         self.faculty_combo.addItem("All Faculties")
-        self.faculty_combo.currentTextChanged.connect(self._apply_filters)
+        # Removed auto-trigger for performance
         grid.addWidget(self.faculty_combo, row, 3)
 
         row += 1
@@ -144,7 +152,7 @@ class CourseBrowserTab(QWidget):
         self.prefix_combo = QComboBox()
         self.prefix_combo.addItem("All Prefixes")
         self.prefix_combo.setEditable(True)
-        self.prefix_combo.currentTextChanged.connect(self._apply_filters)
+        # Removed auto-trigger for performance
         grid.addWidget(self.prefix_combo, row, 1)
 
         # Teacher filter
@@ -152,7 +160,7 @@ class CourseBrowserTab(QWidget):
         self.teacher_combo = QComboBox()
         self.teacher_combo.addItem("All Teachers")
         self.teacher_combo.setEditable(True)
-        self.teacher_combo.currentTextChanged.connect(self._apply_filters)
+        # Removed auto-trigger for performance
         grid.addWidget(self.teacher_combo, row, 3)
 
         row += 1
@@ -178,14 +186,8 @@ class CourseBrowserTab(QWidget):
         self.ects_max_slider.setValue(12)
         self.ects_min_label = QLabel("0")
         self.ects_max_label = QLabel("12")
-        self.ects_min_slider.valueChanged.connect(lambda v: (
-            self.ects_min_label.setText(str(v)),
-            self._apply_filters()
-        ))
-        self.ects_max_slider.valueChanged.connect(lambda v: (
-            self.ects_max_label.setText(str(v)),
-            self._apply_filters()
-        ))
+        self.ects_min_slider.valueChanged.connect(lambda v: self.ects_min_label.setText(str(v)))
+        self.ects_max_slider.valueChanged.connect(lambda v: self.ects_max_label.setText(str(v)))
         ects_layout.addWidget(QLabel("Min:"))
         ects_layout.addWidget(self.ects_min_slider)
         ects_layout.addWidget(self.ects_min_label)
@@ -207,7 +209,7 @@ class CourseBrowserTab(QWidget):
         self.level_4xxx = QCheckBox("4xxx (Senior)")
         for cb in [self.level_1xxx, self.level_2xxx, self.level_3xxx, self.level_4xxx]:
             cb.setChecked(True)
-            cb.toggled.connect(self._apply_filters)
+            # Removed auto-trigger for performance
             level_layout.addWidget(cb)
         grid.addWidget(level_widget, row, 1, 1, 3)
 
@@ -239,7 +241,7 @@ class CourseBrowserTab(QWidget):
         ]
         for cb in self.day_checkboxes:
             cb.setChecked(True)
-            cb.toggled.connect(self._apply_filters)
+            # Removed auto-trigger for performance
             days_layout.addWidget(cb)
         days_layout.addStretch()
         grid.addWidget(days_widget, row, 1, 1, 3)
@@ -256,7 +258,7 @@ class CourseBrowserTab(QWidget):
         self.time_evening = QCheckBox("Evening (9+)")
         for cb in [self.time_morning, self.time_afternoon, self.time_evening]:
             cb.setChecked(True)
-            cb.toggled.connect(self._apply_filters)
+            # Removed auto-trigger for performance
             time_layout.addWidget(cb)
         time_layout.addStretch()
         grid.addWidget(time_widget, row, 1, 1, 3)
@@ -273,7 +275,7 @@ class CourseBrowserTab(QWidget):
         self.type_ps = QCheckBox("Problem Session")
         for cb in [self.type_lecture, self.type_lab, self.type_ps]:
             cb.setChecked(True)
-            cb.toggled.connect(self._apply_filters)
+            # Removed auto-trigger for performance
             type_layout.addWidget(cb)
         type_layout.addStretch()
         grid.addWidget(type_widget, row, 1, 1, 3)
@@ -298,7 +300,7 @@ class CourseBrowserTab(QWidget):
         self.live_both = QCheckBox("Both")
         self.live_both.setChecked(True)
         for cb in [self.live_yes, self.live_no, self.live_both]:
-            cb.toggled.connect(self._apply_filters)
+            # Removed auto-trigger for performance
             live_layout.addWidget(cb)
         live_layout.addStretch()
         grid.addWidget(live_widget, row, 1, 1, 3)
@@ -308,7 +310,7 @@ class CourseBrowserTab(QWidget):
         # Conflict filter
         grid.addWidget(QLabel("⚠️ <b>Conflicts:</b>"), row, 0)
         self.hide_conflicts = QCheckBox("Hide courses conflicting with selected")
-        self.hide_conflicts.toggled.connect(self._apply_filters)
+        # Removed auto-trigger for performance
         grid.addWidget(self.hide_conflicts, row, 1, 1, 3)
 
         row += 1
@@ -316,7 +318,7 @@ class CourseBrowserTab(QWidget):
         # Favorites filter
         grid.addWidget(QLabel("⭐ <b>Favorites:</b>"), row, 0)
         self.show_favorites_only = QCheckBox("Show only favorites")
-        self.show_favorites_only.toggled.connect(self._apply_filters)
+        # Removed auto-trigger for performance
         grid.addWidget(self.show_favorites_only, row, 1, 1, 3)
 
         main_layout.addLayout(grid)
@@ -451,7 +453,6 @@ class CourseBrowserTab(QWidget):
         """Check if two courses have overlapping schedules."""
         if not course1.schedule or not course2.schedule:
             return False
-        
         schedule1 = set(course1.schedule)
         schedule2 = set(course2.schedule)
         return bool(schedule1 & schedule2)
@@ -468,10 +469,32 @@ class CourseBrowserTab(QWidget):
                 periods.add("evening")
         return periods
 
+    def _on_quick_filter_changed(self) -> None:
+        """Debounced trigger for quick filters (search/sort).
+        Starts a 300ms timer. If user continues typing/changing within 300ms,
+        timer resets. After 300ms of idle, filtering executes once.
+        This prevents GUI freeze when filtering large course lists.
+        """
+        self._filter_timer.stop()
+        self._filter_timer.start(300)  # 300ms delay
+
+    def _apply_filters_delayed(self) -> None:
+        """Apply filters after debounce delay.
+        Called by QTimer after 300ms idle period.
+        Triggers the actual filtering operation.
+        """
+        self._apply_filters()
+
     def _apply_filters(self) -> None:
         """Apply all active filters to course list."""
+        # Show loading indicator
+        total = len(self._courses)
+        self.info_label.setText(f"🔄 Filtering {total} courses...")
+        self.info_label.setStyleSheet("color: #FF9800; font-weight: bold;")
+        # Process events to update UI immediately
+        from PyQt6.QtWidgets import QApplication
+        QApplication.processEvents()
         search_text = self.search_edit.text().lower().strip()
-        
         self._filtered_courses = []
 
         for course in self._courses:
@@ -676,12 +699,16 @@ class CourseBrowserTab(QWidget):
         self._apply_filters()
 
     def _update_table(self) -> None:
-        """Update table with filtered courses."""
-        self.course_table.setRowCount(0)
+        """Update table with filtered courses (optimized for large datasets)."""
+        # Disable updates during bulk operations to prevent redraws
+        self.course_table.setUpdatesEnabled(False)
+        
+        # Clear table efficiently
+        self.course_table.clearContents()
+        self.course_table.setRowCount(len(self._filtered_courses))
 
+        # Batch insert rows
         for row, course in enumerate(self._filtered_courses):
-            self.course_table.insertRow(row)
-
             # Favorite button
             fav_btn = QPushButton("⭐" if course.code in self._favorites else "☆")
             fav_btn.setMaximumWidth(40)
@@ -736,6 +763,9 @@ class CourseBrowserTab(QWidget):
             delete_btn.clicked.connect(lambda checked, c=course: self._delete_course(c))
             self.course_table.setCellWidget(row, 7, delete_btn)
 
+        # Re-enable updates and refresh display
+        self.course_table.setUpdatesEnabled(True)
+        
         # Update info
         total = len(self._courses)
         showing = len(self._filtered_courses)
@@ -745,8 +775,10 @@ class CourseBrowserTab(QWidget):
                 f"📊 Showing <b>{showing}</b> of <b>{total}</b> courses "
                 f"({percentage:.1f}%)"
             )
+            self.info_label.setStyleSheet("color: #757575; font-style: italic;")
         else:
             self.info_label.setText("No courses loaded")
+            self.info_label.setStyleSheet("color: #757575; font-style: italic;")
 
     def _toggle_favorite(self, course: Course) -> None:
         """Toggle favorite status of a course."""
@@ -757,12 +789,95 @@ class CourseBrowserTab(QWidget):
         self._update_table()
 
     def _delete_course(self, course: Course) -> None:
-        """Remove course from the list permanently."""
-        if course in self._courses:
-            self._courses.remove(course)
-        if course in self._filtered_courses:
-            self._filtered_courses.remove(course)
+        """Remove course from the list permanently.
+        
+        Smart deletion:
+        - If deleting a lecture with only one section, prompt to delete related Lab/PS
+        - If deleting Lab/PS, just delete it (user manages manually)
+        - Uses QMessageBox for confirmation
+        """
+        from PyQt6.QtWidgets import QMessageBox
+        
+        # Find related courses (same main_code)
+        related_courses = [
+            c for c in self._courses
+            if c.main_code == course.main_code
+        ]
+        
+        # Count lecture sections
+        lecture_sections = [
+            c for c in related_courses
+            if c.course_type == "lecture"
+        ]
+        
+        # Find Lab/PS for this course
+        lab_ps_courses = [
+            c for c in related_courses
+            if c.course_type in ["lab", "ps"]
+        ]
+        
+        courses_to_delete = [course]  # Always delete the selected course
+        
+        # If deleting a lecture AND it's the only section AND there are Lab/PS
+        if (course.course_type == "lecture" and 
+            len(lecture_sections) == 1 and 
+            len(lab_ps_courses) > 0):
+            
+            # Build warning message
+            lab_ps_names = ", ".join([
+                f"{c.code} ({c.course_type.upper()})"
+                for c in lab_ps_courses
+            ])
+            
+            msg_box = QMessageBox()
+            msg_box.setIcon(QMessageBox.Icon.Warning)
+            msg_box.setWindowTitle("Delete Related Courses?")
+            msg_box.setText(
+                f"You are deleting the only lecture section of <b>{course.main_code}</b>."
+            )
+            msg_box.setInformativeText(
+                f"This course has related Lab/PS sections:\n\n"
+                f"{lab_ps_names}\n\n"
+                f"Do you want to delete these as well?"
+            )
+            msg_box.setStandardButtons(
+                QMessageBox.StandardButton.Yes | 
+                QMessageBox.StandardButton.No | 
+                QMessageBox.StandardButton.Cancel
+            )
+            msg_box.setDefaultButton(QMessageBox.StandardButton.Yes)
+            
+            # Add detailed text
+            msg_box.setDetailedText(
+                f"Course: {course.code}\n"
+                f"Name: {course.name}\n"
+                f"Related sections: {len(lab_ps_courses)}\n"
+                f"\n"
+                f"Yes: Delete lecture + all Lab/PS\n"
+                f"No: Delete only the lecture\n"
+                f"Cancel: Keep everything"
+            )
+            
+            result = msg_box.exec()
+            
+            if result == QMessageBox.StandardButton.Cancel:
+                return  # User canceled, do nothing
+            elif result == QMessageBox.StandardButton.Yes:
+                courses_to_delete.extend(lab_ps_courses)
+            # If No, only delete the lecture (already in courses_to_delete)
+        
+        # Perform deletion (optimized - no immediate table update)
+        for c in courses_to_delete:
+            if c in self._courses:
+                self._courses.remove(c)
+            if c in self._filtered_courses:
+                self._filtered_courses.remove(c)
+        
+        # Single table update at the end (prevents multiple redraws)
         self._update_table()
+        
+        # Emit signal to notify other tabs about the deletion
+        self.courses_updated.emit(self._courses.copy())
 
     def _on_selection_changed(self) -> None:
         """Handle table selection change."""

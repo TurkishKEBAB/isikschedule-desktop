@@ -120,6 +120,10 @@ class CourseSelectorTab(QWidget):
         checkbox = QCheckBox(f"{main_code} - {first_course.name}")
         checkbox.setTristate(True)
         checkbox.setCheckState(Qt.CheckState.Unchecked)
+        checkbox.setStyleSheet("font-weight: normal; color: #757575;")  # Initial style
+        
+        # Remove the indeterminate style - we'll use text prefix instead
+        
         checkbox.stateChanged.connect(
             lambda state, code=main_code: self._on_checkbox_changed(code, state)
         )
@@ -139,19 +143,36 @@ class CourseSelectorTab(QWidget):
         return group_box
 
     def _on_checkbox_changed(self, main_code: str, state: int) -> None:
-        """Handle checkbox state change."""
+        """Handle checkbox state change and update visual indicator."""
+        checkbox = self._checkboxes.get(main_code)
+        if not checkbox:
+            return
+            
+        # Get course name (without prefix)
+        course_name = checkbox.text()
+        if " - " in course_name:
+            _, name_part = course_name.split(" - ", 1)
+        else:
+            name_part = course_name
+        
         if state == Qt.CheckState.Checked.value:
-            # Mandatory
+            # Mandatory - show checkmark
             self._mandatory.add(main_code)
             self._optional.discard(main_code)
+            checkbox.setText(f"✅ {main_code} - {name_part}")
+            checkbox.setStyleSheet("font-weight: bold; color: #2E7D32;")
         elif state == Qt.CheckState.PartiallyChecked.value:
-            # Optional
+            # Optional - show X mark
             self._mandatory.discard(main_code)
             self._optional.add(main_code)
+            checkbox.setText(f"❌ {main_code} - {name_part}")
+            checkbox.setStyleSheet("font-weight: normal; color: #F57C00;")
         else:
-            # Excluded
+            # Excluded - no mark
             self._mandatory.discard(main_code)
             self._optional.discard(main_code)
+            checkbox.setText(f"{main_code} - {name_part}")
+            checkbox.setStyleSheet("font-weight: normal; color: #757575;")
 
         self._update_summary()
         self.selection_changed.emit(self._mandatory.copy(), self._optional.copy())

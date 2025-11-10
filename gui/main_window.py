@@ -89,6 +89,7 @@ class MainWindow(QMainWindow):
         self.file_tab.file_selected.connect(self._on_course_file_selected)
         self.file_tab.algorithm_configured.connect(self._on_algorithm_configured)
         self.browser_tab.course_selected.connect(self._on_course_selected)
+        self.browser_tab.courses_updated.connect(self._on_courses_updated)
         self.selector_tab.selection_changed.connect(self._on_selection_changed)
 
     def _status_bar(self) -> QStatusBar:
@@ -519,6 +520,22 @@ class MainWindow(QMainWindow):
         self._optional_codes = set(optional)
         self._status_bar().showMessage(
             f"Selection updated | mandatory: {len(mandatory)} | optional: {len(optional)}"
+        )
+
+    def _on_courses_updated(self, updated_courses: List[Course]) -> None:
+        """Handle course deletions from Browser tab.
+        
+        When courses are deleted in the Browser tab, we need to:
+        1. Update the main course list
+        2. Rebuild course groups
+        3. Update the Selector tab with new groups
+        """
+        self._courses = updated_courses
+        self._course_groups = build_course_groups(updated_courses)
+        self.selector_tab.set_course_groups(self._course_groups)
+        
+        self._status_bar().showMessage(
+            f"Courses updated | Total: {len(updated_courses)} | Groups: {len(self._course_groups)}"
         )
 
     def _load_courses_from_file(self, file_path: Path) -> None:
