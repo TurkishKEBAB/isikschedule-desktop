@@ -66,7 +66,7 @@ COLUMN_MAP = {
     "Fakülte": "faculty",
     
     "Ders Saati": "schedule",  # Correct: Contains "M1, T2" format
-    "Ders Saati(leri)": "schedule",  # With parentheses variant
+    # NOTE: "Ders Saati(leri)" is NOT included - it contains hour count (numeric), not time slots!
     "Schedule": "schedule",
     "Time Slots": "schedule",
     "Zaman": "schedule"
@@ -150,6 +150,14 @@ def parse_schedule(schedule_str: str) -> List[TimeSlot]:
     schedule_str = str(schedule_str).strip()
     if not schedule_str:
         return []
+    
+    # If it's just a number (like "3"), it's not a valid schedule - skip it
+    try:
+        float(schedule_str)  # Will succeed if it's a pure number
+        # It's a number, not a schedule string - return empty
+        return []
+    except ValueError:
+        pass  # Good, it's not a pure number
     
     slots = []
     # Split by comma and process each slot
@@ -298,7 +306,22 @@ def process_excel(
                         ects = 0
                 
                 # Parse schedule
-                schedule_str = row["schedule"] if pd.notna(row["schedule"]) else ""
+                schedule_str = ""
+                if "schedule" in df.columns and pd.notna(row["schedule"]):
+                    # Handle potential Series objects (when multiple columns map to same name)
+                    sched_value = row["schedule"]
+                    if isinstance(sched_value, pd.Series):
+                        # Take the first non-empty value from the Series
+                        for val in sched_value:
+                            if pd.notna(val) and str(val).strip() and str(val).strip() != "nan":
+                                # Check if it looks like a time slot (contains letters)
+                                val_str = str(val).strip()
+                                if any(c.isalpha() for c in val_str):
+                                    schedule_str = val_str
+                                    break
+                    else:
+                        schedule_str = str(sched_value).strip()
+                
                 schedule = parse_schedule(schedule_str)
                 
                 # Determine course type from code
