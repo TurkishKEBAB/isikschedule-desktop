@@ -10,13 +10,23 @@ from PyQt6.QtWidgets import (
     QGroupBox,
     QHBoxLayout,
     QLabel,
+    QMessageBox,
     QPushButton,
     QScrollArea,
     QVBoxLayout,
     QWidget,
 )
 
-from core.models import Course, CourseGroup
+from core.models import Course, CourseGroup, Transcript
+
+# Işık University prerequisite data
+try:
+    from core.prerequisite_data import (
+        get_prerequisites, can_take_course, get_missing_prerequisites
+    )
+    ISIK_PREREQ_AVAILABLE = True
+except ImportError:
+    ISIK_PREREQ_AVAILABLE = False
 
 
 class CourseSelectorTab(QWidget):
@@ -30,7 +40,12 @@ class CourseSelectorTab(QWidget):
         self._mandatory: Set[str] = set()
         self._optional: Set[str] = set()
         self._checkboxes: Dict[str, QCheckBox] = {}
+        self._transcript: Optional[Transcript] = None
         self._setup_ui()
+    
+    def set_transcript(self, transcript: Optional[Transcript]) -> None:
+        """Set student transcript for prerequisite checking."""
+        self._transcript = transcript
 
     def _setup_ui(self) -> None:
         """Initialize UI components."""
@@ -147,6 +162,10 @@ class CourseSelectorTab(QWidget):
         checkbox = self._checkboxes.get(main_code)
         if not checkbox:
             return
+        
+        # Check prerequisites if available
+        if ISIK_PREREQ_AVAILABLE and self._transcript and state == Qt.CheckState.Checked.value:
+            self._check_prerequisites_warning(main_code)
             
         # Get course name (without prefix)
         course_name = checkbox.text()
@@ -176,6 +195,44 @@ class CourseSelectorTab(QWidget):
 
         self._update_summary()
         self.selection_changed.emit(self._mandatory.copy(), self._optional.copy())
+    
+    def _check_prerequisites_warning(self, course_code: str) -> None:
+        """Show warning if prerequisites are missing."""
+        if not self._transcript:
+            return
+        
+        # Get completed courses from transcript
+        completed = {grade.course_code for grade in self._transcript.grades}
+        
+        # Check prerequisites
+        missing = get_missing_prerequisites(course_code, list(completed))
+        
+        if missing:
+            # Show warning dialog
+            prereq_names = []
+            for prereq in missing:
+                prereq_names.append(prereq)
+            
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Warning)
+            msg.setWindowTitle("⚠️ Prerequisite Warning")
+            msg.setText(f"<b>{course_code}</b> has missing prerequisites:")
+            msg.setInformativeText(
+                "You have not completed:\n" + 
+                "\n".join(f"  • {p}" for p in prereq_names) +
+                "\n\nDo you still want to add this course?"
+            )
+            msg.setStandardButtons(
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+            msg.setDefaultButton(QMessageBox.StandardButton.No)
+            
+            reply = msg.exec()
+            if reply == QMessageBox.StandardButton.No:
+                # Revert checkbox state
+                checkbox = self._checkboxes.get(course_code)
+                if checkbox:
+                    checkbox.setCheckState(Qt.CheckState.Unchecked)
 
     def _select_all(self) -> None:
         """Select all courses as mandatory."""

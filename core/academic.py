@@ -5,6 +5,8 @@ Includes:
 - PrerequisiteChecker: Validate prerequisites and detect circular dependencies
 - GPACalculator: Calculate GPA/CGPA
 - GraduationPlanner: Track graduation progress
+
+Updated with Işık University official data.
 """
 from typing import List, Dict, Set, Tuple, Optional, Any
 from dataclasses import dataclass
@@ -13,29 +15,54 @@ from collections import deque
 
 from .models import Course, Schedule, Grade, Transcript, GraduationRequirement
 
+# Import Işık University official data
+try:
+    from .prerequisite_data import (
+        COMPUTER_ENGINEERING_PREREQUISITES,
+        get_prerequisites,
+        can_take_course,
+        get_missing_prerequisites,
+        get_courses_unlocked_by,
+        get_prerequisite_chain
+    )
+    ISIK_DATA_AVAILABLE = True
+except ImportError:
+    ISIK_DATA_AVAILABLE = False
+    logger.warning("Işık University prerequisite data not available")
+
 logger = logging.getLogger(__name__)
 
 
 class PrerequisiteChecker:
     """
     Validates course prerequisites and detects circular dependencies.
+    Updated to use Işık University official prerequisite data when available.
     """
     
-    def __init__(self, courses: List[Course]):
+    def __init__(self, courses: List[Course], use_isik_data: bool = True):
         """
         Initialize with a list of courses.
         
         Args:
             courses: List of all available courses
+            use_isik_data: If True, use Işık University official data when available
         """
         self.courses = {c.main_code: c for c in courses}
         self._prerequisite_graph: Dict[str, List[str]] = {}
+        self.use_isik_data = use_isik_data and ISIK_DATA_AVAILABLE
         self._build_graph()
     
     def _build_graph(self) -> None:
         """Build prerequisite dependency graph."""
-        for code, course in self.courses.items():
-            self._prerequisite_graph[code] = course.prerequisites.copy()
+        if self.use_isik_data:
+            # Use official Işık University prerequisite data
+            self._prerequisite_graph = COMPUTER_ENGINEERING_PREREQUISITES.copy()
+            logger.info("Using Işık University official prerequisite data")
+        else:
+            # Fallback to course-defined prerequisites
+            for code, course in self.courses.items():
+                self._prerequisite_graph[code] = course.prerequisites.copy()
+            logger.info("Using course-defined prerequisites")
     
     def check_prerequisites(
         self, 
@@ -44,6 +71,7 @@ class PrerequisiteChecker:
     ) -> Tuple[bool, List[str]]:
         """
         Check if prerequisites are satisfied for a course.
+        Uses Işık University official data when available.
         
         Args:
             course_code: Course code to check
@@ -340,12 +368,12 @@ class GraduationPlanner:
         """
         completion = self.requirement.check_completion(self.transcript)
         completed_courses = self.transcript.get_completed_courses()
-        
+
         # Calculate semesters to graduation (assuming 30 ECTS/semester)
         remaining_ects = completion["ects_remaining"]
         ects_limit = self.transcript.get_ects_limit()
         semesters_remaining = (remaining_ects + ects_limit - 1) // ects_limit  # Ceiling division
-        
+
         return {
             "can_graduate": completion["can_graduate"],
             "completion_percentage": (

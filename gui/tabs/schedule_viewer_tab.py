@@ -5,23 +5,36 @@ from __future__ import annotations
 from typing import Dict, List, Optional
 
 from PyQt6.QtWidgets import (
+    QCheckBox,
     QComboBox,
     QFileDialog,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QMessageBox,
+    QProgressBar,
     QPushButton,
     QScrollArea,
+    QSpinBox,
     QTextEdit,
     QVBoxLayout,
     QWidget,
 )
+from PyQt6.QtGui import QFont
+from PyQt6.QtCore import Qt
 
-from core.models import Schedule
+from core.models import Schedule, Transcript
 from gui.dialogs import AlgorithmComparisonDialog
 from gui.widgets import ScheduleGrid
 import reporting
+
+# Işık University ECTS limits
+try:
+    from config.settings import ECTS_LIMITS_BY_GPA
+    ISIK_ECTS_AVAILABLE = True
+except ImportError:
+    ISIK_ECTS_AVAILABLE = False
+    ECTS_LIMITS_BY_GPA = {"low": 31, "medium": 37, "high": 42}  # Fallback
 
 
 class ScheduleViewerTab(QWidget):
@@ -31,7 +44,18 @@ class ScheduleViewerTab(QWidget):
         super().__init__(parent)
         self._schedules: List[Schedule] = []
         self._algorithm_results: Dict[str, List[Schedule]] = {}
+        self._transcript: Optional[Transcript] = None
+        self._current_gpa: float = 0.0
         self._setup_ui()
+    
+    def set_transcript(self, transcript: Optional[Transcript]) -> None:
+        """Set student transcript for ECTS limit calculation."""
+        self._transcript = transcript
+        if transcript:
+            from core.academic import GPACalculator
+            calculator = GPACalculator()
+            self._current_gpa = calculator.calculate_cgpa(transcript)
+            self._update_ects_display()
 
     def _setup_ui(self) -> None:
         """Initialize UI components."""
@@ -106,17 +130,146 @@ class ScheduleViewerTab(QWidget):
 
     def _create_stats_section(self) -> QGroupBox:
         """Create statistics display."""
-        group = QGroupBox("📊 Statistics")
+        group = QGroupBox("📊 Statistics & ECTS Tracking")
         layout = QVBoxLayout(group)
+        
+        # ECTS limit display (Işık University)
+        if ISIK_ECTS_AVAILABLE:
+            # First row: GPA-based ECTS info
+            ects_info_layout = QHBoxLayout()
+            
+            self.gpa_ects_label = QLabel("GPA 0.00 → Max 31 ECTS")
+            self.gpa_ects_label.setFont(QFont("Segoe UI", 9))
+            self.gpa_ects_label.setStyleSheet("color: #757575;")
+            ects_info_layout.addWidget(self.gpa_ects_label)
+            
+            ects_info_layout.addStretch()
+            
+            # Modify Max ECTS checkbox
+            self.modify_ects_checkbox = QCheckBox("Modify Max ECTS")
+            self.modify_ects_checkbox.setToolTip("Check to manually override GPA-based ECTS limit")
+            self.modify_ects_checkbox.stateChanged.connect(self._on_modify_ects_toggled)
+            ects_info_layout.addWidget(self.modify_ects_checkbox)
+            
+            # Custom ECTS spinbox (disabled by default)
+            self.custom_ects_spinbox = QSpinBox()
+            self.custom_ects_spinbox.setRange(30, 45)
+            self.custom_ects_spinbox.setValue(37)
+            self.custom_ects_spinbox.setSuffix(" ECTS")
+            self.custom_ects_spinbox.setEnabled(False)
+            self.custom_ects_spinbox.setToolTip("Set custom ECTS limit (30-45)")
+            self.custom_ects_spinbox.valueChanged.connect(self._on_custom_ects_changed)
+            ects_info_layout.addWidget(self.custom_ects_spinbox)
+            
+            layout.addLayout(ects_info_layout)
+            
+            # Second row: Current ECTS tracking
+            ects_limit_layout = QHBoxLayout()
+            
+            ects_limit_layout.addWidget(QLabel("<b>Max ECTS:</b>"))
+            
+            self.ects_limit_label = QLabel("37 ECTS")
+            self.ects_limit_label.setFont(QFont("Segoe UI", 10, QFont.Weight.Bold))
+            self.ects_limit_label.setStyleSheet("color: #1976D2;")
+            ects_limit_layout.addWidget(self.ects_limit_label)
+            
+            ects_limit_layout.addWidget(QLabel("Current:"))
+            self.current_ects_label = QLabel("0 ECTS")
+            self.current_ects_label.setFont(QFont("Segoe UI", 10, QFont.Weight.Bold))
+            ects_limit_layout.addWidget(self.current_ects_label)
+            
+            ects_limit_layout.addStretch()
+            
+            # Progress bar
+            self.ects_progress = QProgressBar()
+            self.ects_progress.setMaximum(100)
+            self.ects_progress.setFormat("%p%")
+            self.ects_progress.setStyleSheet("""
+                QProgressBar {
+                    border: 2px solid #BDBDBD;
+                    border-radius: 5px;
+                    text-align: center;
+                }
+                QProgressBar::chunk {
+                    background-color: #4CAF50;
+                }
+            """)
+            ects_limit_layout.addWidget(self.ects_progress, stretch=1)
+            
+            layout.addLayout(ects_limit_layout)
 
         self.stats_text = QTextEdit()
         self.stats_text.setReadOnly(True)
-        self.stats_text.setMaximumHeight(120)
+        self.stats_text.setMaximumHeight(100)
         self.stats_text.setPlainText("No schedule selected")
 
         layout.addWidget(self.stats_text)
 
         return group
+    
+    def _on_modify_ects_toggled(self, state):
+        """Handle Modify Max ECTS checkbox state change."""
+        is_checked = (state == Qt.CheckState.Checked.value)
+        
+        # Enable/disable custom spinbox
+        if hasattr(self, 'custom_ects_spinbox'):
+            self.custom_ects_spinbox.setEnabled(is_checked)
+        
+        # Update ECTS display
+        self._update_ects_display()
+    
+    def _on_custom_ects_changed(self, value):
+        """Handle custom ECTS value change."""
+        if self.modify_ects_checkbox.isChecked():
+            self._update_ects_display()
+    
+    def _update_ects_display(self):
+        """Update ECTS limit display based on GPA or custom value."""
+        if not ISIK_ECTS_AVAILABLE or not hasattr(self, 'ects_limit_label'):
+            return
+        
+        # Determine max ECTS
+        if hasattr(self, 'modify_ects_checkbox') and self.modify_ects_checkbox.isChecked():
+            # Use custom value from spinbox
+            max_ects = self.custom_ects_spinbox.value()
+        else:
+            # Use GPA-based limit
+            max_ects = self._get_max_ects_for_gpa(self._current_gpa)
+            
+            # Update custom spinbox to match GPA-based value (for reference)
+            if hasattr(self, 'custom_ects_spinbox'):
+                self.custom_ects_spinbox.setValue(max_ects)
+        
+        # Update GPA info label
+        if hasattr(self, 'gpa_ects_label'):
+            gpa_based_ects = self._get_max_ects_for_gpa(self._current_gpa)
+            if self._current_gpa >= 3.50:
+                gpa_range = "GPA ≥ 3.50"
+            elif self._current_gpa >= 2.50:
+                gpa_range = "2.50 ≤ GPA < 3.50"
+            else:
+                gpa_range = "GPA < 2.50"
+            
+            self.gpa_ects_label.setText(f"{gpa_range} → Max {gpa_based_ects} ECTS")
+        
+        # Update max ECTS label
+        self.ects_limit_label.setText(f"{max_ects} ECTS")
+        
+        # Update progress bar maximum
+        if hasattr(self, 'ects_progress'):
+            self.ects_progress.setMaximum(max_ects)
+    
+    def _get_max_ects_for_gpa(self, gpa: float) -> int:
+        """Get maximum ECTS allowed based on GPA (Işık University rules)."""
+        if not ISIK_ECTS_AVAILABLE:
+            return 43  # Default
+        
+        if gpa >= 3.50:
+            return ECTS_LIMITS_BY_GPA["high"]  # 43
+        elif gpa >= 2.50:
+            return ECTS_LIMITS_BY_GPA["medium"]  # 37
+        else:
+            return ECTS_LIMITS_BY_GPA["low"]  # 31
 
     def _create_export_section(self) -> QGroupBox:
         """Create export controls."""
@@ -186,6 +339,40 @@ class ScheduleViewerTab(QWidget):
             schedule = self._schedules[index]
             self.schedule_grid.set_schedule(schedule)
             self._update_stats(schedule)
+            
+            # Update ECTS display
+            if ISIK_ECTS_AVAILABLE and hasattr(self, 'current_ects_label'):
+                current_ects = schedule.total_credits
+                max_ects = self._get_max_ects_for_gpa(self._current_gpa)
+                
+                self.current_ects_label.setText(f"{current_ects} ECTS")
+                
+                # Update progress bar
+                if hasattr(self, 'ects_progress'):
+                    self.ects_progress.setValue(current_ects)
+                    
+                    # Change color based on limit
+                    if current_ects > max_ects:
+                        self.current_ects_label.setStyleSheet("color: #D32F2F; font-weight: bold;")
+                        self.ects_progress.setStyleSheet("""
+                            QProgressBar::chunk {
+                                background-color: #F44336;
+                            }
+                        """)
+                    elif current_ects >= max_ects * 0.9:
+                        self.current_ects_label.setStyleSheet("color: #F57C00; font-weight: bold;")
+                        self.ects_progress.setStyleSheet("""
+                            QProgressBar::chunk {
+                                background-color: #FF9800;
+                            }
+                        """)
+                    else:
+                        self.current_ects_label.setStyleSheet("color: #388E3C; font-weight: bold;")
+                        self.ects_progress.setStyleSheet("""
+                            QProgressBar::chunk {
+                                background-color: #4CAF50;
+                            }
+                        """)
     
     def _on_course_clicked(self, course) -> None:
         """Handle course click event to show details."""

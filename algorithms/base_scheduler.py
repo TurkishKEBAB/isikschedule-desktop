@@ -20,9 +20,17 @@ import functools
 import time
 from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Set
 
-from core.models import Course, CourseGroup, Schedule
+from core.models import Course, CourseGroup, Schedule, Transcript
 from utils.schedule_metrics import SchedulerPrefs, score_schedule
 from .constraints import ConstraintUtils
+
+# Işık University smart filtering
+try:
+    from core.prerequisite_data import can_take_course, get_prerequisites
+    from core.isik_university_data import ECTS_LIMITS_BY_GPA
+    ISIK_FILTERING_AVAILABLE = True
+except ImportError:
+    ISIK_FILTERING_AVAILABLE = False
 
 
 @dataclass(frozen=True)
@@ -94,11 +102,15 @@ class BaseScheduler(ABC):
         max_conflicts: int = 1,
         scheduler_prefs: Optional[SchedulerPrefs] = None,
         timeout_seconds: int = 120,
+        transcript: Optional[Transcript] = None,
+        enable_smart_filtering: bool = True,
     ) -> None:
         self.max_results = max_results
         self.max_ects = max_ects
         self.allow_conflicts = allow_conflicts
         self.max_conflicts = max_conflicts
+        self.transcript = transcript
+        self.enable_smart_filtering = enable_smart_filtering and ISIK_FILTERING_AVAILABLE
         self.scheduler_prefs = scheduler_prefs or SchedulerPrefs()
         self.timeout_seconds = timeout_seconds
 
@@ -213,6 +225,55 @@ class BaseScheduler(ABC):
 
         self._sort_schedules(filtered)
         return filtered
+    
+    def filter_courses_by_prerequisites(
+        self, courses: List[Course]
+    ) -> List[Course]:
+        """
+        Filter courses based on prerequisites (Işık University smart filtering).
+        
+        Args:
+            courses: List of courses to filter
+            
+        Returns:
+            Filtered list of courses that prerequisites are met
+        """
+        if not self.enable_smart_filtering or not self.transcript or not ISIK_FILTERING_AVAILABLE:
+            return courses
+        
+        # Get completed courses from transcript
+        completed = {grade.course_code for grade in self.transcript.grades}
+        
+        # Filter courses
+        available = []
+        for course in courses:
+            if can_take_course(course.main_code, list(completed)):
+                available.append(course)
+        
+        return available
+    
+    def adjust_max_ects_by_gpa(self) -> int:
+        """
+        Adjust max ECTS based on GPA (Işık University rules).
+        
+        Returns:
+            Adjusted max ECTS value
+        """
+        if not self.enable_smart_filtering or not self.transcript or not ISIK_FILTERING_AVAILABLE:
+            return self.max_ects
+        
+        # Calculate current GPA
+        from core.academic import GPACalculator
+        calculator = GPACalculator()
+        current_gpa = calculator.calculate_gpa(self.transcript.grades)
+        
+        # Apply Işık University rules
+        if current_gpa >= 3.50:
+            return min(ECTS_LIMITS_BY_GPA["high"], self.max_ects)  # 43
+        elif current_gpa >= 2.50:
+            return min(ECTS_LIMITS_BY_GPA["medium"], self.max_ects)  # 37
+        else:
+            return min(ECTS_LIMITS_BY_GPA["low"], self.max_ects)  # 31
 
     def _sort_schedules(self, schedules: List[Schedule]) -> None:
         if not schedules:

@@ -18,6 +18,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from config.settings import ISIK_BLUE_PRIMARY
 from gui.widgets import AlgorithmSelector
 
 
@@ -37,6 +38,31 @@ class FileSettingsTab(QWidget):
         layout = QVBoxLayout(self)
         layout.setSpacing(20)
         layout.setContentsMargins(20, 20, 20, 20)
+        
+        # Apply Işık University theme
+        self.setStyleSheet(f"""
+            QGroupBox {{
+                font-weight: bold;
+                border: 2px solid {ISIK_BLUE_PRIMARY};
+                border-radius: 5px;
+                margin-top: 10px;
+                padding-top: 10px;
+            }}
+            QGroupBox::title {{
+                color: {ISIK_BLUE_PRIMARY};
+                subcontrol-origin: margin;
+                left: 10px;
+                padding: 0 5px;
+            }}
+            QPushButton {{
+                padding: 8px 16px;
+                border-radius: 4px;
+            }}
+            QPushButton:hover {{
+                background-color: {ISIK_BLUE_PRIMARY};
+                color: white;
+            }}
+        """)
 
         # File input section
         file_group = self._create_file_section()

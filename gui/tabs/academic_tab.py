@@ -22,6 +22,21 @@ from core.academic import PrerequisiteChecker, GPACalculator, GraduationPlanner
 from gui.tabs.graduation_planner_widget import GraduationPlannerWidget
 from gui.dialogs.transcript_import_dialog import TranscriptImportWidget
 
+# Işık University official data
+try:
+    from core.prerequisite_data import (
+        get_prerequisites, can_take_course, get_missing_prerequisites,
+        get_prerequisite_chain, get_courses_unlocked_by
+    )
+    from core.curriculum_data import (
+        COMPUTER_ENGINEERING_CURRICULUM, GRADUATION_REQUIREMENTS,
+        get_semester_courses, get_all_mandatory_courses
+    )
+    from core.isik_university_data import GRADE_SCALE, ECTS_LIMITS_BY_GPA
+    ISIK_DATA_AVAILABLE = True
+except ImportError:
+    ISIK_DATA_AVAILABLE = False
+
 
 class PrerequisiteViewer(QWidget):
     """Widget to visualize course prerequisites."""

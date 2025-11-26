@@ -18,7 +18,23 @@ LOGS_DIR = BASE_DIR / "logs"
 DOCS_DIR = BASE_DIR / "docs"
 
 # Default scheduler parameters
-DEFAULT_MAX_ECTS = 31
+# Işık University ECTS Limits (Official Academic Regulations):
+# - Freshmen: Maximum 30 ECTS
+# - GPA < 2.49: Maximum 31 ECTS
+# - 2.50 ≤ GPA < 3.50: Maximum 37 ECTS
+# - GPA ≥ 3.50: Maximum 42 ECTS
+# - Double Major Students: Maximum 45 ECTS
+DEFAULT_MAX_ECTS = 31  # Safe default (for low GPA students)
+DEFAULT_MIN_ECTS = 30  # Normal semester load (recommended)
+
+# GPA-based ECTS limits mapping
+ECTS_LIMITS_BY_GPA = {
+    "freshmen": 30,
+    "low": 31,        # GPA < 2.50
+    "medium": 37,     # 2.50 ≤ GPA < 3.50
+    "high": 42,       # GPA ≥ 3.50
+    "double_major": 45,
+}
 DEFAULT_ALLOW_CONFLICT = 1
 DEFAULT_MAX_RESULTS = 5
 DEFAULT_PRIORITY = "lecture,ps,lab"
@@ -52,12 +68,34 @@ DAY_FULL_NAMES = {
     "Su": "Sunday"
 }
 
+# Işık University Official Brand Colors
+# Source: Corporate Identity Guidelines
+ISIK_BLUE_PRIMARY = "#0018A8"  # Pantone Blue 072 C (R=0, G=24, B=168)
+ISIK_BLUE_RGB = (0, 24, 168)
+ISIK_BLUE_CMYK = {"C": 100, "M": 95, "Y": 0, "K": 3}
+
 # Course types and their display colors (PyQt6 compatible)
+# Updated with Işık University brand color
 COURSE_COLORS = {
     "lecture": "#FFE5E5",  # Light red
     "ps": "#E5FFE5",       # Light green
     "lab": "#E5E5FF"       # Light blue
 }
+
+# Schedule visualization colors (for course highlighting)
+SCHEDULE_COLORS = [
+    ISIK_BLUE_PRIMARY,  # Işık Blue (primary brand color)
+    "#FFB6C1",  # Light pink
+    "#FFD700",  # Gold
+    "#98FB98",  # Pale green
+    "#87CEEB",  # Sky blue
+    "#DDA0DD",  # Plum
+    "#F0E68C",  # Khaki
+    "#FF69B4",  # Hot pink
+    "#BA55D3",  # Medium orchid
+    "#FF6347",  # Tomato
+    "#40E0D0"   # Turquoise
+]
 
 # Frequency preference options
 FREQUENCY_OPTIONS = {

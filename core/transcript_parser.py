@@ -42,7 +42,6 @@ class TranscriptParser:
         'CC': 2.0,
         'DC': 1.5,
         'DD': 1.0,
-        'FD': 0.5,
         'FF': 0.0,
         'P': 0.0,  # Pass (not included in GPA)
         'F': 0.0,  # Fail

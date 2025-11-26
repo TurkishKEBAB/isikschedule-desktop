@@ -458,6 +458,7 @@ class Grade:
         letter_grade: Letter grade (AA, BA, BB, CB, CC, DC, DD, FF, FD)
         numeric_grade: Numeric grade (0.0-4.0)
         semester: Semester when course was taken
+        is_retake: Whether this is a retake of a previously failed course
     """
     course_code: str
     course_name: str
@@ -465,10 +466,47 @@ class Grade:
     letter_grade: str
     numeric_grade: float
     semester: str
+    is_retake: bool = False
     
     def is_passing(self) -> bool:
         """Check if grade is passing (>= DD/2.0)."""
         return self.numeric_grade >= 2.0
+    
+    @staticmethod
+    def letter_to_numeric(letter: str) -> float:
+        """
+        Convert letter grade to numeric grade (0.0-4.0).
+        
+        Args:
+            letter: Letter grade (AA, BA, BB, CB, CC, DC, DD, FF, FD, etc.)
+        
+        Returns:
+            Numeric grade value
+        """
+        grade_scale = {
+            "AA": 4.00, "BA": 3.50, "BB": 3.00, "CB": 2.50,
+            "CC": 2.00, "DC": 1.50, "DD": 1.00, "FD": 0.50, "FF": 0.00,
+            "P": 0.00,  # Pass (non-credit)
+            "F": 0.00,  # Fail
+            "W": 0.00,  # Withdrawn
+            "I": 0.00,  # Incomplete
+            "NA": 0.00, # Not Available
+        }
+        return grade_scale.get(letter.upper(), 0.0)
+    
+    @staticmethod
+    def is_passing_grade(letter: str) -> bool:
+        """
+        Check if a letter grade is passing.
+        
+        Args:
+            letter: Letter grade
+        
+        Returns:
+            True if grade is passing (>= DD)
+        """
+        passing_grades = {"AA", "BA", "BB", "CB", "CC", "DC", "DD", "P"}
+        return letter.upper() in passing_grades
 
 
 @dataclass
@@ -508,14 +546,36 @@ class Transcript:
         return [g.course_code for g in self.grades if g.is_passing()]
     
     def get_ects_limit(self) -> int:
-        """Get ECTS limit based on current GPA."""
+        """
+        Get ECTS limit based on current GPA.
+        
+        Official Işık University regulations:
+        - GPA < 2.50: 31 ECTS
+        - 2.50 ≤ GPA < 3.50: 37 ECTS
+        - GPA ≥ 3.50: 42 ECTS
+        """
         gpa = self.get_gpa()
-        if gpa >= 3.0:
+        if gpa >= 3.5:
             return 42
         elif gpa >= 2.5:
             return 37
         else:
             return 31
+    
+    @property
+    def gpa(self) -> float:
+        """Current GPA as a property."""
+        return self.get_gpa()
+    
+    @property
+    def total_ects_earned(self) -> int:
+        """Total ECTS credits earned (passing grades only)."""
+        return self.get_total_ects()
+    
+    @property
+    def total_ects_taken(self) -> int:
+        """Total ECTS credits taken (all courses including failures)."""
+        return sum(g.ects for g in self.grades)
 
 
 @dataclass
@@ -524,15 +584,28 @@ class GraduationRequirement:
     Graduation requirements for a program.
     
     Attributes:
-        program: Program name
-        total_ects: Required total ECTS
+        program_name: Program name (e.g., 'Computer Engineering')
+        total_ects_required: Required total ECTS credits
         min_gpa: Minimum GPA requirement
         core_courses: Required core course codes
+        elective_ects_required: Required ECTS from elective courses
     """
-    program: str
-    total_ects: int
+    program_name: str
+    total_ects_required: int
     min_gpa: float
     core_courses: List[str] = field(default_factory=list)
+    elective_ects_required: int = 60
+    
+    # Backward compatibility aliases
+    @property
+    def program(self) -> str:
+        """Alias for program_name."""
+        return self.program_name
+    
+    @property
+    def total_ects(self) -> int:
+        """Alias for total_ects_required."""
+        return self.total_ects_required
     
     def check_completion(self, transcript: Transcript) -> Tuple[bool, Dict[str, Any]]:
         """
@@ -546,13 +619,30 @@ class GraduationRequirement:
         completed_courses = set(transcript.get_completed_courses())
         missing_cores = [c for c in self.core_courses if c not in completed_courses]
         
+        # Calculate elective ECTS (total - cores)
+        core_ects = sum(
+            g.ects for g in transcript.grades 
+            if g.course_code in self.core_courses and g.is_passing()
+        )
+        elective_ects_earned = completed_ects - core_ects
+        
         progress = {
-            "ects_complete": completed_ects >= self.total_ects,
-            "ects_progress": f"{completed_ects}/{self.total_ects}",
+            # Original keys
+            "ects_complete": completed_ects >= self.total_ects_required,
+            "ects_progress": f"{completed_ects}/{self.total_ects_required}",
             "gpa_complete": current_gpa >= self.min_gpa,
             "gpa_progress": f"{current_gpa:.2f}/{self.min_gpa:.2f}",
             "cores_complete": len(missing_cores) == 0,
             "missing_cores": missing_cores,
+            # Extended keys (for GUI compatibility)
+            "ects_earned": completed_ects,
+            "ects_required": self.total_ects_required,
+            "current_gpa": current_gpa,
+            "min_gpa": self.min_gpa,
+            "missing_core_courses": missing_cores,
+            "elective_ects_earned": elective_ects_earned,
+            "elective_ects_required": self.elective_ects_required,
+            "elective_complete": elective_ects_earned >= self.elective_ects_required,
         }
         
         is_complete = (
