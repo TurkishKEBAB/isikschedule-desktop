@@ -1,0 +1,66 @@
+================================================================================
+AUTOMATED GUI TEST REPORT
+================================================================================
+Timestamp: 2025-11-26_13-40-59
+Total Tests: 19
+✅ Passed: 15
+❌ Failed: 1
+⏭️  Skipped: 3
+Success Rate: 78.9%
+
+================================================================================
+FAILED TESTS (1)
+================================================================================
+
+❌ Tabs::Access
+   Error: No tabs attribute found
+   Type: Exception
+   Traceback:
+NoneType: None
+
+
+================================================================================
+UNREACHABLE FEATURES (2)
+================================================================================
+🚫 ScheduleViewer::ModifyECTS - checkbox not found
+🚫 AlgorithmComparison::Button - not found
+
+================================================================================
+TEST RESULTS BY CATEGORY
+================================================================================
+
+Dialog:
+  Total: 3
+  ✅ Pass: 0
+  ❌ Fail: 0
+  ⏭️  Skip: 3
+
+EdgeCase:
+  Total: 1
+  ✅ Pass: 1
+  ❌ Fail: 0
+  ⏭️  Skip: 0
+
+Keyboard:
+  Total: 3
+  ✅ Pass: 3
+  ❌ Fail: 0
+  ⏭️  Skip: 0
+
+Menu:
+  Total: 10
+  ✅ Pass: 10
+  ❌ Fail: 0
+  ⏭️  Skip: 0
+
+Setup:
+  Total: 1
+  ✅ Pass: 1
+  ❌ Fail: 0
+  ⏭️  Skip: 0
+
+Tabs:
+  Total: 1
+  ✅ Pass: 0
+  ❌ Fail: 1
+  ⏭️  Skip: 0
