@@ -145,12 +145,8 @@ class TestECTSLimits:
             "Low GPA ECTS limit should be 31"
         assert ECTS_LIMITS_BY_GPA["medium"] == 37, \
             "Medium GPA ECTS limit should be 37"
-        assert ECTS_LIMITS_BY_GPA["high"] == 43, \
-            "High GPA ECTS limit should be 43 (note: Transcript uses 42)"
-        
-        # Note: There's a slight discrepancy between ECTS_LIMITS_BY_GPA["high"] = 43
-        # and Transcript.get_ects_limit() which returns 42 for high GPA.
-        # This should be documented or aligned.
+        assert ECTS_LIMITS_BY_GPA["high"] == 42, \
+            "High GPA ECTS limit should be 42"
 
     def test_multiple_grades_average_gpa(self):
         """Test ECTS limit with multiple grades averaging to specific GPA."""

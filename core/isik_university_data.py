@@ -256,7 +256,7 @@ ECTS_LIMITS_BY_GPA = {
     "freshmen": 31,      # First year students (minimum 31 ECTS for all)
     "low": 31,           # GPA < 2.49
     "medium": 37,        # 2.50 ≤ GPA ≤ 3.49
-    "high": 43,          # GPA ≥ 3.50
+    "high": 42,          # GPA ≥ 3.50
     "double_major": 45,  # Double major students
 }
 

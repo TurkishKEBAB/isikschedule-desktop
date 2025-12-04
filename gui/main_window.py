@@ -57,11 +57,13 @@ class MainWindow(QMainWindow):
         """Initialize main UI structure."""
         self.setWindowTitle("SchedularV3 - Course Schedule Generator")
         self.setMinimumSize(1200, 800)
+        self.setObjectName("main_window")
 
         # Create central tab widget
         self.tab_widget = QTabWidget()
         self.tab_widget.setTabPosition(QTabWidget.TabPosition.North)
         self.tab_widget.setMovable(False)
+        self.tab_widget.setObjectName("tab_widget")
         
         # Import and create actual tabs
         from gui.tabs.file_settings_tab import FileSettingsTab
@@ -71,10 +73,15 @@ class MainWindow(QMainWindow):
         from gui.tabs.academic_tab import AcademicTab
 
         self.file_tab = FileSettingsTab()
+        self.file_tab.setObjectName("file_tab")
         self.browser_tab = CourseBrowserTab()
+        self.browser_tab.setObjectName("browser_tab")
         self.selector_tab = CourseSelectorTab()
+        self.selector_tab.setObjectName("selector_tab")
         self.viewer_tab = ScheduleViewerTab()
+        self.viewer_tab.setObjectName("viewer_tab")
         self.academic_tab = AcademicTab()
+        self.academic_tab.setObjectName("academic_tab")
 
         self.tab_widget.addTab(self.file_tab, "📁 File & Settings")
         self.tab_widget.addTab(self.browser_tab, "📚 Course Browser")

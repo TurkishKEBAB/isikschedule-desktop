@@ -85,9 +85,11 @@ class FileSettingsTab(QWidget):
         self.file_path_edit = QLineEdit()
         self.file_path_edit.setPlaceholderText("No file selected...")
         self.file_path_edit.setReadOnly(True)
+        self.file_path_edit.setObjectName("file_path_edit")
 
         self.browse_button = QPushButton("Browse...")
         self.browse_button.clicked.connect(self._on_browse_file)
+        self.browse_button.setObjectName("browse_button")
 
         file_layout.addWidget(QLabel("Excel File:"))
         file_layout.addWidget(self.file_path_edit, stretch=1)
@@ -96,6 +98,7 @@ class FileSettingsTab(QWidget):
         # File info
         self.file_info_label = QLabel("No file loaded")
         self.file_info_label.setStyleSheet("color: #757575; font-style: italic;")
+        self.file_info_label.setObjectName("file_info_label")
 
         # Quick actions
         actions_layout = QHBoxLayout()
@@ -103,10 +106,12 @@ class FileSettingsTab(QWidget):
         self.load_sample_button = QPushButton("📋 Load Sample Data")
         self.load_sample_button.setToolTip("Load sample Turkish courses for testing")
         self.load_sample_button.clicked.connect(self._on_load_sample)
+        self.load_sample_button.setObjectName("load_sample_button")
 
         self.reload_button = QPushButton("🔄 Reload")
         self.reload_button.setEnabled(False)
         self.reload_button.clicked.connect(self._on_reload_file)
+        self.reload_button.setObjectName("reload_button")
 
         actions_layout.addWidget(self.load_sample_button)
         actions_layout.addWidget(self.reload_button)
