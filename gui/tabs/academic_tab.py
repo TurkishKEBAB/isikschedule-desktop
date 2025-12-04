@@ -7,6 +7,7 @@ Features:
 - Graduation planner
 - Transcript import
 """
+import logging
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, QLabel,
     QPushButton, QTableWidget, QTableWidgetItem, QGroupBox,
@@ -16,11 +17,14 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont
 from typing import List, Optional, Dict, Any, Tuple
+import re
 
 from core.models import Course, Transcript, GraduationRequirement, Grade
 from core.academic import PrerequisiteChecker, GPACalculator, GraduationPlanner
 from gui.tabs.graduation_planner_widget import GraduationPlannerWidget
 from gui.dialogs.transcript_import_dialog import TranscriptImportWidget
+
+logger = logging.getLogger(__name__)
 
 # Işık University official data
 try:
@@ -272,12 +276,15 @@ class GPACalculatorWidget(QWidget):
         self.current_gpa_label = QLabel("0.00")
         self.current_gpa_label.setFont(QFont("Segoe UI", 24, QFont.Weight.Bold))
         self.current_gpa_label.setStyleSheet("color: #2196F3;")
+        self.current_gpa_label.setObjectName("current_gpa_label")
         gpa_layout.addRow("CGPA:", self.current_gpa_label)
         
         self.ects_earned_label = QLabel("0 / 0")
+        self.ects_earned_label.setObjectName("ects_earned_label")
         gpa_layout.addRow("ECTS Earned:", self.ects_earned_label)
         
-        self.ects_limit_label = QLabel("37 ECTS")
+        self.ects_limit_label = QLabel("31 ECTS")
+        self.ects_limit_label.setObjectName("ects_limit_label")
         gpa_layout.addRow("Semester Limit:", self.ects_limit_label)
         
         layout.addWidget(gpa_group)
@@ -299,6 +306,7 @@ class GPACalculatorWidget(QWidget):
         self.sim_ects_input = QSpinBox()
         self.sim_ects_input.setRange(1, 15)
         self.sim_ects_input.setValue(6)
+        self.sim_ects_input.setObjectName("sim_ects_input")
         input_layout.addWidget(self.sim_ects_input)
         
         input_layout.addWidget(QLabel("Expected Grade:"))
@@ -307,10 +315,12 @@ class GPACalculatorWidget(QWidget):
             "AA (4.0)", "BA (3.5)", "BB (3.0)", "CB (2.5)",
             "CC (2.0)", "DC (1.5)", "DD (1.0)", "FF (0.0)"
         ])
+        self.sim_grade_input.setObjectName("sim_grade_input")
         input_layout.addWidget(self.sim_grade_input)
         
         self.add_sim_btn = QPushButton("➕ Add Course")
         self.add_sim_btn.clicked.connect(self._add_simulated_course)
+        self.add_sim_btn.setObjectName("add_sim_btn")
         input_layout.addWidget(self.add_sim_btn)
         
         sim_layout.addLayout(input_layout)
@@ -327,10 +337,12 @@ class GPACalculatorWidget(QWidget):
         
         self.calculate_sim_btn = QPushButton("🧮 Calculate Simulated GPA")
         self.calculate_sim_btn.clicked.connect(self._calculate_simulation)
+        self.calculate_sim_btn.setObjectName("calculate_sim_btn")
         sim_btn_layout.addWidget(self.calculate_sim_btn)
         
         self.clear_sim_btn = QPushButton("🗑️ Clear All")
         self.clear_sim_btn.clicked.connect(self._clear_simulation)
+        self.clear_sim_btn.setObjectName("clear_sim_btn")
         sim_btn_layout.addWidget(self.clear_sim_btn)
         
         sim_layout.addLayout(sim_btn_layout)
@@ -339,6 +351,7 @@ class GPACalculatorWidget(QWidget):
         self.sim_result_label = QLabel()
         self.sim_result_label.setWordWrap(True)
         self.sim_result_label.setStyleSheet("padding: 10px; background: #E3F2FD; border-radius: 5px;")
+        self.sim_result_label.setObjectName("sim_result_label")
         sim_layout.addWidget(self.sim_result_label)
         
         layout.addWidget(sim_group)
@@ -379,7 +392,7 @@ class GPACalculatorWidget(QWidget):
         self._update_gpa_display()
     
     def _update_gpa_display(self):
-        """Update current GPA display."""
+        """Update current GPA display with state validation and logging."""
         if not self.transcript:
             return
         
@@ -388,9 +401,78 @@ class GPACalculatorWidget(QWidget):
         total_taken = sum(g.ects for g in self.transcript.grades)
         ects_limit = self.transcript.get_ects_limit()
         
+        # Log the state change
+        logger.info(
+            f"GPA Display Updated - GPA: {gpa:.2f}, "
+            f"ECTS Earned: {total_ects}/{total_taken}, "
+            f"ECTS Limit: {ects_limit}"
+        )
+        
+        # Update UI labels
         self.current_gpa_label.setText(f"{gpa:.2f}")
         self.ects_earned_label.setText(f"{total_ects} / {total_taken}")
         self.ects_limit_label.setText(f"{ects_limit} ECTS")
+        
+        # Validate state consistency
+        issues = self._validate_state()
+        if issues:
+            for issue in issues:
+                logger.warning(f"STATE INCONSISTENCY: {issue}")
+    
+    def _validate_state(self) -> List[str]:
+        """
+        Validate state consistency between internal values and UI display.
+        
+        Returns:
+            List of inconsistency messages (empty if state is consistent)
+        """
+        issues = []
+        
+        if not self.transcript:
+            return issues
+        
+        # Get internal state
+        internal_ects_limit = self.transcript.get_ects_limit()
+        internal_gpa = self.transcript.get_gpa()
+        
+        # Get UI displayed values
+        ui_ects_text = self.ects_limit_label.text()
+        ui_gpa_text = self.current_gpa_label.text()
+        
+        # Parse UI values
+        ects_match = re.search(r'(\d+)', ui_ects_text)
+        if ects_match:
+            ui_ects_limit = int(ects_match.group(1))
+            if ui_ects_limit != internal_ects_limit:
+                issues.append(
+                    f"ECTS Limit mismatch - Internal: {internal_ects_limit}, "
+                    f"UI Display: {ui_ects_limit}"
+                )
+        
+        try:
+            ui_gpa = float(ui_gpa_text)
+            if abs(ui_gpa - internal_gpa) > 0.01:  # Allow small floating point differences
+                issues.append(
+                    f"GPA mismatch - Internal: {internal_gpa:.2f}, "
+                    f"UI Display: {ui_gpa:.2f}"
+                )
+        except ValueError:
+            pass  # UI might not have valid GPA yet
+        
+        # Validate ECTS limit based on GPA
+        expected_limit = 31  # Default for GPA < 2.5
+        if internal_gpa >= 3.5:
+            expected_limit = 42
+        elif internal_gpa >= 2.5:
+            expected_limit = 37
+        
+        if internal_ects_limit != expected_limit:
+            issues.append(
+                f"ECTS Limit incorrect for GPA - GPA: {internal_gpa:.2f}, "
+                f"Expected: {expected_limit}, Actual: {internal_ects_limit}"
+            )
+        
+        return issues
     
     def _add_simulated_course(self):
         """Add a simulated course."""

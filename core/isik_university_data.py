@@ -253,7 +253,7 @@ GRADE_SCALE = {
 
 # GPA-based ECTS limits (Işık University regulations)
 ECTS_LIMITS_BY_GPA = {
-    "freshmen": 30,      # First year students cannot exceed 30 ECTS
+    "freshmen": 31,      # First year students (minimum 31 ECTS for all)
     "low": 31,           # GPA < 2.49
     "medium": 37,        # 2.50 ≤ GPA ≤ 3.49
     "high": 43,          # GPA ≥ 3.50
