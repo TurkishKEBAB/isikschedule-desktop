@@ -3,16 +3,31 @@
 from __future__ import annotations
 
 import random
-from typing import Dict, List, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional
 
-from core.models import Course, Schedule
-from utils.schedule_metrics import SchedulerPrefs, score_schedule
+if TYPE_CHECKING:
+    from core.models import Course, Schedule
+    from utils.schedule_metrics import SchedulerPrefs
+
+# Runtime imports
+try:
+    from core.models import Course, Schedule
+except ImportError as e:
+    raise ImportError(f"Required module core.models not found: {e}")
+
+try:
+    from utils.schedule_metrics import SchedulerPrefs, score_schedule
+except ImportError as e:
+    raise ImportError(f"Required module utils.schedule_metrics not found: {e}")
+
 from . import register_scheduler
 from .base_scheduler import AlgorithmMetadata, BaseScheduler, PreparedSearch
 from .heuristics import estimate_conflict_penalty
 
 
 class Particle:
+    """Represents a single particle in the PSO swarm."""
+
     def __init__(self, position: Dict[str, int]):
         self.position = position
         self.best_position = position.copy()
@@ -80,37 +95,74 @@ class ParticleSwarmScheduler(BaseScheduler):
         global_best_schedule: Optional[Schedule] = None
 
         for _ in range(self.iterations):
-            for particle in particles:
-                schedule = self._decode(particle.position, index_map)
-                if schedule is None:
-                    continue
-
-                cost = self._fitness(schedule)
-                self._last_run_stats["nodes_explored"] += 1
-
-                if cost < particle.best_cost and self._is_valid_final_schedule(schedule):
-                    particle.best_cost = cost
-                    particle.best_position = particle.position.copy()
-
-                if cost < global_best_cost and self._is_valid_final_schedule(schedule):
-                    global_best_cost = cost
-                    global_best_position = particle.position.copy()
-                    global_best_schedule = schedule
-
-            for particle in particles:
-                for key, options in index_map.items():
-                    if not options:
-                        continue
-
-                    rand = random.random()
-                    if rand < self.cognitive and key in particle.best_position:
-                        particle.position[key] = particle.best_position[key]
-                    elif rand < self.cognitive + self.social and key in global_best_position:
-                        particle.position[key] = global_best_position[key]
-                    elif rand > self.inertia:
-                        particle.position[key] = random.randrange(len(options))
+            self._evaluate_particles(particles, index_map, global_best_position)
+            global_best_position, global_best_cost, global_best_schedule = self._update_global_best(
+                particles, global_best_position, global_best_cost, global_best_schedule, index_map
+            )
+            self._update_particles(particles, index_map, global_best_position)
 
         return [global_best_schedule] if global_best_schedule else []
+
+    def _evaluate_particles(
+        self,
+        particles: List[Particle],
+        index_map: Dict[str, List[Optional[List[Course]]]],
+        global_best_position: Dict[str, int],
+    ) -> None:
+        """Evaluate all particles and update their best positions."""
+        for particle in particles:
+            schedule = self._decode(particle.position, index_map)
+            if schedule is None:
+                continue
+
+            cost = self._fitness(schedule)
+            self._last_run_stats["nodes_explored"] += 1
+
+            if cost < particle.best_cost and self._is_valid_final_schedule(schedule):
+                particle.best_cost = cost
+                particle.best_position = particle.position.copy()
+
+    def _update_global_best(
+        self,
+        particles: List[Particle],
+        global_best_position: Dict[str, int],
+        global_best_cost: float,
+        global_best_schedule: Optional[Schedule],
+        index_map: Dict[str, List[Optional[List[Course]]]],
+    ) -> tuple:
+        """Update global best position and schedule."""
+        for particle in particles:
+            schedule = self._decode(particle.position, index_map)
+            if schedule is None:
+                continue
+
+            cost = self._fitness(schedule)
+            if cost < global_best_cost and self._is_valid_final_schedule(schedule):
+                global_best_cost = cost
+                global_best_position = particle.position.copy()
+                global_best_schedule = schedule
+
+        return global_best_position, global_best_cost, global_best_schedule
+
+    def _update_particles(
+        self,
+        particles: List[Particle],
+        index_map: Dict[str, List[Optional[List[Course]]]],
+        global_best_position: Dict[str, int],
+    ) -> None:
+        """Update particle velocities and positions."""
+        for particle in particles:
+            for key, options in index_map.items():
+                if not options:
+                    continue
+
+                rand = random.random()
+                if rand < self.cognitive and key in particle.best_position:
+                    particle.position[key] = particle.best_position[key]
+                elif rand < self.cognitive + self.social and key in global_best_position:
+                    particle.position[key] = global_best_position[key]
+                elif rand > self.inertia:
+                    particle.position[key] = random.randrange(len(options))
 
     def _create_particle(
         self,

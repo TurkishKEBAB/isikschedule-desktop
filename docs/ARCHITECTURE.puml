@@ -1,0 +1,152 @@
+@startuml SchedularV3_Architecture
+!theme plain
+skinparam linetype ortho
+skinparam backgroundColor #FEFEFE
+skinparam classBackgroundColor #F0F8FF
+skinparam classBorderColor #0018A8
+skinparam packageBackgroundColor #E8F4F8
+skinparam packageBorderColor #0018A8
+skinparam arrowColor #0018A8
+skinparam stereotypeCBackgroundColor #FFE5E5
+
+title SchedularV3 - Genel Sistem Mimarisi
+
+package "Presentation Layer (GUI)" as GUI {
+    [MainWindow]
+    [File Settings Tab]
+    [Course Browser Tab]
+    [Course Selector Tab]
+    [Schedule Viewer Tab]
+    [Academic Tab]
+}
+
+package "Application Layer" as APP {
+    [Application Entry Point]
+    [Configuration Manager]
+    [Logging System]
+    [Error Handler]
+}
+
+package "Business Logic Layer" as LOGIC {
+    package "Scheduling Algorithms" as ALGO {
+        [BaseScheduler]
+        [DFS Scheduler]
+        [BFS Scheduler]
+        [A* Scheduler]
+        [Dijkstra Scheduler]
+        [IDDFS Scheduler]
+        [Genetic Algorithm]
+        [Simulated Annealing]
+        [Hill Climbing]
+        [Tabu Search]
+        [Particle Swarm]
+        [Hybrid GA-SA]
+        [Greedy Scheduler]
+        [Constraint Programming]
+        [Algorithm Selector]
+    }
+    
+    package "Academic System" as ACADEMIC {
+        [Prerequisite Checker]
+        [GPA Calculator]
+        [Graduation Planner]
+    }
+    
+    package "Constraints & Evaluation" as CONSTRAINTS {
+        [Constraint Utils]
+        [Evaluator]
+        [Heuristics]
+        [Schedule Metrics]
+    }
+}
+
+package "Data Layer" as DATA {
+    package "Core Models" as MODELS {
+        [Course]
+        [Schedule]
+        [CourseGroup]
+        [Program]
+        [Grade]
+        [Transcript]
+        [GraduationRequirement]
+    }
+    
+    package "Data Access" as DAO {
+        [Excel Loader]
+        [Database Manager]
+        [Transcript Parser]
+    }
+}
+
+package "Reporting Layer" as REPORT {
+    [PDF Exporter]
+    [Excel Exporter]
+    [JPEG Exporter]
+    [Charts Generator]
+}
+
+package "Utilities" as UTILS {
+    [Error Handler]
+    [Performance Monitor]
+    [Schedule Metrics]
+}
+
+package "External Resources" as EXTERNAL {
+    database "SQLite DB" as DB {
+        [courses]
+        [schedules]
+        [programs]
+        [transcripts]
+        [grades]
+    }
+    
+    folder "Excel Files" as EXCEL {
+        [Course Data.xlsx]
+        [Transcript.csv]
+    }
+    
+    folder "Logs" as LOGS {
+        [schedular_*.log]
+    }
+}
+
+' Connections
+GUI --> APP
+GUI --> LOGIC
+GUI --> DATA
+GUI --> REPORT
+
+APP --> UTILS
+APP --> LOGS
+
+LOGIC --> DATA
+LOGIC --> UTILS
+
+ALGO --> MODELS
+ALGO --> CONSTRAINTS
+ACADEMIC --> MODELS
+
+DAO --> DB
+DAO --> EXCEL
+
+REPORT --> MODELS
+
+note right of GUI
+  PyQt6 tabanlı
+  5 ana sekme
+  Modern arayüz
+end note
+
+note right of LOGIC
+  15+ algoritma
+  Constraint sistemi
+  Academic features
+end note
+
+note right of DATA
+  SQLite persistence
+  Excel I/O
+  Type-safe models
+end note
+
+@enduml

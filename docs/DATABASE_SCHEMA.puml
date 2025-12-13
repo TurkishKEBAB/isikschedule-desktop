@@ -1,0 +1,113 @@
+@startuml SchedularV3_Database_Schema
+!theme plain
+
+title SchedularV3 - Database Schema (SQLite)
+
+entity "courses" {
+    * id : INTEGER <<PK>>
+    --
+    * code : TEXT <<UNIQUE>>
+    * main_code : TEXT
+    * name : TEXT
+    * ects : INTEGER
+    * course_type : TEXT
+    * schedule : TEXT (JSON)
+    teacher : TEXT
+    * has_lecture : BOOLEAN
+    faculty : TEXT
+    department : TEXT
+    campus : TEXT
+    created_at : TIMESTAMP
+}
+
+entity "schedules" {
+    * id : INTEGER <<PK>>
+    --
+    * name : TEXT
+    * total_credits : INTEGER
+    * conflict_count : INTEGER
+    * courses : TEXT (JSON)
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "programs" {
+    * id : INTEGER <<PK>>
+    --
+    * name : TEXT
+    metadata : TEXT (JSON)
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "program_schedules" {
+    * program_id : INTEGER <<FK>>
+    * schedule_id : INTEGER <<FK>>
+    --
+    <<PK (program_id, schedule_id)>>
+}
+
+entity "transcripts" {
+    * id : INTEGER <<PK>>
+    --
+    * student_id : TEXT <<UNIQUE>>
+    * student_name : TEXT
+    * program : TEXT
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+}
+
+entity "grades" {
+    * id : INTEGER <<PK>>
+    --
+    * transcript_id : INTEGER <<FK>>
+    * course_code : TEXT
+    * course_name : TEXT
+    * ects : INTEGER
+    * letter_grade : TEXT
+    * numeric_grade : REAL
+    * semester : TEXT
+    created_at : TIMESTAMP
+}
+
+' Relationships
+programs ||--o{ program_schedules : has
+schedules ||--o{ program_schedules : belongs to
+transcripts ||--o{ grades : contains
+
+' Indexes
+note right of courses
+  Indexes:
+  - idx_courses_main_code
+  - idx_courses_code
+  
+  Example schedule JSON:
+  [["Monday", 1], ["Monday", 2], ["Tuesday", 3]]
+end note
+
+note right of schedules
+  courses field stores
+  list of course codes:
+  ["COMP1111.1", "MATH2222.2"]
+end note
+
+note right of programs
+  metadata field stores:
+  {
+    "faculty": "Engineering",
+    "department": "Computer Eng"
+  }
+end note
+
+note right of transcripts
+  GPA calculation:
+  - Sum(numeric_grade * ects)
+  - Sum(ects)
+  
+  ECTS limits by GPA:
+  - >= 3.5: 42 ECTS
+  - >= 2.5: 37 ECTS
+  - < 2.5: 31 ECTS
+end note
+
+@enduml

@@ -1,0 +1,154 @@
+@startuml SchedularV3_Package_Dependencies
+!theme plain
+skinparam packageBackgroundColor #F0F8FF
+skinparam packageBorderColor #0018A8
+
+title SchedularV3 - Package Dependencies
+
+package "SchedularV3" {
+    package "main.py" as MAIN {
+    }
+    
+    package "config" {
+        [settings.py]
+    }
+    
+    package "core" {
+        [models.py]
+        [database.py]
+        [excel_loader.py]
+        [academic.py]
+        [transcript_parser.py]
+        [isik_university_data.py]
+        [prerequisite_data.py]
+        [curriculum_data.py]
+    }
+    
+    package "algorithms" {
+        [base_scheduler.py]
+        [dfs_scheduler.py]
+        [bfs_scheduler.py]
+        [a_star_scheduler.py]
+        [dijkstra_scheduler.py]
+        [iddfs_scheduler.py]
+        [greedy_scheduler.py]
+        [genetic_algorithm.py]
+        [simulated_annealing.py]
+        [hill_climbing.py]
+        [tabu_search.py]
+        [particle_swarm.py]
+        [hybrid_ga_sa.py]
+        [constraint_programming.py]
+        [algorithm_selector.py]
+        [constraints.py]
+        [evaluator.py]
+        [heuristics.py]
+    }
+    
+    package "gui" {
+        [main_window.py]
+        
+        package "tabs" {
+            [file_settings_tab.py]
+            [course_browser_tab.py]
+            [course_selector_tab.py]
+            [schedule_viewer_tab.py]
+            [academic_tab.py]
+            [graduation_planner_widget.py]
+        }
+        
+        package "widgets" {
+            [algorithm_selector.py]
+            [schedule_grid.py]
+            [course_card.py]
+            [progress_dialog.py]
+        }
+        
+        package "dialogs" {
+            [algorithm_comparison.py]
+            [add_grade_dialog.py]
+            [transcript_import_dialog.py]
+        }
+    }
+    
+    package "reporting" {
+        [pdf.py]
+        [excel.py]
+        [jpeg.py]
+        [charts.py]
+    }
+    
+    package "utils" {
+        [error_handler.py]
+        [performance.py]
+        [schedule_metrics.py]
+    }
+    
+    package "tests" {
+        [test_*.py]
+    }
+}
+
+' Dependencies
+MAIN --> config
+MAIN --> gui
+MAIN --> utils
+
+gui --> core
+gui --> algorithms
+gui --> reporting
+gui --> utils
+
+algorithms --> core
+algorithms --> utils
+
+reporting --> core
+reporting --> utils
+
+core --> config
+
+tests --> core
+tests --> algorithms
+tests --> gui
+
+note right of MAIN
+  Application entry point
+  Initializes:
+  - Logging
+  - QApplication
+  - MainWindow
+  - Exception handlers
+end note
+
+note right of core
+  Core business models:
+  - Course, Schedule, Program
+  - Grade, Transcript
+  - Database persistence
+  - Excel I/O
+  - Academic calculations
+end note
+
+note right of algorithms
+  15+ scheduling algorithms
+  All inherit from BaseScheduler
+  Auto-registration system
+  Performance tracking
+end note
+
+note right of gui
+  PyQt6-based interface
+  5 main tabs
+  Custom widgets
+  Signal-based communication
+end note
+
+note bottom of reporting
+  Export functionality:
+  - PDF (reportlab)
+  - Excel (openpyxl)
+  - JPEG (Pillow)
+  - Charts (matplotlib)
+end note
+
+@enduml

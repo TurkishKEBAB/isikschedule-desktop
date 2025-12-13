@@ -3,10 +3,23 @@
 from __future__ import annotations
 
 import time
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple, Type, Union
+from typing import TYPE_CHECKING, Dict, Iterable, Optional, Sequence, Tuple, Type, Union
 
-from core.models import CourseGroup, Schedule
-from utils.schedule_metrics import SchedulerPrefs
+if TYPE_CHECKING:
+    from core.models import CourseGroup, Schedule
+    from utils.schedule_metrics import SchedulerPrefs
+
+# Runtime imports
+try:
+    from core.models import CourseGroup, Schedule
+except ImportError as e:
+    raise ImportError(f"Required module core.models not found: {e}")
+
+try:
+    from utils.schedule_metrics import SchedulerPrefs
+except ImportError as e:
+    raise ImportError(f"Required module utils.schedule_metrics not found: {e}")
+
 from . import get_registered_scheduler
 from .base_scheduler import BaseScheduler
 from .evaluator import evaluate_schedule

@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
         self._apply_theme()
         self._wire_tab_signals()
 
-        initial_algorithm, initial_params = self.file_tab.get_algorithm_config()
+        initial_algorithm, initial_params = self.algo_tab.get_algorithm_config()
         self._selected_algorithm = initial_algorithm
         self._algorithm_params = initial_params
 
@@ -64,16 +64,19 @@ class MainWindow(QMainWindow):
         self.tab_widget.setTabPosition(QTabWidget.TabPosition.North)
         self.tab_widget.setMovable(False)
         self.tab_widget.setObjectName("tab_widget")
-        
+
         # Import and create actual tabs
-        from gui.tabs.file_settings_tab import FileSettingsTab
+        from gui.tabs.data_profile_tab import DataProfileTab
+        from gui.tabs.algorithm_tab import AlgorithmTab
         from gui.tabs.course_browser_tab import CourseBrowserTab
         from gui.tabs.course_selector_tab import CourseSelectorTab
         from gui.tabs.schedule_viewer_tab import ScheduleViewerTab
         from gui.tabs.academic_tab import AcademicTab
 
-        self.file_tab = FileSettingsTab()
-        self.file_tab.setObjectName("file_tab")
+        self.data_tab = DataProfileTab()
+        self.data_tab.setObjectName("data_tab")
+        self.algo_tab = AlgorithmTab()
+        self.algo_tab.setObjectName("algo_tab")
         self.browser_tab = CourseBrowserTab()
         self.browser_tab.setObjectName("browser_tab")
         self.selector_tab = CourseSelectorTab()
@@ -83,7 +86,8 @@ class MainWindow(QMainWindow):
         self.academic_tab = AcademicTab()
         self.academic_tab.setObjectName("academic_tab")
 
-        self.tab_widget.addTab(self.file_tab, "📁 File & Settings")
+        self.tab_widget.addTab(self.data_tab, "📁 Data & Profile")
+        self.tab_widget.addTab(self.algo_tab, "⚙️ Algorithms")
         self.tab_widget.addTab(self.browser_tab, "📚 Course Browser")
         self.tab_widget.addTab(self.selector_tab, "✅ Course Selector")
         self.tab_widget.addTab(self.viewer_tab, "📊 Schedule Viewer")
@@ -93,11 +97,16 @@ class MainWindow(QMainWindow):
 
     def _wire_tab_signals(self) -> None:
         """Connect cross-tab signals for data sharing."""
-        self.file_tab.file_selected.connect(self._on_course_file_selected)
-        self.file_tab.algorithm_configured.connect(self._on_algorithm_configured)
+        self.data_tab.file_selected.connect(self._on_course_file_selected)
+        self.data_tab.program_selected.connect(self._on_program_selected)
+        self.algo_tab.algorithm_configured.connect(self._on_algorithm_configured)
         self.browser_tab.course_selected.connect(self._on_course_selected)
         self.browser_tab.courses_updated.connect(self._on_courses_updated)
         self.selector_tab.selection_changed.connect(self._on_selection_changed)
+
+        # Wire main code filter sync between browser and selector tabs
+        self.browser_tab.main_code_filter_changed.connect(self.selector_tab.on_main_code_filter_changed)
+        self.selector_tab.request_main_code_filter.connect(self.browser_tab.set_main_code_filter)
 
     def _status_bar(self) -> QStatusBar:
         """Return the main window status bar with proper typing."""
@@ -125,7 +134,7 @@ class MainWindow(QMainWindow):
         file_menu.addSeparator()
 
         export_menu = cast(QMenu, file_menu.addMenu("📤 Export"))
-        
+
         export_pdf = QAction("Export as PDF...", self)
         export_pdf.triggered.connect(lambda: self._on_export("pdf"))
         export_menu.addAction(export_pdf)
@@ -212,6 +221,12 @@ class MainWindow(QMainWindow):
         toolbar.addAction(open_action)
 
         toolbar.addSeparator()
+
+        # Quick Schedule (Lucky button)
+        lucky_action = QAction("🍀 Şansımı Dene", self)
+        lucky_action.setStatusTip("Tek tuşla optimal program oluştur")
+        lucky_action.triggered.connect(self._on_quick_schedule)
+        toolbar.addAction(lucky_action)
 
         # Generate
         generate_action = QAction("⚡ Generate", self)
@@ -375,7 +390,7 @@ class MainWindow(QMainWindow):
     # Event handlers (to be implemented)
     def _on_open_file(self) -> None:
         """Handle open file action."""
-        self.file_tab.browse_button.click()
+        self.data_tab.browse_button.click()
 
     def _on_save_schedule(self) -> None:
         """Handle save schedule action."""
@@ -433,6 +448,11 @@ class MainWindow(QMainWindow):
         max_ects = int(params.pop("max_ects", 31))
         allow_conflicts = bool(params.pop("allow_conflicts", False))
 
+        # Remove UI-only parameters that schedulers don't expect
+        params.pop("lifestyle_mode", None)
+        params.pop("morning_person", None)
+        params.pop("free_day_preference", None)
+
         try:
             scheduler = scheduler_cls(
                 max_ects=max_ects,
@@ -449,7 +469,7 @@ class MainWindow(QMainWindow):
             schedules = scheduler.generate_schedules(
                 self._course_groups,
                 mandatory_codes,
-                optional_codes if optional_codes else None,
+                optional_codes,
             )
         except Exception as exc:  # pragma: no cover - defensive guard
             logger.exception("Scheduler execution failed")
@@ -459,12 +479,26 @@ class MainWindow(QMainWindow):
         stats = scheduler.get_search_statistics()
 
         if not schedules:
-            message = "No valid schedules found. Consider relaxing constraints or selections."
-            self._status_bar().showMessage(message)
-            QMessageBox.information(self, "No Schedules", message)
+            # Provide more helpful message based on the failure
+            failure_reasons = scheduler.analyze_failure(self._course_groups)
+            message = "No valid schedules found.\n\n"
+
+            # Add specific reasons if available
+            if failure_reasons:
+                message += "Possible reasons:\n" + "\n".join(f"• {reason}" for reason in failure_reasons)
+                message += "\n\nConsider:\n"
+                message += "• Relaxing ECTS constraints\n"
+                message += "• Removing some mandatory courses\n"
+                message += "• Allowing time conflicts\n"
+                message += "• Checking if selected courses have valid sections"
+            else:
+                message += "Consider relaxing constraints or selections."
+
+            self._status_bar().showMessage("No valid schedules found")
+            QMessageBox.warning(self, "No Schedules Found", message)
             return
 
-        self.viewer_tab.set_schedules(schedules, algorithm=self._selected_algorithm)
+        self.viewer_tab.set_schedules(schedules, algorithm=self._selected_algorithm, max_ects=max_ects)
         self.tab_widget.setCurrentWidget(self.viewer_tab)
 
         total_time = stats.get("total_time") if isinstance(stats, dict) else None
@@ -475,6 +509,88 @@ class MainWindow(QMainWindow):
         else:
             status = f"{self._selected_algorithm}: generated {len(schedules)} schedules"
         self._status_bar().showMessage(status)
+
+    def _on_quick_schedule(self) -> None:
+        """Handle quick schedule (Lucky) action - generates optimal schedule with one click."""
+        if not self._course_groups:
+            QMessageBox.warning(
+                self,
+                "Ders Verisi Yok",
+                "Lütfen önce bir Excel dosyası yükleyiniz.",
+            )
+            return
+
+        mandatory_codes, optional_codes = self.selector_tab.get_selected_courses()
+        if not mandatory_codes:
+            QMessageBox.warning(
+                self,
+                "Ders Seçimi Yok",
+                "Lütfen en az bir dersi zorunlu olarak işaretleyiniz.\n\n"
+                "İpucu: Ders Seçici sekmesine gidin ve almak istediğiniz dersleri tıklayın.",
+            )
+            self.tab_widget.setCurrentWidget(self.selector_tab)
+            return
+
+        # Use smart configuration based on balanced lifestyle
+        from utils.smart_advisor import create_quick_schedule_config
+
+        config = create_quick_schedule_config(
+            lifestyle_mode="balanced",
+            morning_person=False,
+            prefer_gaps=False,
+            free_day_preference="Friday",  # Typical preference: Friday off
+        )
+
+        algorithm_name = config["algorithm"]
+        scheduler_cls = get_registered_scheduler(algorithm_name)
+
+        if scheduler_cls is None:
+            # Fallback to DFS
+            scheduler_cls = get_registered_scheduler("DFS")
+            algorithm_name = "DFS"
+
+        if scheduler_cls is None:
+            QMessageBox.critical(self, "Hata", "Planlayıcı algoritması bulunamadı (DFS dahil).")
+            self._status_bar().showMessage("❌ Hata: Algoritma bulunamadı.")
+            return
+
+        self._status_bar().showMessage("🍀 Şansını deniyorum... Program oluşturuluyor...")
+
+        try:
+            scheduler = scheduler_cls(
+                max_ects=config["max_ects"],
+                max_results=config["max_results"],
+                allow_conflicts=False,
+                scheduler_prefs=config.get("scheduler_prefs"),
+                **config.get("params", {}),
+            )
+
+            schedules = scheduler.generate_schedules(
+                self._course_groups,
+                mandatory_codes,
+                optional_codes,
+            )
+        except Exception as exc:
+            logger.exception("Quick schedule generation failed")
+            self._show_error("Hızlı Program Hatası", str(exc))
+            return
+
+        if not schedules:
+            QMessageBox.information(
+                self,
+                "Program Bulunamadı",
+                "Seçtiğin derslerle uygun bir program oluşturulamadı.\n\n"
+                "Öneriler:\n"
+                "• Zorunlu ders sayısını azalt\n"
+                "• Normal 'Generate' butonunu farklı ayarlarla dene",
+            )
+            return
+
+        self.viewer_tab.set_schedules(schedules, algorithm=f"🍀 Lucky ({algorithm_name})")
+        self.tab_widget.setCurrentWidget(self.viewer_tab)
+        self._status_bar().showMessage(
+            f"🍀 Şanslısın! {len(schedules)} program bulundu. En iyisi seçildi."
+        )
 
     def _on_compare_algorithms(self) -> None:
         """Handle compare algorithms action."""
@@ -508,6 +624,16 @@ class MainWindow(QMainWindow):
         self._status_bar().showMessage(f"Loading courses from {self._loaded_file.name}...")
         self._load_courses_from_file(self._loaded_file)
 
+    def _on_program_selected(self, program_code: str, year: int) -> None:
+        """Handle program selection from DataProfileTab."""
+        self._status_bar().showMessage(f"Program selected: {program_code} ({year})")
+
+        # Notify selector tab about the program change
+        if hasattr(self.selector_tab, 'kanban_widget'):
+            self.selector_tab.kanban_widget.set_active_program(program_code, year)
+
+        print(f"MainWindow: Program {program_code} ({year}) activated")
+
     def _on_algorithm_configured(self, algorithm_name: str, params: dict) -> None:
         """Remember the active algorithm configuration."""
         self._selected_algorithm = algorithm_name
@@ -531,7 +657,7 @@ class MainWindow(QMainWindow):
 
     def _on_courses_updated(self, updated_courses: List[Course]) -> None:
         """Handle course deletions from Browser tab.
-        
+
         When courses are deleted in the Browser tab, we need to:
         1. Update the main course list
         2. Rebuild course groups
@@ -540,7 +666,7 @@ class MainWindow(QMainWindow):
         self._courses = updated_courses
         self._course_groups = build_course_groups(updated_courses)
         self.selector_tab.set_course_groups(self._course_groups)
-        
+
         self._status_bar().showMessage(
             f"Courses updated | Total: {len(updated_courses)} | Groups: {len(self._course_groups)}"
         )
@@ -551,24 +677,24 @@ class MainWindow(QMainWindow):
             courses = process_excel(str(file_path))
         except FileNotFoundError:
             self._reset_loaded_data()
-            self.file_tab.update_file_status("❌ Excel file not found")
+            self.data_tab.update_health_status(0, 0, 1)
             self._show_error("File Not Found", f"Could not locate {file_path}.")
             return
         except ValueError as exc:
             self._reset_loaded_data()
-            self.file_tab.update_file_status("❌ Invalid Excel format")
+            self.data_tab.update_health_status(0, 0, 1)
             self._show_error("Invalid Excel Format", str(exc))
             return
         except Exception as exc:  # pragma: no cover - defensive guard
             logger.exception("Unexpected error while loading courses")
             self._reset_loaded_data()
-            self.file_tab.update_file_status("❌ Failed to load courses")
+            self.data_tab.update_health_status(0, 0, 1)
             self._show_error("Load Failed", str(exc))
             return
 
         if not courses:
             self._reset_loaded_data()
-            self.file_tab.update_file_status("⚠️ File loaded but no courses detected")
+            self.data_tab.update_health_status(0, 0, 0)
             QMessageBox.information(
                 self,
                 "No Courses",
@@ -582,11 +708,9 @@ class MainWindow(QMainWindow):
         self.selector_tab.set_course_groups(self._course_groups)
         self.viewer_tab.clear()
 
-        summary = (
-            f"📄 File: {file_path.name} | Courses: {len(courses)} | "
-            f"Groups: {len(self._course_groups)}"
-        )
-        self.file_tab.update_file_status(summary)
+        # Update health status (assuming all loaded courses are valid)
+        self.data_tab.update_health_status(len(courses), len(courses), 0)
+
         self._status_bar().showMessage(
             f"Loaded {len(courses)} courses across {len(self._course_groups)} groups"
         )
@@ -601,6 +725,7 @@ class MainWindow(QMainWindow):
         self.browser_tab.set_courses([])
         self.selector_tab.set_course_groups({})
         self.viewer_tab.clear()
+        self.data_tab.update_health_status(0, 0, 0)
 
     def _show_error(self, title: str, message: str) -> None:
         """Show an error dialog and mirror the message in the status bar."""

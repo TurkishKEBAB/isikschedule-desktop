@@ -1,0 +1,147 @@
+@startuml SchedularV3_Classes
+!theme plain
+skinparam classBackgroundColor #F0F8FF
+skinparam classBorderColor #0018A8
+skinparam packageBackgroundColor #E8F4F8
+
+title SchedularV3 - Class Diagram (Core Models)
+
+package "Core Models" {
+    class Course {
+        +code: str
+        +main_code: str
+        +name: str
+        +ects: int
+        +course_type: CourseType
+        +schedule: List[TimeSlot]
+        +teacher: Optional[str]
+        +has_lecture: bool
+        +faculty: str
+        +department: str
+        +campus: str
+        +prerequisites: List[str]
+        +corequisites: List[str]
+        --
+        +from_dict(data: Dict): Course
+        +to_dict(): Dict
+        +conflicts_with(other: Course): bool
+        +get_conflict_slots(other: Course): Set[TimeSlot]
+        +__hash__(): int
+        +__eq__(other: Course): bool
+    }
+    
+    class Schedule {
+        +courses: List[Course]
+        --
+        +total_credits: int <<property>>
+        +conflict_count: int <<property>>
+        +has_conflicts: bool <<property>>
+        --
+        +add_course(course: Course): None
+        +remove_course(code: str): bool
+        +get_courses_by_main_code(code: str): List[Course]
+        +has_conflict_with(courses: List[Course]): bool
+        +get_course_codes(): Set[str]
+        +get_main_codes(): Set[str]
+        +to_dict_list(): List[Dict]
+        +from_dict_list(data: List[Dict]): Schedule
+    }
+    
+    class CourseGroup {
+        +main_code: str
+        +courses: List[Course]
+        --
+        +lecture_courses: List[Course] <<property>>
+        +ps_courses: List[Course] <<property>>
+        +lab_courses: List[Course] <<property>>
+        +has_lecture: bool <<property>>
+        +has_ps: bool <<property>>
+        +has_lab: bool <<property>>
+    }
+    
+    class Program {
+        +name: str
+        +schedules: List[Schedule]
+        +metadata: Dict[str, Any]
+        --
+        +best_schedule: Optional[Schedule] <<property>>
+        +conflict_free_schedules: List[Schedule] <<property>>
+        --
+        +add_schedule(schedule: Schedule): None
+        +get_statistics(): Dict[str, Any]
+    }
+    
+    class Grade {
+        +course_code: str
+        +course_name: str
+        +ects: int
+        +letter_grade: str
+        +numeric_grade: float
+        +semester: str
+        +is_retake: bool
+        --
+        +is_passing(): bool
+        +letter_to_numeric(letter: str): float <<static>>
+        +is_passing_grade(letter: str): bool <<static>>
+    }
+    
+    class Transcript {
+        +student_id: str
+        +student_name: str
+        +program: str
+        +grades: List[Grade]
+        --
+        +gpa: float <<property>>
+        +total_ects_earned: int <<property>>
+        +total_ects_taken: int <<property>>
+        --
+        +add_grade(grade: Grade): None
+        +get_gpa(): float
+        +get_total_ects(): int
+        +get_completed_courses(): List[str]
+        +get_ects_limit(): int
+    }
+    
+    class GraduationRequirement {
+        +program_name: str
+        +total_ects_required: int
+        +min_gpa: float
+        +core_courses: List[str]
+        +elective_ects_required: int
+        --
+        +program: str <<property>>
+        +total_ects: int <<property>>
+        --
+        +check_completion(transcript: Transcript): Tuple[bool, Dict]
+    }
+}
+
+' Relationships
+Schedule "1" *-- "0..*" Course : contains
+CourseGroup "1" *-- "1..*" Course : groups
+Program "1" *-- "0..*" Schedule : has
+Transcript "1" *-- "0..*" Grade : contains
+GraduationRequirement "1" -- "1" Transcript : validates
+
+note right of Course
+  TimeSlot = Tuple[str, int]
+  CourseType = "lecture"|"ps"|"lab"
+  
+  Işık University format
+  Turkish character support
+end note
+
+note right of Schedule
+  Conflict detection
+  ECTS calculation
+  Validation logic
+end note
+
+note right of Transcript
+  GPA-based ECTS limits:
+  - GPA >= 3.5: 42 ECTS
+  - GPA >= 2.5: 37 ECTS
+  - GPA < 2.5: 31 ECTS
+end note
+
+@enduml

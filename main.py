@@ -11,7 +11,6 @@ import traceback as tb_module
 from pathlib import Path
 from datetime import datetime
 from PyQt6.QtWidgets import QApplication, QMessageBox
-from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import Qt
 
 # Add the current directory to Python path
@@ -34,26 +33,26 @@ from utils import ErrorHandler
 def setup_logging(verbose: bool = False) -> Path:
     """
     Configure the logging system.
-    
+
     Args:
         verbose: If True, set logging level to DEBUG
-        
+
     Returns:
         Path to the log file
     """
     # Create logs directory if it doesn't exist
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
-    
+
     # Create log filename with timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_file = LOGS_DIR / f"schedular_{timestamp}.log"
-    
+    log_file = LOGS_DIR / f"scheduler_{timestamp}.log"
+
     # Determine log level
-    level = logging.DEBUG if verbose else getattr(logging, LOG_LEVEL)
-    
+    level = logging.DEBUG if verbose else getattr(logging, LOG_LEVEL, logging.INFO)
+
     # Configure logging with rotation
     from logging.handlers import RotatingFileHandler
-    
+
     # File handler with rotation
     file_handler = RotatingFileHandler(
         log_file,
@@ -62,21 +61,29 @@ def setup_logging(verbose: bool = False) -> Path:
     )
     file_handler.setLevel(level)
     file_handler.setFormatter(logging.Formatter(LOG_FORMAT, LOG_DATE_FORMAT))
-    
+
     # Console handler
+    # Use utf-8 encoding for console output to handle special characters like 'İ'
+    # We check if reconfigure is available (Python 3.7+)
+    if hasattr(sys.stdout, 'reconfigure'):
+        try:
+            getattr(sys.stdout, 'reconfigure')(encoding='utf-8')
+        except Exception:
+            pass
+
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(level)
     console_handler.setFormatter(logging.Formatter(LOG_FORMAT, LOG_DATE_FORMAT))
-    
+
     # Configure root logger
     root_logger = logging.getLogger()
     root_logger.setLevel(level)
     root_logger.addHandler(file_handler)
     root_logger.addHandler(console_handler)
-    
+
     logging.info(f"{APP_NAME} v{APP_VERSION} - Logging initialized")
     logging.info(f"Log file: {log_file}")
-    
+
     return log_file
 
 
@@ -100,21 +107,21 @@ def parse_arguments():
         action='store_true',
         help='Skip the splash screen on startup'
     )
-    
+
     return parser.parse_args()
 
 
 def exception_hook(exctype, value, tb):
     """
     Global exception handler for uncaught exceptions.
-    
+
     Args:
         exctype: Exception type
         value: Exception value
         tb: Exception traceback
     """
     logging.critical("Uncaught exception", exc_info=(exctype, value, tb))
-    
+
     # Show error dialog to user
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Icon.Critical)
@@ -123,7 +130,7 @@ def exception_hook(exctype, value, tb):
     msg.setInformativeText(str(value))
     msg.setDetailedText(''.join(tb_module.format_exception(exctype, value, tb)))
     msg.exec()
-    
+
     # Call the default exception handler
     sys.__excepthook__(exctype, value, tb)
 
@@ -131,54 +138,61 @@ def exception_hook(exctype, value, tb):
 def main():
     """
     Application entry point.
-    
+
     Initializes the PyQt6 application, shows splash screen (optional),
     and creates the main window.
     """
     # Parse command-line arguments
     args = parse_arguments()
-    
+
     # Setup logging
     try:
-        log_file = setup_logging(verbose=args.verbose)
+        _ = setup_logging(verbose=args.verbose)
     except Exception as e:
         print(f"Failed to setup logging: {e}", file=sys.stderr)
         return 1
-    
+
     logging.info(f"Starting {APP_NAME} v{APP_VERSION}")
     logging.info(f"Python version: {sys.version}")
     logging.info(f"Platform: {sys.platform}")
-    
+
     # Install global exception handlers
-    sys.excepthook = exception_hook
+    # Note: ErrorHandler.setup_exception_hook() sets sys.excepthook internally,
+    # so we use it instead of setting exception_hook directly to avoid conflicts
+    # #region agent log
+    import json; log_path = Path(__file__).parent.parent / ".cursor" / "debug.log"; log_data = {"location": "main.py:162", "message": "Before setting exception hook", "data": {"current_hook": str(sys.excepthook)}, "timestamp": int(__import__("time").time() * 1000), "sessionId": "debug-session", "runId": "run1", "hypothesisId": "A"}; open(log_path, "a", encoding="utf-8").write(json.dumps(log_data) + "\n")
+    # #endregion
     ErrorHandler.setup_exception_hook()
-    
+    # #region agent log
+    import json; log_path = Path(__file__).parent.parent / ".cursor" / "debug.log"; log_data = {"location": "main.py:165", "message": "After setting exception hook", "data": {"hook_set": sys.excepthook is not None, "hook_type": type(sys.excepthook).__name__}, "timestamp": int(__import__("time").time() * 1000), "sessionId": "debug-session", "runId": "run1", "hypothesisId": "A"}; open(log_path, "a", encoding="utf-8").write(json.dumps(log_data) + "\n")
+    # #endregion
+
     # Create QApplication
     try:
         # Enable High DPI scaling
         QApplication.setHighDpiScaleFactorRoundingPolicy(
             Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
         )
-        
+
         app = QApplication(sys.argv)
         app.setApplicationName(APP_NAME)
         app.setApplicationVersion(APP_VERSION)
         app.setOrganizationName("Course Scheduler Team")
-        
+
         logging.info("QApplication initialized successfully")
-        
+
         # Create and show main window
         from gui.main_window import MainWindow
         main_window = MainWindow()
         main_window.show()
-        
+
         logging.info("Application initialized successfully")
-        
+
         # Start event loop
         return_code = app.exec()
         logging.info(f"Application exiting with code {return_code}")
         return return_code
-        
+
     except Exception as e:
         logging.critical(f"Failed to start application: {e}", exc_info=True)
         return 1

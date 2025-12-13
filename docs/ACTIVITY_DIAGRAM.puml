@@ -1,0 +1,168 @@
+@startuml SchedularV3_Activity_Schedule_Generation
+!theme plain
+skinparam activityBackgroundColor #F0F8FF
+skinparam activityBorderColor #0018A8
+skinparam activityDiamondBackgroundColor #FFE5E5
+
+title SchedularV3 - Schedule Generation Activity Diagram
+
+start
+
+:User opens SchedularV3;
+
+:Load Excel file with courses;
+
+if (File valid?) then (yes)
+    :Parse Excel data;
+    :Create Course objects;
+    :Save to database;
+    :Display course count;
+else (no)
+    :Show error message;
+    stop
+endif
+
+:User switches to Course Selector tab;
+
+:Browse available courses;
+
+repeat
+    :Select course;
+    
+    if (Click state) then (First click)
+        :Mark as Mandatory ✅;
+    elseif (Second click) then
+        :Mark as Optional ❌;
+    else (Third click)
+        :Mark as Excluded ⬜;
+    endif
+    
+repeat while (More courses to select?) is (yes)
+->no;
+
+:User switches to File Settings tab;
+
+:Select algorithm from dropdown;
+
+:Configure parameters;
+note right
+    - max_results: 1-100
+    - max_ects: 25-45
+    - allow_conflicts: 0-10
+    - timeout: 30-300s
+end note
+
+if (Set preferences?) then (yes)
+    :Configure preferences;
+    note right
+        - Desired free days
+        - Preferred time slots
+        - Campus preference
+        - Morning/Afternoon
+    end note
+else (no)
+    :Use default preferences;
+endif
+
+:User clicks "Generate Schedules";
+
+:Show progress dialog;
+
+fork
+    :Prepare search space;
+    :Build course groups;
+    :Identify mandatory/optional;
+fork again
+    :Initialize algorithm;
+    :Set parameters;
+end fork
+
+:Run algorithm;
+
+while (Not done AND not timeout) is (true)
+    :Generate partial schedule;
+    
+    if (ECTS limit exceeded?) then (yes)
+        :Prune branch;
+    else (no)
+        if (Has conflicts AND not allowed?) then (yes)
+            :Prune branch;
+        else (no)
+            if (All mandatory included?) then (yes)
+                :Validate schedule;
+                
+                if (Valid?) then (yes)
+                    :Calculate preference score;
+                    :Add to results;
+                    
+                    if (Reached max results?) then (yes)
+                        :Stop generation;
+                    endif
+                endif
+            else (no)
+                :Continue recursion;
+            endif
+        endif
+    endif
+    
+    :Update progress bar;
+endwhile (done)
+
+:Sort results by score;
+
+:Close progress dialog;
+
+if (Schedules found?) then (yes)
+    :Display schedules in Viewer tab;
+    
+    :User selects a schedule;
+    
+    :Display weekly grid;
+    :Highlight conflicts in red;
+    :Show course details;
+    
+    if (User wants to export?) then (yes)
+        :User selects export format;
+        
+        if (Format?) then (PDF)
+            :Generate PDF report;
+            :Add university logo;
+            :Add schedule grid;
+        elseif (Excel) then
+            :Generate Excel file;
+            :Add formatted tables;
+        else (JPEG)
+            :Generate image;
+            :Add visual styling;
+        endif
+        
+        :Save file;
+        :Show success message;
+    endif
+    
+else (no)
+    :Show "No schedules found" message;
+    :Analyze failure reasons;
+    :Display suggestions;
+endif
+
+stop
+
+note right of "Run algorithm"
+    Algorithms available:
+    - DFS (Depth-First Search)
+    - BFS (Breadth-First Search)
+    - A* (A-Star)
+    - Dijkstra
+    - IDDFS
+    - Genetic Algorithm
+    - Simulated Annealing
+    - Hill Climbing
+    - Tabu Search
+    - Particle Swarm
+    - Hybrid GA-SA
+    - Greedy
+    - Constraint Programming
+end note
+
+@enduml

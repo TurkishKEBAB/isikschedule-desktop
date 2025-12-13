@@ -157,6 +157,36 @@
 
 ---
 
+## 🏛️ Sistem Mimarisi
+
+### Genel Bakış
+
+SchedularV3, katmanlı (layered) mimari kullanır:
+
+1. **Presentation Layer:** PyQt6 GUI (5 sekme)
+2. **Business Logic:** 15+ algoritma + Academic system
+3. **Data Layer:** SQLite + Excel I/O
+4. **Reporting:** PDF/Excel/JPEG export
+
+**Detaylı Bilgi:** Bkz. `docs/ARCHITECTURE_COMPLETE_REPORT.md`
+
+### Algoritma Mimarisi
+
+15+ farklı scheduling algoritması:
+- **Search:** DFS, BFS, A*, Dijkstra, IDDFS
+- **Optimization:** GA, SA, HC, Tabu, PSO, Hybrid
+- **Greedy:** Fast approximation
+- **CP-SAT:** Constraint programming
+
+**Algoritma Seçimi:** Sistem otomatik olarak en uygun algoritmayı seçer.
+
+**Diagram:** `docs/ALGORITHM_DIAGRAM.puml`
+
+### Veri Akışı
+```
+
+---
+
 ## ❓ Sık Sorulan Sorular
 
 ### Q: Program bulunamadı, ne yapmalıyım?

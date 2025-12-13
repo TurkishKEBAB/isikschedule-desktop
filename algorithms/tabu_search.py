@@ -2,10 +2,23 @@
 
 from __future__ import annotations
 
-from typing import List, Optional, Tuple
+from typing import TYPE_CHECKING, Optional
 
-from core.models import Course, Schedule
-from utils.schedule_metrics import SchedulerPrefs, score_schedule
+if TYPE_CHECKING:
+    from core.models import Course, Schedule
+    from utils.schedule_metrics import SchedulerPrefs
+
+# Runtime imports
+try:
+    from core.models import Course, Schedule
+except ImportError as e:
+    raise ImportError(f"Required module core.models not found: {e}")
+
+try:
+    from utils.schedule_metrics import SchedulerPrefs, score_schedule
+except ImportError as e:
+    raise ImportError(f"Required module utils.schedule_metrics not found: {e}")
+
 from . import register_scheduler
 from .base_scheduler import AlgorithmMetadata, BaseScheduler, PreparedSearch
 from .heuristics import estimate_conflict_penalty
@@ -47,17 +60,8 @@ class TabuSearchScheduler(BaseScheduler):
         self.max_iterations = max_iterations
         self.tabu_tenure = max(3, tabu_tenure)
 
-    def _run_algorithm(self, search: PreparedSearch) -> List[Schedule]:
-        initial_courses: List[Course] = []
-        for group_key in search.group_keys:
-            options = search.group_options.get(group_key, [])
-            for option in options:
-                if option is None:
-                    continue
-                tentative = initial_courses + option
-                if self._is_valid_partial_selection(tentative):
-                    initial_courses.extend(option)
-                    break
+    def _run_algorithm(self, search):
+        initial_courses = self._build_initial_solution(search)
 
         if not initial_courses:
             return []
@@ -69,40 +73,12 @@ class TabuSearchScheduler(BaseScheduler):
         best_schedule = current_schedule
         best_cost = self._cost(best_schedule)
 
-        tabu_list: List[Tuple[str, ...]] = []
+        tabu_list = []
 
         for _ in range(self.max_iterations):
-            best_candidate = None
-            best_candidate_cost = float("inf")
-
-            for group_key in search.group_keys:
-                options = search.group_options.get(group_key, [])
-                for option in options:
-                    if option is None:
-                        continue
-
-                    filtered = [
-                        course
-                        for course in current_schedule.courses
-                        if course.main_code != group_key
-                    ]
-                    tentative_courses = filtered + option
-
-                    if not self._is_valid_partial_selection(tentative_courses):
-                        self._last_run_stats["branches_pruned"] += 1
-                        continue
-
-                    tentative_schedule = Schedule(tentative_courses)
-                    signature = tuple(sorted(course.code for course in tentative_schedule.courses))
-                    if signature in tabu_list:
-                        continue
-
-                    cost = self._cost(tentative_schedule)
-                    self._last_run_stats["nodes_explored"] += 1
-
-                    if self._is_valid_final_schedule(tentative_schedule) and cost < best_candidate_cost:
-                        best_candidate = tentative_schedule
-                        best_candidate_cost = cost
+            best_candidate, best_candidate_cost = self._find_best_neighbor(
+                search, current_schedule, tabu_list
+            )
 
             if best_candidate is None:
                 break
@@ -119,10 +95,69 @@ class TabuSearchScheduler(BaseScheduler):
 
         return [best_schedule]
 
-    def _cost(self, schedule: Schedule) -> float:
-        if self.scheduler_prefs:
+    def _build_initial_solution(self, search):
+        """Build initial feasible solution greedily."""
+        initial_courses = []
+        for group_key in search.group_keys:
+            options = search.group_options.get(group_key, [])
+            for option in options:
+                if option is None:
+                    continue
+                tentative = initial_courses + option
+                if self._is_valid_partial_selection(tentative):
+                    initial_courses.extend(option)
+                    break
+        return initial_courses
+
+    def _find_best_neighbor(self, search, current_schedule, tabu_list):
+        """Find best neighbor not in tabu list."""
+        best_candidate = None
+        best_candidate_cost = float("inf")
+
+        for group_key in search.group_keys:
+            options = search.group_options.get(group_key, [])
+            for option in options:
+                if option is None:
+                    continue
+
+                candidate, cost = self._check_option(
+                    current_schedule, group_key, option, tabu_list
+                )
+
+                if candidate and cost < best_candidate_cost:
+                    best_candidate = candidate
+                    best_candidate_cost = cost
+
+        return best_candidate, best_candidate_cost
+
+    def _check_option(self, current_schedule, group_key, option, tabu_list):
+        """Check if an option is valid and return candidate schedule and cost."""
+        filtered = [
+            course
+            for course in current_schedule.courses
+            if course.main_code != group_key
+        ]
+        tentative_courses = filtered + option
+
+        if not self._is_valid_partial_selection(tentative_courses):
+            self._last_run_stats["branches_pruned"] += 1
+            return None, float("inf")
+
+        tentative_schedule = Schedule(tentative_courses)
+        signature = tuple(sorted(course.code for course in tentative_schedule.courses))
+        if signature in tabu_list:
+            return None, float("inf")
+
+        cost = self._cost(tentative_schedule)
+        self._last_run_stats["nodes_explored"] += 1
+
+        if self._is_valid_final_schedule(tentative_schedule):
+            return tentative_schedule, cost
+
+        return None, float("inf")
+
+    def _cost(self, schedule):
+        if self.scheduler_prefs and score_schedule:
             return -score_schedule(schedule, self.scheduler_prefs)
         return estimate_conflict_penalty(schedule)
-
-
 __all__ = ["TabuSearchScheduler"]

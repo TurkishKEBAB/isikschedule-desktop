@@ -1,0 +1,178 @@
+@startuml SchedularV3_GUI
+!theme plain
+skinparam componentBackgroundColor #F0F8FF
+skinparam componentBorderColor #0018A8
+skinparam packageBackgroundColor #E8F4F8
+
+title SchedularV3 - GUI Component Architecture
+
+package "Main Window" {
+    component [MainWindow] {
+        [QTabWidget]
+        [MenuBar]
+        [ToolBar]
+        [StatusBar]
+    }
+}
+
+package "Tabs" {
+    component [FileSettingsTab] {
+        [File Browser]
+        [Algorithm Selector Widget]
+        [Algorithm Parameters]
+        [Generate Button]
+        [Progress Bar]
+    }
+    
+    component [CourseBrowserTab] {
+        [Course Table View]
+        [Advanced Filters Panel]
+        [Quick Filters]
+        [Delete Actions]
+        [Course Counter]
+    }
+    
+    component [CourseSelectorTab] {
+        [Course Tree Widget]
+        [Tri-State Checkboxes]
+        [Selection Counter]
+        [State Indicators]
+    }
+    
+    component [ScheduleViewerTab] {
+        [Program List]
+        [Schedule Grid Widget]
+        [Course Details Panel]
+        [Export Buttons]
+    }
+    
+    component [AcademicTab] {
+        [Prerequisites Viewer]
+        [GPA Calculator]
+        [Graduation Planner]
+        [Transcript Import]
+    }
+}
+
+package "Custom Widgets" {
+    component [AlgorithmSelectorWidget] {
+        [Algorithm Dropdown]
+        [Parameters Panel]
+        [Metadata Display]
+    }
+    
+    component [ScheduleGridWidget] {
+        [Weekly Grid (M-F)]
+        [Period Labels (1-12)]
+        [Course Cells]
+        [Conflict Highlighting]
+        [Click Handlers]
+    }
+    
+    component [CourseCardWidget] {
+        [Course Info Display]
+        [Teacher Info]
+        [Schedule Display]
+        [Action Buttons]
+    }
+    
+    component [ProgressDialogWidget] {
+        [Progress Bar]
+        [Status Label]
+        [Cancel Button]
+    }
+    
+    component [GraduationPlannerWidget] {
+        [ECTS Progress Bar]
+        [GPA Progress Bar]
+        [Core Courses List]
+        [Timeline Display]
+        [Recommendations]
+    }
+}
+
+package "Dialogs" {
+    component [AlgorithmComparisonDialog] {
+        [Algorithm List]
+        [Benchmark Results]
+        [Comparison Chart]
+    }
+    
+    component [AddGradeDialog] {
+        [Course Selection]
+        [Grade Input]
+        [ECTS Input]
+        [Semester Input]
+    }
+    
+    component [TranscriptImportDialog] {
+        [File Browser]
+        [Preview Table]
+        [Import Button]
+        [Validation Messages]
+    }
+}
+
+' Relationships
+MainWindow *-- FileSettingsTab
+MainWindow *-- CourseBrowserTab
+MainWindow *-- CourseSelectorTab
+MainWindow *-- ScheduleViewerTab
+MainWindow *-- AcademicTab
+
+FileSettingsTab *-- AlgorithmSelectorWidget
+FileSettingsTab *-- ProgressDialogWidget
+
+ScheduleViewerTab *-- ScheduleGridWidget
+ScheduleViewerTab *-- CourseCardWidget
+
+AcademicTab *-- GraduationPlannerWidget
+
+CourseBrowserTab ..> AlgorithmComparisonDialog : opens
+AcademicTab ..> AddGradeDialog : opens
+AcademicTab ..> TranscriptImportDialog : opens
+
+' Signals
+FileSettingsTab --> MainWindow : file_selected
+FileSettingsTab --> MainWindow : algorithm_configured
+
+CourseBrowserTab --> CourseSelectorTab : course_selected
+CourseBrowserTab --> CourseSelectorTab : courses_updated
+
+CourseSelectorTab --> ScheduleViewerTab : selection_changed
+
+note right of MainWindow
+  PyQt6 QMainWindow
+  5 tabs + menubar + toolbar
+  Cross-tab signal communication
+end note
+
+note right of CourseBrowserTab
+  Advanced filtering:
+  - Faculty, Department, Campus
+  - Type, Teacher
+  - Search, Sort
+  
+  Features:
+  - Debouncing (300ms)
+  - Batch updates
+  - Smart group deletion
+end note
+
+note right of CourseSelectorTab
+  Tri-state checkboxes:
+  ✅ Mandatory (green)
+  ❌ Optional (orange)
+  ⬜ Excluded (gray)
+  
+  Real-time sync with Browser
+end note
+
+note right of ScheduleGridWidget
+  14 periods x 5 days
+  Color-coded courses
+  Conflict highlighting (RED)
+  Click for details
+end note
+
+@enduml

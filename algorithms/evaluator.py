@@ -3,15 +3,27 @@
 from __future__ import annotations
 
 from statistics import mean
-from typing import Dict, Iterable, List, Optional
+from typing import TYPE_CHECKING, Dict, Iterable, List, Optional
 
-from core.models import Schedule
-from utils.schedule_metrics import (
-    SchedulerPrefs,
-    analyze_schedule_efficiency,
-    compute_schedule_stats,
-    score_schedule,
-)
+if TYPE_CHECKING:
+    from core.models import Schedule
+    from utils.schedule_metrics import SchedulerPrefs
+
+# Runtime imports
+try:
+    from core.models import Schedule
+except ImportError as e:
+    raise ImportError(f"Required module core.models not found: {e}")
+
+try:
+    from utils.schedule_metrics import (
+        SchedulerPrefs,
+        analyze_schedule_efficiency,
+        compute_schedule_stats,
+        score_schedule,
+    )
+except ImportError as e:
+    raise ImportError(f"Required module utils.schedule_metrics not found: {e}")
 
 
 def evaluate_schedule(schedule: Schedule, prefs: Optional[SchedulerPrefs] = None) -> Dict[str, float]:
@@ -49,14 +61,14 @@ def summarize_schedules(
     evaluations = [evaluate_schedule(schedule, prefs) for schedule in schedules]
     scores = [item["score"] for item in evaluations]
     conflicts = [item["conflicts"] for item in evaluations]
-    credits = [item["credits"] for item in evaluations]
+    credit_values = [item["credits"] for item in evaluations]
 
     return {
         "total": len(schedules),
         "best_score": max(scores),
         "avg_score": mean(scores) if scores else 0.0,
         "avg_conflicts": mean(conflicts) if conflicts else 0.0,
-        "avg_credits": mean(credits) if credits else 0.0,
+        "avg_credits": mean(credit_values) if credit_values else 0.0,
     }
 
 
@@ -66,8 +78,8 @@ def compare_algorithm_outputs(
     """Compare multiple algorithms' outputs using the same metrics."""
 
     comparison: Dict[str, Dict[str, float]] = {}
-    for name, schedules in results.items():
-        comparison[name] = summarize_schedules(schedules, prefs)
+    for algo_name, schedules in results.items():
+        comparison[algo_name] = summarize_schedules(schedules, prefs)
     return comparison
 
 

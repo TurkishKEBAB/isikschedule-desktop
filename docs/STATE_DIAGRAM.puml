@@ -1,0 +1,75 @@
+@startuml SchedularV3_State_Diagram
+!theme plain
+skinparam stateBackgroundColor #F0F8FF
+skinparam stateBorderColor #0018A8
+
+title SchedularV3 - Application State Diagram
+
+[*] --> NotInitialized
+
+NotInitialized --> Initializing : Application Start
+Initializing --> Ready : Initialization Complete
+Initializing --> Error : Initialization Failed
+
+state Ready {
+    [*] --> NoFileLoaded
+    
+    NoFileLoaded --> FileLoading : User selects Excel file
+    FileLoading --> FileLoaded : Load successful
+    FileLoading --> NoFileLoaded : Load failed
+    
+    FileLoaded --> CourseSelecting : User switches to Selector tab
+    CourseSelecting --> CourseSelected : User marks courses
+    
+    CourseSelected --> AlgorithmConfiguring : User switches to File tab
+    AlgorithmConfiguring --> ReadyToGenerate : Configuration complete
+    
+    ReadyToGenerate --> Generating : User clicks Generate
+    Generating --> SchedulesGenerated : Generation successful
+    Generating --> GenerationFailed : Generation failed
+    Generating --> Generating : Cancel & Retry
+    
+    SchedulesGenerated --> ViewingSchedules : User switches to Viewer tab
+    ViewingSchedules --> Exporting : User clicks Export
+    Exporting --> ViewingSchedules : Export complete
+    
+    ViewingSchedules --> CourseSelecting : User modifies selection
+    CourseSelecting --> ReadyToGenerate : Re-configure
+}
+
+Ready --> Exiting : User closes application
+Exiting --> [*]
+
+Error --> [*] : Critical error
+
+note right of FileLoading
+  Actions:
+  - Read Excel file
+  - Parse courses
+  - Validate data
+  - Save to database
+  - Update UI
+end note
+
+note right of Generating
+  Actions:
+  - Prepare search space
+  - Run algorithm
+  - Validate results
+  - Sort by preferences
+  - Update progress bar
+  
+  Can be cancelled
+  by user
+end note
+
+note right of ViewingSchedules
+  Available actions:
+  - View schedule grid
+  - Check conflicts
+  - View course details
+  - Export to PDF/Excel/JPEG
+  - Compare schedules
+end note
+
+@enduml

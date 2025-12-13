@@ -1,0 +1,4090 @@
+{
+  "test_name": "SchedularV3_FullTest",
+  "start_time": "2025-12-04T16:38:21.277696",
+  "end_time": "2025-12-04T16:39:51.407806",
+  "duration_seconds": 90.13011,
+  "actions": [
+    {
+      "timestamp": "2025-12-04T16:38:23.926605",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0002_before_tab_switch_0_163823_474.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0003_after_tab_switch_0_163823_777.png",
+      "duration_ms": 452.1462917327881
+    },
+    {
+      "timestamp": "2025-12-04T16:38:24.980761",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0004_before_tab_switch_1_163824_453.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0005_after_tab_switch_1_163824_836.png",
+      "duration_ms": 527.0018577575684
+    },
+    {
+      "timestamp": "2025-12-04T16:38:26.282976",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0006_before_tab_switch_2_163825_715.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0007_after_tab_switch_2_163826_132.png",
+      "duration_ms": 567.7237510681152
+    },
+    {
+      "timestamp": "2025-12-04T16:38:27.326637",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0008_before_tab_switch_3_163826_813.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0009_after_tab_switch_3_163827_190.png",
+      "duration_ms": 513.0538940429688
+    },
+    {
+      "timestamp": "2025-12-04T16:38:28.453683",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0010_before_tab_switch_4_163827_859.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0011_after_tab_switch_4_163828_270.png",
+      "duration_ms": 594.611406326294
+    },
+    {
+      "timestamp": "2025-12-04T16:38:29.509857",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0012_before_tab_switch_0_163828_987.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0013_after_tab_switch_0_163829_334.png",
+      "duration_ms": 523.313045501709
+    },
+    {
+      "timestamp": "2025-12-04T16:38:30.196094",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0014_before_click_Load Sample Data_163830_016.png",
+      "screenshot_after": null,
+      "duration_ms": 179.97002601623535
+    },
+    {
+      "timestamp": "2025-12-04T16:38:30.360167",
+      "phase": "gui",
+      "action_type": "select",
+      "element": "algorithm_selector",
+      "value": "A*",
+      "expected": "A*",
+      "actual": "ComboBox not found",
+      "status": "FAILED",
+      "details": "ComboBox 'algorithm_selector' not found",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0015_before_select_algorithm_selector_163830_200.png",
+      "screenshot_after": null,
+      "duration_ms": 160.06970405578613
+    },
+    {
+      "timestamp": "2025-12-04T16:38:30.876519",
+      "phase": "gui",
+      "action_type": "select",
+      "element": "algorithm_selector",
+      "value": "Greedy",
+      "expected": "Greedy",
+      "actual": "ComboBox not found",
+      "status": "FAILED",
+      "details": "ComboBox 'algorithm_selector' not found",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0016_before_select_algorithm_selector_163830_666.png",
+      "screenshot_after": null,
+      "duration_ms": 210.22987365722656
+    },
+    {
+      "timestamp": "2025-12-04T16:38:31.382258",
+      "phase": "gui",
+      "action_type": "select",
+      "element": "algorithm_selector",
+      "value": "Backtracking",
+      "expected": "Backtracking",
+      "actual": "ComboBox not found",
+      "status": "FAILED",
+      "details": "ComboBox 'algorithm_selector' not found",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0017_before_select_algorithm_selector_163831_181.png",
+      "screenshot_after": null,
+      "duration_ms": 200.5295753479004
+    },
+    {
+      "timestamp": "2025-12-04T16:38:32.228654",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0018_before_tab_switch_1_163831_686.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0019_after_tab_switch_1_163832_048.png",
+      "duration_ms": 542.3438549041748
+    },
+    {
+      "timestamp": "2025-12-04T16:38:33.358892",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0020_before_tab_switch_2_163832_764.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0021_after_tab_switch_2_163833_163.png",
+      "duration_ms": 594.1817760467529
+    },
+    {
+      "timestamp": "2025-12-04T16:38:34.497547",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0022_before_tab_switch_3_163833_892.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0023_after_tab_switch_3_163834_302.png",
+      "duration_ms": 605.1926612854004
+    },
+    {
+      "timestamp": "2025-12-04T16:38:35.550832",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0024_before_tab_switch_4_163835_031.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0025_after_tab_switch_4_163835_384.png",
+      "duration_ms": 519.3228721618652
+    },
+    {
+      "timestamp": "2025-12-04T16:38:37.068865",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0026_before_tab_switch_4_163836_496.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0027_after_tab_switch_4_163836_935.png",
+      "duration_ms": 572.6804733276367
+    },
+    {
+      "timestamp": "2025-12-04T16:38:39.757047",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0028_before_tab_switch_0_163839_247.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0029_after_tab_switch_0_163839_600.png",
+      "duration_ms": 509.71221923828125
+    },
+    {
+      "timestamp": "2025-12-04T16:38:40.377358",
+      "phase": "gui",
+      "action_type": "select",
+      "element": "algorithm_selector",
+      "value": "A*",
+      "expected": "A*",
+      "actual": "ComboBox not found",
+      "status": "FAILED",
+      "details": "ComboBox 'algorithm_selector' not found",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0030_before_select_algorithm_selector_163840_262.png",
+      "screenshot_after": null,
+      "duration_ms": 114.3789291381836
+    },
+    {
+      "timestamp": "2025-12-04T16:38:40.921706",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0031_before_click_Run Scheduler_163840_705.png",
+      "screenshot_after": null,
+      "duration_ms": 216.08448028564453
+    },
+    {
+      "timestamp": "2025-12-04T16:38:41.137665",
+      "phase": "gui",
+      "action_type": "select",
+      "element": "algorithm_selector",
+      "value": "Greedy",
+      "expected": "Greedy",
+      "actual": "ComboBox not found",
+      "status": "FAILED",
+      "details": "ComboBox 'algorithm_selector' not found",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0032_before_select_algorithm_selector_163840_930.png",
+      "screenshot_after": null,
+      "duration_ms": 206.9551944732666
+    },
+    {
+      "timestamp": "2025-12-04T16:38:41.618702",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0033_before_click_Run Scheduler_163841_466.png",
+      "screenshot_after": null,
+      "duration_ms": 152.52971649169922
+    },
+    {
+      "timestamp": "2025-12-04T16:38:41.756656",
+      "phase": "gui",
+      "action_type": "select",
+      "element": "algorithm_selector",
+      "value": "Backtracking",
+      "expected": "Backtracking",
+      "actual": "ComboBox not found",
+      "status": "FAILED",
+      "details": "ComboBox 'algorithm_selector' not found",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0034_before_select_algorithm_selector_163841_622.png",
+      "screenshot_after": null,
+      "duration_ms": 133.7275505065918
+    },
+    {
+      "timestamp": "2025-12-04T16:38:42.242034",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0035_before_click_Run Scheduler_163842_086.png",
+      "screenshot_after": null,
+      "duration_ms": 155.97772598266602
+    },
+    {
+      "timestamp": "2025-12-04T16:38:42.409615",
+      "phase": "gui",
+      "action_type": "select",
+      "element": "algorithm_selector",
+      "value": "BFS",
+      "expected": "BFS",
+      "actual": "ComboBox not found",
+      "status": "FAILED",
+      "details": "ComboBox 'algorithm_selector' not found",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0036_before_select_algorithm_selector_163842_245.png",
+      "screenshot_after": null,
+      "duration_ms": 164.5803451538086
+    },
+    {
+      "timestamp": "2025-12-04T16:38:42.889478",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0037_before_click_Run Scheduler_163842_738.png",
+      "screenshot_after": null,
+      "duration_ms": 150.50005912780762
+    },
+    {
+      "timestamp": "2025-12-04T16:38:43.047480",
+      "phase": "gui",
+      "action_type": "select",
+      "element": "algorithm_selector",
+      "value": "DFS",
+      "expected": "DFS",
+      "actual": "ComboBox not found",
+      "status": "FAILED",
+      "details": "ComboBox 'algorithm_selector' not found",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0038_before_select_algorithm_selector_163842_893.png",
+      "screenshot_after": null,
+      "duration_ms": 153.99813652038574
+    },
+    {
+      "timestamp": "2025-12-04T16:38:43.537590",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0039_before_click_Run Scheduler_163843_373.png",
+      "screenshot_after": null,
+      "duration_ms": 164.0009880065918
+    },
+    {
+      "timestamp": "2025-12-04T16:38:44.038144",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0040_before_tab_switch_0_163843_553.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0041_after_tab_switch_0_163843_899.png",
+      "duration_ms": 484.91716384887695
+    },
+    {
+      "timestamp": "2025-12-04T16:38:44.695032",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0042_before_click_Load Sample Data_163844_541.png",
+      "screenshot_after": null,
+      "duration_ms": 153.1360149383545
+    },
+    {
+      "timestamp": "2025-12-04T16:38:45.191427",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0043_before_tab_switch_1_163844_698.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0044_after_tab_switch_1_163844_996.png",
+      "duration_ms": 493.36838722229004
+    },
+    {
+      "timestamp": "2025-12-04T16:38:46.315002",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0045_before_tab_switch_2_163845_720.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0046_after_tab_switch_2_163846_147.png",
+      "duration_ms": 594.6331024169922
+    },
+    {
+      "timestamp": "2025-12-04T16:38:47.475436",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0047_before_tab_switch_0_163846_854.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0048_after_tab_switch_0_163847_319.png",
+      "duration_ms": 621.0298538208008
+    },
+    {
+      "timestamp": "2025-12-04T16:38:48.145196",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0049_before_click_Run Scheduler_163847_979.png",
+      "screenshot_after": null,
+      "duration_ms": 165.28654098510742
+    },
+    {
+      "timestamp": "2025-12-04T16:38:48.740211",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0050_before_tab_switch_3_163848_148.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0051_after_tab_switch_3_163848_519.png",
+      "duration_ms": 592.0205116271973
+    },
+    {
+      "timestamp": "2025-12-04T16:38:51.119717",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0052_before_tab_switch_3_163850_636.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0053_after_tab_switch_3_163850_956.png",
+      "duration_ms": 483.1724166870117
+    },
+    {
+      "timestamp": "2025-12-04T16:38:52.365169",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0054_before_click_Run Scheduler_163852_210.png",
+      "screenshot_after": null,
+      "duration_ms": 155.16304969787598
+    },
+    {
+      "timestamp": "2025-12-04T16:38:52.835380",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0055_before_click_Export_163852_672.png",
+      "screenshot_after": null,
+      "duration_ms": 162.78576850891113
+    },
+    {
+      "timestamp": "2025-12-04T16:38:53.730972",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0056_before_tab_switch_1_163853_144.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0057_after_tab_switch_1_163853_525.png",
+      "duration_ms": 586.5166187286377
+    },
+    {
+      "timestamp": "2025-12-04T16:38:54.434265",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0058_before_tab_switch_2_163853_937.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0059_after_tab_switch_2_163854_285.png",
+      "duration_ms": 496.279239654541
+    },
+    {
+      "timestamp": "2025-12-04T16:38:54.849724",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0060_before_click_Export_163854_637.png",
+      "screenshot_after": null,
+      "duration_ms": 212.1119499206543
+    },
+    {
+      "timestamp": "2025-12-04T16:38:55.749023",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0061_before_tab_switch_2_163855_183.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0062_after_tab_switch_2_163855_581.png",
+      "duration_ms": 565.2759075164795
+    },
+    {
+      "timestamp": "2025-12-04T16:38:56.521177",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0063_before_tab_switch_4_163855_953.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0064_after_tab_switch_4_163856_344.png",
+      "duration_ms": 567.7692890167236
+    },
+    {
+      "timestamp": "2025-12-04T16:38:57.265355",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0065_before_tab_switch_2_163856_753.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0066_after_tab_switch_2_163857_116.png",
+      "duration_ms": 512.0537281036377
+    },
+    {
+      "timestamp": "2025-12-04T16:38:57.734870",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0067_before_click_Run Scheduler_163857_493.png",
+      "screenshot_after": null,
+      "duration_ms": 241.0440444946289
+    },
+    {
+      "timestamp": "2025-12-04T16:38:58.726783",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0068_before_tab_switch_3_163858_115.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0069_after_tab_switch_3_163858_540.png",
+      "duration_ms": 611.1505031585693
+    },
+    {
+      "timestamp": "2025-12-04T16:38:59.467835",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0070_before_tab_switch_4_163858_933.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0071_after_tab_switch_4_163859_297.png",
+      "duration_ms": 534.5630645751953
+    },
+    {
+      "timestamp": "2025-12-04T16:39:00.407435",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0072_before_tab_switch_4_163859_796.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0073_after_tab_switch_4_163900_229.png",
+      "duration_ms": 610.8334064483643
+    },
+    {
+      "timestamp": "2025-12-04T16:39:01.304425",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0074_before_tab_switch_3_163900_666.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0075_after_tab_switch_3_163901_102.png",
+      "duration_ms": 638.04030418396
+    },
+    {
+      "timestamp": "2025-12-04T16:39:02.149479",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0076_before_tab_switch_1_163901_562.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0077_after_tab_switch_1_163901_966.png",
+      "duration_ms": 586.4818096160889
+    },
+    {
+      "timestamp": "2025-12-04T16:39:02.611695",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0078_before_click_Run Scheduler_163902_437.png",
+      "screenshot_after": null,
+      "duration_ms": 174.54051971435547
+    },
+    {
+      "timestamp": "2025-12-04T16:39:03.499205",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0079_before_tab_switch_4_163902_915.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0080_after_tab_switch_4_163903_300.png",
+      "duration_ms": 583.3909511566162
+    },
+    {
+      "timestamp": "2025-12-04T16:39:03.887898",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0081_before_click_Run Scheduler_163903_707.png",
+      "screenshot_after": null,
+      "duration_ms": 180.53698539733887
+    },
+    {
+      "timestamp": "2025-12-04T16:39:04.708818",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0082_before_tab_switch_1_163904_193.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0083_after_tab_switch_1_163904_556.png",
+      "duration_ms": 515.7883167266846
+    },
+    {
+      "timestamp": "2025-12-04T16:39:05.159126",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0084_before_click_Load Sample Data_163904_940.png",
+      "screenshot_after": null,
+      "duration_ms": 218.56379508972168
+    },
+    {
+      "timestamp": "2025-12-04T16:39:05.993020",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0085_before_tab_switch_1_163905_465.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0086_after_tab_switch_1_163905_887.png",
+      "duration_ms": 527.778148651123
+    },
+    {
+      "timestamp": "2025-12-04T16:39:06.925011",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0087_before_tab_switch_0_163906_379.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0088_after_tab_switch_0_163906_760.png",
+      "duration_ms": 545.8011627197266
+    },
+    {
+      "timestamp": "2025-12-04T16:39:07.614020",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0089_before_tab_switch_4_163907_136.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0090_after_tab_switch_4_163907_509.png",
+      "duration_ms": 477.4630069732666
+    },
+    {
+      "timestamp": "2025-12-04T16:39:07.985935",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0091_before_click_Export_163907_819.png",
+      "screenshot_after": null,
+      "duration_ms": 166.81408882141113
+    },
+    {
+      "timestamp": "2025-12-04T16:39:08.460338",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0092_before_click_Load Sample Data_163908_315.png",
+      "screenshot_after": null,
+      "duration_ms": 144.52409744262695
+    },
+    {
+      "timestamp": "2025-12-04T16:39:08.976121",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0093_before_click_Run Scheduler_163908_764.png",
+      "screenshot_after": null,
+      "duration_ms": 211.96770668029785
+    },
+    {
+      "timestamp": "2025-12-04T16:39:10.052574",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0094_before_tab_switch_3_163909_497.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0095_after_tab_switch_3_163909_882.png",
+      "duration_ms": 555.5245876312256
+    },
+    {
+      "timestamp": "2025-12-04T16:39:10.432292",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0096_before_click_Export_163910_258.png",
+      "screenshot_after": null,
+      "duration_ms": 174.2379665374756
+    },
+    {
+      "timestamp": "2025-12-04T16:39:10.868149",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0097_before_click_Export_163910_737.png",
+      "screenshot_after": null,
+      "duration_ms": 130.8431625366211
+    },
+    {
+      "timestamp": "2025-12-04T16:39:11.338787",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0098_before_click_Load Sample Data_163911_172.png",
+      "screenshot_after": null,
+      "duration_ms": 165.8957004547119
+    },
+    {
+      "timestamp": "2025-12-04T16:39:11.936580",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0099_before_click_Export_163911_721.png",
+      "screenshot_after": null,
+      "duration_ms": 215.23094177246094
+    },
+    {
+      "timestamp": "2025-12-04T16:39:12.396570",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0100_before_click_Export_163912_241.png",
+      "screenshot_after": null,
+      "duration_ms": 155.50541877746582
+    },
+    {
+      "timestamp": "2025-12-04T16:39:12.854322",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0101_before_click_Run Scheduler_163912_702.png",
+      "screenshot_after": null,
+      "duration_ms": 151.6284942626953
+    },
+    {
+      "timestamp": "2025-12-04T16:39:13.318436",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0102_before_click_Export_163913_157.png",
+      "screenshot_after": null,
+      "duration_ms": 160.91609001159668
+    },
+    {
+      "timestamp": "2025-12-04T16:39:14.226268",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0103_before_tab_switch_0_163913_622.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0104_after_tab_switch_0_163914_038.png",
+      "duration_ms": 603.7616729736328
+    },
+    {
+      "timestamp": "2025-12-04T16:39:15.014240",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0105_before_tab_switch_1_163914_483.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0106_after_tab_switch_1_163914_877.png",
+      "duration_ms": 530.3905010223389
+    },
+    {
+      "timestamp": "2025-12-04T16:39:15.390183",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0107_before_click_Export_163915_242.png",
+      "screenshot_after": null,
+      "duration_ms": 147.45521545410156
+    },
+    {
+      "timestamp": "2025-12-04T16:39:15.927541",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0108_before_click_Load Sample Data_163915_722.png",
+      "screenshot_after": null,
+      "duration_ms": 204.9100399017334
+    },
+    {
+      "timestamp": "2025-12-04T16:39:16.755860",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0109_before_tab_switch_0_163916_233.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0110_after_tab_switch_0_163916_614.png",
+      "duration_ms": 522.7372646331787
+    },
+    {
+      "timestamp": "2025-12-04T16:39:17.531552",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0111_before_tab_switch_3_163916_959.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0112_after_tab_switch_3_163917_359.png",
+      "duration_ms": 572.2732543945312
+    },
+    {
+      "timestamp": "2025-12-04T16:39:18.285409",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0113_before_tab_switch_0_163917_790.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0114_after_tab_switch_0_163918_137.png",
+      "duration_ms": 494.89784240722656
+    },
+    {
+      "timestamp": "2025-12-04T16:39:19.034680",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0115_before_tab_switch_0_163918_489.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0116_after_tab_switch_0_163918_882.png",
+      "duration_ms": 545.2945232391357
+    },
+    {
+      "timestamp": "2025-12-04T16:39:19.821249",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0117_before_tab_switch_1_163919_238.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0118_after_tab_switch_1_163919_629.png",
+      "duration_ms": 582.8323364257812
+    },
+    {
+      "timestamp": "2025-12-04T16:39:20.196445",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0119_before_click_Load Sample Data_163920_027.png",
+      "screenshot_after": null,
+      "duration_ms": 169.17037963867188
+    },
+    {
+      "timestamp": "2025-12-04T16:39:20.785669",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0120_before_click_Run Scheduler_163920_637.png",
+      "screenshot_after": null,
+      "duration_ms": 147.91131019592285
+    },
+    {
+      "timestamp": "2025-12-04T16:39:21.356278",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0121_before_click_Load Sample Data_163921_117.png",
+      "screenshot_after": null,
+      "duration_ms": 238.60549926757812
+    },
+    {
+      "timestamp": "2025-12-04T16:39:23.380367",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0122_before_tab_switch_4_163922_879.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0123_after_tab_switch_4_163923_259.png",
+      "duration_ms": 500.4262924194336
+    },
+    {
+      "timestamp": "2025-12-04T16:39:23.729731",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0124_before_click_Export_163923_610.png",
+      "screenshot_after": null,
+      "duration_ms": 119.56787109375
+    },
+    {
+      "timestamp": "2025-12-04T16:39:24.143949",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0125_before_click_Run Scheduler_163924_042.png",
+      "screenshot_after": null,
+      "duration_ms": 101.00221633911133
+    },
+    {
+      "timestamp": "2025-12-04T16:39:25.062164",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0126_before_tab_switch_3_163924_471.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0127_after_tab_switch_3_163924_867.png",
+      "duration_ms": 591.1040306091309
+    },
+    {
+      "timestamp": "2025-12-04T16:39:25.819643",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0128_before_tab_switch_2_163925_267.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0129_after_tab_switch_2_163925_647.png",
+      "duration_ms": 552.4845123291016
+    },
+    {
+      "timestamp": "2025-12-04T16:39:26.549842",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0130_before_tab_switch_3_163926_051.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0131_after_tab_switch_3_163926_394.png",
+      "duration_ms": 498.4257221221924
+    },
+    {
+      "timestamp": "2025-12-04T16:39:27.289551",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0132_before_tab_switch_2_163926_755.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0133_after_tab_switch_2_163927_145.png",
+      "duration_ms": 534.2302322387695
+    },
+    {
+      "timestamp": "2025-12-04T16:39:27.687243",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0134_before_click_Load Sample Data_163927_516.png",
+      "screenshot_after": null,
+      "duration_ms": 170.53699493408203
+    },
+    {
+      "timestamp": "2025-12-04T16:39:28.190288",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0135_before_click_Export_163927_991.png",
+      "screenshot_after": null,
+      "duration_ms": 198.77886772155762
+    },
+    {
+      "timestamp": "2025-12-04T16:39:28.701702",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0136_before_click_Run Scheduler_163928_495.png",
+      "screenshot_after": null,
+      "duration_ms": 205.70969581604004
+    },
+    {
+      "timestamp": "2025-12-04T16:39:29.215788",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0137_before_click_Load Sample Data_163929_033.png",
+      "screenshot_after": null,
+      "duration_ms": 182.32035636901855
+    },
+    {
+      "timestamp": "2025-12-04T16:39:29.699413",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0138_before_click_Load Sample Data_163929_523.png",
+      "screenshot_after": null,
+      "duration_ms": 176.10549926757812
+    },
+    {
+      "timestamp": "2025-12-04T16:39:30.346655",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0139_before_click_Load Sample Data_163930_101.png",
+      "screenshot_after": null,
+      "duration_ms": 245.43309211730957
+    },
+    {
+      "timestamp": "2025-12-04T16:39:31.191796",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0140_before_tab_switch_3_163930_653.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0141_after_tab_switch_3_163931_042.png",
+      "duration_ms": 537.8141403198242
+    },
+    {
+      "timestamp": "2025-12-04T16:39:31.546383",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0142_before_click_Run Scheduler_163931_395.png",
+      "screenshot_after": null,
+      "duration_ms": 151.02458000183105
+    },
+    {
+      "timestamp": "2025-12-04T16:39:32.010005",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0143_before_click_Run Scheduler_163931_850.png",
+      "screenshot_after": null,
+      "duration_ms": 159.6996784210205
+    },
+    {
+      "timestamp": "2025-12-04T16:39:32.497120",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0144_before_click_Run Scheduler_163932_316.png",
+      "screenshot_after": null,
+      "duration_ms": 180.56297302246094
+    },
+    {
+      "timestamp": "2025-12-04T16:39:32.995631",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0145_before_click_Export_163932_802.png",
+      "screenshot_after": null,
+      "duration_ms": 193.15338134765625
+    },
+    {
+      "timestamp": "2025-12-04T16:39:33.862020",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0146_before_tab_switch_1_163933_301.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0147_after_tab_switch_1_163933_666.png",
+      "duration_ms": 560.6250762939453
+    },
+    {
+      "timestamp": "2025-12-04T16:39:34.279126",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0148_before_click_Load Sample Data_163934_094.png",
+      "screenshot_after": null,
+      "duration_ms": 184.99755859375
+    },
+    {
+      "timestamp": "2025-12-04T16:39:34.855726",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0149_before_click_Run Scheduler_163934_644.png",
+      "screenshot_after": null,
+      "duration_ms": 210.79587936401367
+    },
+    {
+      "timestamp": "2025-12-04T16:39:35.781118",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0150_before_tab_switch_0_163935_163.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0151_after_tab_switch_0_163935_546.png",
+      "duration_ms": 617.537260055542
+    },
+    {
+      "timestamp": "2025-12-04T16:39:36.633179",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_0",
+      "value": "0",
+      "expected": "Switch to tab 0",
+      "actual": "Switched to tab 0: 📁 File & Settings",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📁 File & Settings'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0152_before_tab_switch_0_163936_017.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0153_after_tab_switch_0_163936_425.png",
+      "duration_ms": 615.3900623321533
+    },
+    {
+      "timestamp": "2025-12-04T16:39:37.160783",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0154_before_click_Run Scheduler_163936_998.png",
+      "screenshot_after": null,
+      "duration_ms": 162.2328758239746
+    },
+    {
+      "timestamp": "2025-12-04T16:39:37.635721",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0155_before_click_Run Scheduler_163937_472.png",
+      "screenshot_after": null,
+      "duration_ms": 163.27619552612305
+    },
+    {
+      "timestamp": "2025-12-04T16:39:38.073597",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0156_before_click_Load Sample Data_163937_942.png",
+      "screenshot_after": null,
+      "duration_ms": 130.91659545898438
+    },
+    {
+      "timestamp": "2025-12-04T16:39:38.924762",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0157_before_tab_switch_2_163938_446.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0158_after_tab_switch_2_163938_768.png",
+      "duration_ms": 478.41835021972656
+    },
+    {
+      "timestamp": "2025-12-04T16:39:39.654813",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0159_before_tab_switch_2_163939_131.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0160_after_tab_switch_2_163939_512.png",
+      "duration_ms": 523.3306884765625
+    },
+    {
+      "timestamp": "2025-12-04T16:39:40.035334",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0161_before_click_Run Scheduler_163939_858.png",
+      "screenshot_after": null,
+      "duration_ms": 176.94687843322754
+    },
+    {
+      "timestamp": "2025-12-04T16:39:40.893049",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0162_before_tab_switch_2_163940_409.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0163_after_tab_switch_2_163940_744.png",
+      "duration_ms": 483.3025932312012
+    },
+    {
+      "timestamp": "2025-12-04T16:39:41.248884",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0164_before_click_Run Scheduler_163941_096.png",
+      "screenshot_after": null,
+      "duration_ms": 151.93438529968262
+    },
+    {
+      "timestamp": "2025-12-04T16:39:42.119366",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0165_before_tab_switch_4_163941_552.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0166_after_tab_switch_4_163941_932.png",
+      "duration_ms": 567.0077800750732
+    },
+    {
+      "timestamp": "2025-12-04T16:39:42.944918",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0167_before_tab_switch_4_163942_390.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0168_after_tab_switch_4_163942_750.png",
+      "duration_ms": 554.1398525238037
+    },
+    {
+      "timestamp": "2025-12-04T16:39:43.743267",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0169_before_tab_switch_1_163943_182.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0170_after_tab_switch_1_163943_556.png",
+      "duration_ms": 560.7118606567383
+    },
+    {
+      "timestamp": "2025-12-04T16:39:44.125488",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0171_before_click_Export_163943_947.png",
+      "screenshot_after": null,
+      "duration_ms": 178.21788787841797
+    },
+    {
+      "timestamp": "2025-12-04T16:39:44.613748",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0172_before_click_Export_163944_431.png",
+      "screenshot_after": null,
+      "duration_ms": 182.37614631652832
+    },
+    {
+      "timestamp": "2025-12-04T16:39:45.102725",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0173_before_click_Load Sample Data_163944_946.png",
+      "screenshot_after": null,
+      "duration_ms": 156.0688018798828
+    },
+    {
+      "timestamp": "2025-12-04T16:39:45.564075",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Load Sample Data",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Load Sample Data' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0174_before_click_Load Sample Data_163945_407.png",
+      "screenshot_after": null,
+      "duration_ms": 156.7976474761963
+    },
+    {
+      "timestamp": "2025-12-04T16:39:46.500850",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0175_before_tab_switch_3_163945_896.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0176_after_tab_switch_3_163946_310.png",
+      "duration_ms": 604.4752597808838
+    },
+    {
+      "timestamp": "2025-12-04T16:39:46.888450",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0177_before_click_Export_163946_707.png",
+      "screenshot_after": null,
+      "duration_ms": 181.4272403717041
+    },
+    {
+      "timestamp": "2025-12-04T16:39:47.402908",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Export",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Export' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0178_before_click_Export_163947_192.png",
+      "screenshot_after": null,
+      "duration_ms": 210.61348915100098
+    },
+    {
+      "timestamp": "2025-12-04T16:39:48.291404",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_1",
+      "value": "1",
+      "expected": "Switch to tab 1",
+      "actual": "Switched to tab 1: 📚 Course Browser",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📚 Course Browser'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0179_before_tab_switch_1_163947_710.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0180_after_tab_switch_1_163948_102.png",
+      "duration_ms": 580.9586048126221
+    },
+    {
+      "timestamp": "2025-12-04T16:39:48.695650",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "Run Scheduler",
+      "value": null,
+      "expected": "Button clicked",
+      "actual": "Button not found",
+      "status": "FAILED",
+      "details": "Button 'Run Scheduler' not found in GUI",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0181_before_click_Run Scheduler_163948_494.png",
+      "screenshot_after": null,
+      "duration_ms": 200.8194923400879
+    },
+    {
+      "timestamp": "2025-12-04T16:39:49.563245",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_3",
+      "value": "3",
+      "expected": "Switch to tab 3",
+      "actual": "Switched to tab 3: 📊 Schedule Viewer",
+      "status": "SUCCESS",
+      "details": "Tab switched to '📊 Schedule Viewer'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0182_before_tab_switch_3_163949_001.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0183_after_tab_switch_3_163949_406.png",
+      "duration_ms": 561.9595050811768
+    },
+    {
+      "timestamp": "2025-12-04T16:39:50.314850",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_4",
+      "value": "4",
+      "expected": "Switch to tab 4",
+      "actual": "Switched to tab 4: 🎓 Academic",
+      "status": "SUCCESS",
+      "details": "Tab switched to '🎓 Academic'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0184_before_tab_switch_4_163949_768.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0185_after_tab_switch_4_163950_162.png",
+      "duration_ms": 546.5874671936035
+    },
+    {
+      "timestamp": "2025-12-04T16:39:51.074639",
+      "phase": "gui",
+      "action_type": "click",
+      "element": "tab_2",
+      "value": "2",
+      "expected": "Switch to tab 2",
+      "actual": "Switched to tab 2: ✅ Course Selector",
+      "status": "SUCCESS",
+      "details": "Tab switched to '✅ Course Selector'",
+      "screenshot_before": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0186_before_tab_switch_2_163950_520.png",
+      "screenshot_after": "C:\\Users\\PC\\Downloads\\SchedularDeprecatedV1\\SchedularV3\\tests\\logs\\screenshots\\0187_after_tab_switch_2_163950_905.png",
+      "duration_ms": 554.3417930603027
+    }
+  ],
+  "snapshots": [
+    {
+      "timestamp": "2025-12-04T16:38:23.462458",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:24.437755",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:25.492942",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:26.797579",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:27.839529",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:28.967371",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:32.744145",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:33.872731",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:35.012686",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:36.063649",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:37.595859",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:37.625896",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:37.952847",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:38.278530",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:38.601011",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:38.923776",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:40.687617",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:41.451337",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:42.069014",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:42.722985",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:43.360592",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:45.702367",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:46.830405",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:49.251511",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:49.279032",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:49.606105",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:49.934843",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:50.264679",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:50.600936",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:50.622550",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:52.136815",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:52.185796",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:55.166536",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:56.735296",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:57.475820",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:58.054551",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:58.091633",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:59.681120",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:59.714698",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:59.744126",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:38:59.776122",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:00.620378",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:00.647375",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:01.520531",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:01.546540",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:02.363817",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:02.393325",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:02.420076",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:04.920933",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:06.203985",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:06.317834",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:08.298808",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:09.290984",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:09.312984",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:09.337055",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:09.362056",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:09.386049",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:09.409049",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:09.433055",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:09.460058",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:09.482049",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:11.651345",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:11.677888",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:11.701349",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:14.439845",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:14.466848",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:15.225727",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:15.702626",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:17.744506",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:17.770516",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:20.516102",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:20.596212",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:21.104093",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:22.726614",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:24.455966",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:26.033424",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:27.499698",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:29.016373",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:30.010391",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:30.046404",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:30.082209",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:34.076129",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:34.594280",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:34.625208",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:35.998534",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:36.902000",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:38.385348",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:38.406881",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:38.430345",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:40.349748",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:40.371742",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:40.393742",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:42.328912",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:42.353772",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:42.375772",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:43.158555",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:44.926649",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    },
+    {
+      "timestamp": "2025-12-04T16:39:45.876534",
+      "gpa": 0.0,
+      "selected_credits": 0,
+      "max_credits_internal": 31,
+      "max_credits_ui": 0,
+      "selected_courses": [],
+      "total_ects": 0,
+      "conflicts": 0,
+      "free_days": 0,
+      "preferences": {
+        "max_conflicts": 0,
+        "desired_free_days": [],
+        "prefer_morning": false,
+        "prefer_afternoon": false
+      },
+      "inconsistencies": [
+        "CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+        "WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31"
+      ]
+    }
+  ],
+  "issues": [
+    "[2025-12-04T16:38:23.462458] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:23.462458] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:24.437755] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:24.437755] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:25.492942] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:25.492942] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:26.797579] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:26.797579] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:27.839529] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:27.839529] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:28.967371] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:28.967371] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:30.196094] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:38:30.360167] ComboBox 'algorithm_selector' not found",
+    "[2025-12-04T16:38:30.876519] ComboBox 'algorithm_selector' not found",
+    "[2025-12-04T16:38:31.382258] ComboBox 'algorithm_selector' not found",
+    "[2025-12-04T16:38:32.744145] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:32.744145] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:33.872731] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:33.872731] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:35.012686] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:35.012686] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:36.063649] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:36.063649] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:37.595859] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:37.595859] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:37.625896] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:37.625896] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:37.952847] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:37.952847] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:38.278530] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:38.278530] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:38.601011] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:38.601011] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:38.923776] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:38.923776] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:40.377358] ComboBox 'algorithm_selector' not found",
+    "[2025-12-04T16:38:40.687617] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:40.687617] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:40.921706] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:38:41.137665] ComboBox 'algorithm_selector' not found",
+    "[2025-12-04T16:38:41.451337] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:41.451337] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:41.618702] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:38:41.756656] ComboBox 'algorithm_selector' not found",
+    "[2025-12-04T16:38:42.069014] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:42.069014] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:42.242034] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:38:42.409615] ComboBox 'algorithm_selector' not found",
+    "[2025-12-04T16:38:42.722985] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:42.722985] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:42.889478] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:38:43.047480] ComboBox 'algorithm_selector' not found",
+    "[2025-12-04T16:38:43.360592] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:43.360592] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:43.537590] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:38:44.695032] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:38:45.702367] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:45.702367] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:46.830405] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:46.830405] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:48.145196] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:38:49.251511] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:49.251511] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:49.279032] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:49.279032] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:49.606105] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:49.606105] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:49.934843] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:49.934843] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:50.264679] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:50.264679] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:50.600936] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:50.600936] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:50.622550] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:50.622550] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:52.136815] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:52.136815] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:52.185796] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:52.185796] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:52.365169] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:38:52.835380] Button 'Export' not found in GUI",
+    "[2025-12-04T16:38:54.849724] Button 'Export' not found in GUI",
+    "[2025-12-04T16:38:55.166536] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:55.166536] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:56.735296] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:56.735296] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:57.475820] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:57.475820] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:57.734870] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:38:58.054551] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:58.054551] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:58.091633] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:58.091633] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:59.681120] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:59.681120] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:59.714698] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:59.714698] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:59.744126] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:59.744126] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:38:59.776122] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:38:59.776122] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:00.620378] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:00.620378] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:00.647375] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:00.647375] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:01.520531] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:01.520531] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:01.546540] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:01.546540] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:02.363817] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:02.363817] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:02.393325] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:02.393325] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:02.420076] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:02.420076] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:02.611695] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:03.887898] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:04.920933] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:04.920933] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:05.159126] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:06.203985] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:06.203985] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:06.317834] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:06.317834] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:07.985935] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:08.298808] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:08.298808] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:08.460338] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:08.976121] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:09.290984] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:09.290984] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:09.312984] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:09.312984] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:09.337055] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:09.337055] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:09.362056] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:09.362056] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:09.386049] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:09.386049] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:09.409049] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:09.409049] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:09.433055] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:09.433055] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:09.460058] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:09.460058] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:09.482049] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:09.482049] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:10.432292] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:10.868149] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:11.338787] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:11.651345] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:11.651345] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:11.677888] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:11.677888] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:11.701349] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:11.701349] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:11.936580] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:12.396570] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:12.854322] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:13.318436] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:14.439845] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:14.439845] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:14.466848] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:14.466848] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:15.225727] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:15.225727] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:15.390183] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:15.702626] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:15.702626] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:15.927541] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:17.744506] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:17.744506] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:17.770516] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:17.770516] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:20.196445] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:20.516102] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:20.516102] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:20.596212] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:20.596212] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:20.785669] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:21.104093] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:21.104093] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:21.356278] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:22.726614] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:22.726614] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:23.729731] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:24.143949] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:24.455966] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:24.455966] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:26.033424] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:26.033424] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:27.499698] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:27.499698] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:27.687243] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:28.190288] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:28.701702] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:29.016373] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:29.016373] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:29.215788] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:29.699413] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:30.010391] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:30.010391] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:30.046404] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:30.046404] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:30.082209] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:30.082209] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:30.346655] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:31.546383] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:32.010005] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:32.497120] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:32.995631] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:34.076129] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:34.076129] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:34.279126] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:34.594280] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:34.594280] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:34.625208] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:34.625208] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:34.855726] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:35.998534] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:35.998534] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:36.902000] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:36.902000] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:37.160783] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:37.635721] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:38.073597] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:38.385348] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:38.385348] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:38.406881] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:38.406881] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:38.430345] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:38.430345] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:40.035334] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:40.349748] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:40.349748] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:40.371742] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:40.371742] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:40.393742] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:40.393742] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:41.248884] Button 'Run Scheduler' not found in GUI",
+    "[2025-12-04T16:39:42.328912] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:42.328912] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:42.353772] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:42.353772] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:42.375772] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:42.375772] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:43.158555] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:43.158555] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:44.125488] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:44.613748] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:44.926649] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:44.926649] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:45.102725] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:45.564075] Button 'Load Sample Data' not found in GUI",
+    "[2025-12-04T16:39:45.876534] CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0",
+    "[2025-12-04T16:39:45.876534] WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31",
+    "[2025-12-04T16:39:46.888450] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:47.402908] Button 'Export' not found in GUI",
+    "[2025-12-04T16:39:48.695650] Button 'Run Scheduler' not found in GUI"
+  ],
+  "summary": {
+    "total_actions": 125,
+    "success": 61,
+    "failed": 64,
+    "warnings": 0,
+    "success_rate": "48.80%",
+    "total_snapshots": 98,
+    "total_issues": 260,
+    "duration": "0:01:30.131123"
+  }
+}

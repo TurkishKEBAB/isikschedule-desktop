@@ -53,11 +53,24 @@ class Course:
     campus: str = "Main"
     prerequisites: List[str] = field(default_factory=list)
     corequisites: List[str] = field(default_factory=list)
-    campus: str = "Main"
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'Course':
         """Create a Course object from a dictionary."""
+        # #region agent log
+        import json; from pathlib import Path; log_path = Path(__file__).parent.parent.parent / ".cursor" / "debug.log"; log_data = {"location": "models.py:58", "message": "from_dict called", "data": {"has_code": "code" in data, "has_main_code": "main_code" in data, "has_schedule": "schedule" in data}, "timestamp": int(__import__("time").time() * 1000), "sessionId": "debug-session", "runId": "run1", "hypothesisId": "B"}; open(log_path, "a", encoding="utf-8").write(json.dumps(log_data) + "\n")
+        # #endregion
+        # Validate required fields
+        if "code" not in data:
+            raise ValueError("Missing required field 'code' in Course data")
+        if "main_code" not in data:
+            raise ValueError("Missing required field 'main_code' in Course data")
+        if "schedule" not in data:
+            raise ValueError("Missing required field 'schedule' in Course data")
+        
+        # #region agent log
+        import json; from pathlib import Path; log_path = Path(__file__).parent.parent.parent / ".cursor" / "debug.log"; log_data = {"location": "models.py:70", "message": "Creating Course instance", "data": {"code": data.get("code", "N/A"), "main_code": data.get("main_code", "N/A")}, "timestamp": int(__import__("time").time() * 1000), "sessionId": "debug-session", "runId": "run1", "hypothesisId": "B"}; open(log_path, "a", encoding="utf-8").write(json.dumps(log_data) + "\n")
+        # #endregion
         return cls(
             code=data["code"],
             main_code=data["main_code"],
@@ -65,7 +78,7 @@ class Course:
             ects=data.get("credit", data.get("ects", data.get("ECTS", 0))),
             course_type=data.get("course_type", data.get("type", "lecture")),
             schedule=data["schedule"],
-            teacher=data["teacher"],
+            teacher=data.get("teacher"),  # Changed to .get() since it's optional
             has_lecture=data.get("has_lecture", data.get("hasLecture", False)),
             faculty=data.get("faculty", "Unknown Faculty"),
             department=data.get("department", "Unknown Department"),
@@ -234,6 +247,40 @@ class Schedule:
         """Create a Schedule from a list of course dictionaries."""
         return cls([Course.from_dict(course_dict) for course_dict in dict_list])
 
+    def get_conflict_slots(self) -> Set[TimeSlot]:
+        """
+        Get all time slots that have conflicts.
+        
+        Returns:
+            Set of time slots (day, period) tuples that have conflicts
+        """
+        slot_courses: Dict[TimeSlot, List[Course]] = defaultdict(list)
+        conflict_slots = set()
+
+        # Map each time slot to courses occupying it
+        for course in self.courses:
+            for slot in course.schedule:
+                slot_courses[slot].append(course)
+                # If multiple courses in same slot, it's a conflict
+                if len(slot_courses[slot]) > 1:
+                    conflict_slots.add(slot)
+
+        return conflict_slots
+
+    def get_statistics(self) -> Dict[str, Any]:
+        """
+        Get statistics about this schedule.
+        
+        Returns:
+            Dictionary with schedule statistics
+        """
+        return {
+            "total_courses": len(self.courses),
+            "total_credits": self.total_credits,
+            "conflict_count": self.conflict_count,
+            "has_conflicts": self.has_conflicts
+        }
+
     def __len__(self) -> int:
         return len(self.courses)
 
@@ -283,6 +330,13 @@ class CourseGroup:
         """Check if this group has any lab courses."""
         return len(self.lab_courses) > 0
 
+    @property
+    def name(self) -> str:
+        """Get the course name from the first course in the group."""
+        if self.courses:
+            return self.courses[0].name
+        return "Unknown Course"
+
     def __str__(self) -> str:
         return f"CourseGroup({self.main_code}, {len(self.courses)} sections)"
 
@@ -314,6 +368,10 @@ class Program:
         )
         return sorted_schedules[0]
 
+    def get_best_schedule(self) -> Optional[Schedule]:
+        """Get the best schedule (least conflicts, highest credits)."""
+        return self.best_schedule
+
     @property
     def conflict_free_schedules(self) -> List[Schedule]:
         """Get all schedules without conflicts."""
@@ -325,14 +383,19 @@ class Program:
 
     def get_statistics(self) -> Dict[str, Any]:
         """Get program statistics."""
+        stats = {
+            "name": self.name,
+            "total_schedules": len(self.schedules),
+            "metadata": self.metadata
+        }
+        
         if not self.schedules:
-            return {"total_schedules": 0}
+            return stats
 
         total_credits = [s.total_credits for s in self.schedules]
         conflict_counts = [s.conflict_count for s in self.schedules]
 
-        return {
-            "total_schedules": len(self.schedules),
+        stats.update({
             "conflict_free_schedules": len(self.conflict_free_schedules),
             "min_credits": min(total_credits),
             "max_credits": max(total_credits),
@@ -340,7 +403,9 @@ class Program:
             "min_conflicts": min(conflict_counts),
             "max_conflicts": max(conflict_counts),
             "avg_conflicts": sum(conflict_counts) / len(conflict_counts)
-        }
+        })
+        
+        return stats
 
     def __str__(self) -> str:
         return f"Program({self.name}, {len(self.schedules)} schedules)"

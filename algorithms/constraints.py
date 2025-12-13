@@ -4,8 +4,18 @@ Constraint generation and handling for the course scheduler.
 This module provides functionality for generating and managing course constraints,
 such as mandatory PS/lab sections and dependencies between course sections.
 """
-from typing import Dict, List, Set, Optional, Any
-from core.models import Course, CourseGroup
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Dict, List, Set, Any
+
+if TYPE_CHECKING:
+    from core.models import Course, CourseGroup
+
+# Runtime imports
+try:
+    from core.models import Course, CourseGroup
+except ImportError as e:
+    raise ImportError(f"Required module core.models not found: {e}")
 
 
 class ConstraintUtils:
@@ -60,34 +70,56 @@ class ConstraintUtils:
 
         valid_selections = []
         for lec in lectures:
-            base_selection = [lec]
-
-            # Get constraint for this main code
-            constraint = constraints.get(lec.main_code, {"must_ps": False, "must_lab": False})
-            must_ps = constraint.get("must_ps", False)
-            must_lab = constraint.get("must_lab", False)
-
-            # Determine options based on constraints
-            ps_options = ps_sections if must_ps else [None] + ps_sections
-            lab_options = lab_sections if must_lab else [None] + lab_sections
-
-            # Skip if constraints cannot be satisfied
-            if must_ps and not ps_sections:
-                continue
-            if must_lab and not lab_sections:
-                continue
-
-            # Generate all valid combinations
-            for ps in ps_options:
-                for lab in lab_options:
-                    sel = base_selection.copy()
-                    if ps is not None:
-                        sel.append(ps)
-                    if lab is not None:
-                        sel.append(lab)
-                    valid_selections.append(sel)
+            selections = ConstraintUtils._generate_selections_for_lecture(
+                lec, ps_sections, lab_sections, constraints
+            )
+            valid_selections.extend(selections)
 
         return valid_selections
+
+    @staticmethod
+    def _generate_selections_for_lecture(
+            lecture: Course,
+            ps_sections: List[Course],
+            lab_sections: List[Course],
+            constraints: Dict[str, Dict[str, bool]]
+    ) -> List[List[Course]]:
+        """Generate valid selections for a single lecture."""
+        base_selection = [lecture]
+
+        # Get constraint for this main code
+        constraint = constraints.get(lecture.main_code, {"must_ps": False, "must_lab": False})
+        must_ps = constraint.get("must_ps", False)
+        must_lab = constraint.get("must_lab", False)
+
+        # Determine options based on constraints
+        ps_options = ps_sections if must_ps else [None] + ps_sections
+        lab_options = lab_sections if must_lab else [None] + lab_sections
+
+        # Skip if constraints cannot be satisfied
+        if (must_ps and not ps_sections) or (must_lab and not lab_sections):
+            return []
+
+        # Generate all valid combinations
+        return ConstraintUtils._combine_sections(base_selection, ps_options, lab_options)
+
+    @staticmethod
+    def _combine_sections(
+            base_selection: List[Course],
+            ps_options: List,
+            lab_options: List
+    ) -> List[List[Course]]:
+        """Combine base selection with PS and lab options."""
+        selections = []
+        for ps in ps_options:
+            for lab in lab_options:
+                sel = base_selection.copy()
+                if ps is not None:
+                    sel.append(ps)
+                if lab is not None:
+                    sel.append(lab)
+                selections.append(sel)
+        return selections
 
     @staticmethod
     def build_group_options(course_groups: Dict[str, CourseGroup],
@@ -185,7 +217,7 @@ class ConstraintUtils:
 
         # Check for ECTS consistency
         if course_group.lecture_courses:
-            ects_values = set(c.ects for c in course_group.lecture_courses)
+            ects_values = {c.ects for c in course_group.lecture_courses}
             if len(ects_values) > 1:
                 warnings.append(f"Inconsistent ECTS values in lectures: {ects_values}")
 
@@ -211,17 +243,10 @@ class ConstraintUtils:
         Returns:
             Dictionary mapping course codes to set of conflicting course codes
         """
-        conflict_matrix = {}
-
-        for i, course1 in enumerate(courses):
-            conflicts = set()
-            for j, course2 in enumerate(courses):
-                if i != j and course1.conflicts_with(course2):
-                    conflicts.add(course2.code)
-
-            conflict_matrix[course1.code] = conflicts
-
-        return conflict_matrix
+        return {
+            course.code: {c.code for c in courses if course != c and course.conflicts_with(c)}
+            for course in courses
+        }
 
     @staticmethod
     def find_independent_sets(courses: List[Course]) -> List[List[Course]]:
@@ -235,10 +260,8 @@ class ConstraintUtils:
             List of independent course sets
         """
         # Simple greedy algorithm to find independent sets
-        conflict_matrix = ConstraintUtils.get_conflict_matrix(courses)
-
         independent_sets = []
-        remaining = set(c.code for c in courses)
+        remaining = {c.code for c in courses}
 
         while remaining:
             # Start new independent set with a course
@@ -248,15 +271,14 @@ class ConstraintUtils:
             current_set.append(course)
 
             # Add compatible courses
-            for other_code in list(remaining):
+            for other_code in tuple(remaining):
                 other_course = next(c for c in courses if c.code == other_code)
 
                 # Check if compatible with all in current set
-                compatible = True
-                for set_course in current_set:
-                    if other_course.conflicts_with(set_course):
-                        compatible = False
-                        break
+                compatible = all(
+                    not other_course.conflicts_with(set_course)
+                    for set_course in current_set
+                )
 
                 if compatible:
                     current_set.append(other_course)

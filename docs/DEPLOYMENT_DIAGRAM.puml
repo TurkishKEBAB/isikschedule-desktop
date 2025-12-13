@@ -1,0 +1,87 @@
+@startuml SchedularV3_Deployment
+!theme plain
+skinparam nodeBackgroundColor #F0F8FF
+skinparam nodeBorderColor #0018A8
+skinparam componentBackgroundColor #E8F4F8
+
+title SchedularV3 - Deployment Architecture
+
+node "User Workstation (Windows/macOS/Linux)" {
+    component "SchedularV3 Application" {
+        [PyQt6 GUI]
+        [Business Logic]
+        [Algorithm Engine]
+    }
+    
+    database "SQLite Database" {
+        [course_scheduler.db]
+    }
+    
+    folder "File System" {
+        [Excel Files (.xlsx)]
+        [CSV Files (.csv)]
+        [PDF Exports]
+        [JPEG Exports]
+        [Log Files]
+    }
+    
+    component "Python 3.11+ Runtime" {
+        [Standard Library]
+        [Third-party Packages]
+    }
+}
+
+cloud "External Dependencies" {
+    [PyQt6 6.6.1+]
+    [pandas 2.1.0+]
+    [numpy 1.24.0+]
+    [openpyxl 3.1.0+]
+    [reportlab 4.0.0+]
+    [matplotlib 3.7.0+]
+    [Pillow 10.0.0+]
+    [pytest 7.4.0+]
+}
+
+[SchedularV3 Application] --> [course_scheduler.db] : Read/Write
+[SchedularV3 Application] --> [Excel Files (.xlsx)] : Import
+[SchedularV3 Application] --> [CSV Files (.csv)] : Import
+[SchedularV3 Application] --> [PDF Exports] : Export
+[SchedularV3 Application] --> [JPEG Exports] : Export
+[SchedularV3 Application] --> [Log Files] : Write
+
+[SchedularV3 Application] ..> [Python 3.11+ Runtime] : Runs on
+[Python 3.11+ Runtime] ..> [External Dependencies] : Requires
+
+note right of [SchedularV3 Application]
+  Standalone desktop application
+  No internet required
+  Self-contained
+end note
+
+note right of [SQLite Database]
+  Local persistence:
+  - Courses
+  - Schedules
+  - Programs
+  - Transcripts
+  - Grades
+end note
+
+note right of [Python 3.11+ Runtime]
+  Virtual Environment:
+  venv/
+  ├── Scripts/ (Windows)
+  ├── bin/ (Linux/macOS)
+  └── Lib/site-packages/
+end note
+
+note bottom of [External Dependencies]
+  All dependencies installed via:
+  pip install -r requirements.txt
+  
+  No external services
+  No API calls
+  Fully offline
+end note
+
+@enduml

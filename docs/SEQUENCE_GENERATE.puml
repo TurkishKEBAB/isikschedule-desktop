@@ -1,0 +1,140 @@
+@startuml SchedularV3_Sequence_Generate
+!theme plain
+skinparam participantBackgroundColor #F0F8FF
+skinparam participantBorderColor #0018A8
+
+title SchedularV3 - Schedule Generation Sequence
+
+actor User
+participant "FileSettingsTab" as FST
+participant "AlgorithmSelector" as AS
+participant "DFSScheduler" as DFS
+participant "ConstraintUtils" as CU
+participant "Course" as C
+participant "Schedule" as S
+participant "ScheduleViewerTab" as SVT
+
+User -> FST : Click "Generate Schedules"
+activate FST
+
+FST -> FST : Validate inputs
+alt No courses loaded
+    FST -> User : Show error message
+else No mandatory courses
+    FST -> User : Show error message
+else Valid inputs
+    FST -> AS : select_scheduler(requirements)
+    activate AS
+    
+    AS -> AS : Score all registered algorithms
+    AS -> AS : Select best match
+    AS --> FST : DFSScheduler class
+    deactivate AS
+    
+    FST -> DFS : __init__(max_results, max_ects, ...)
+    activate DFS
+    
+    FST -> DFS : generate_schedules(groups, mandatory, optional)
+    
+    DFS -> DFS : _prepare_search_space()
+    DFS -> CU : build_group_options(groups, mandatory)
+    activate CU
+    
+    loop For each group
+        CU -> CU : Get valid combinations
+        CU -> CU : Filter by constraints
+    end
+    
+    CU --> DFS : (valid_selections, group_options)
+    deactivate CU
+    
+    DFS -> DFS : _run_algorithm(search)
+    
+    loop DFS Recursion
+        DFS -> DFS : _dfs_recursive(depth, current, search)
+        
+        alt Reached max results
+            DFS -> DFS : Return
+        else depth < len(groups)
+            loop For each valid option
+                DFS -> DFS : Try adding course(s)
+                
+                DFS -> DFS : _is_valid_partial_selection()
+                DFS -> C : Calculate total ECTS
+                activate C
+                C --> DFS : total_ects
+                deactivate C
+                
+                alt ECTS > max_ects
+                    DFS -> DFS : Skip (prune branch)
+                else allow_conflicts = False
+                    DFS -> S : Check conflicts
+                    activate S
+                    S -> C : conflicts_with()
+                    C --> S : has_conflict
+                    S --> DFS : conflict_count
+                    deactivate S
+                    
+                    alt Has conflicts
+                        DFS -> DFS : Skip
+                    else No conflicts
+                        DFS -> DFS : Recurse deeper
+                    end
+                else allow_conflicts = True
+                    DFS -> DFS : Recurse deeper
+                end
+            end
+        else All mandatory included
+            DFS -> S : Create Schedule
+            activate S
+            S -> S : Calculate total_credits
+            S -> S : Calculate conflict_count
+            S --> DFS : schedule
+            deactivate S
+            
+            DFS -> DFS : Add to results
+        end
+    end
+    
+    DFS -> DFS : _finalize_results(raw_results)
+    
+    loop For each result
+        DFS -> DFS : _is_valid_final_schedule()
+        DFS -> DFS : Score with preferences
+    end
+    
+    DFS -> DFS : Sort by score
+    DFS -> DFS : Limit to max_results
+    
+    DFS --> FST : List[Schedule]
+    deactivate DFS
+    
+    FST -> SVT : Display schedules
+    activate SVT
+    
+    SVT -> SVT : Clear previous results
+    
+    loop For each schedule
+        SVT -> SVT : Add to program list
+        SVT -> SVT : Display conflict count
+    end
+    
+    SVT --> User : Show schedules
+    deactivate SVT
+end
+
+deactivate FST
+
+note right of DFS
+  Performance tracking:
+  - nodes_explored
+  - branches_pruned
+  - execution_time
+  
+  Optimization:
+  - Early termination
+  - Branch pruning
+  - Preference scoring
+end note
+
+@enduml

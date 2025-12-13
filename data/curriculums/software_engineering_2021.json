@@ -1,0 +1,536 @@
+{
+  "program_info": {
+    "program_code": "SOFT",
+    "program_name_tr": "Yazılım Mühendisliği",
+    "program_name_en": "Software Engineering",
+    "degree": "Lisans",
+    "degree_en": "Undergraduate",
+    "year": 2021,
+    "faculty_tr": "Mühendislik Fakültesi",
+    "faculty_en": "Faculty of Engineering",
+    "total_ects": 240,
+    "total_credits": 145
+  },
+  "semesters": {
+    "1": {
+      "semester_name_tr": "1. Yarıyıl",
+      "semester_name_en": "1st Semester",
+      "total_ects": 29,
+      "total_credits": 21,
+      "courses": [
+        {
+          "code": "COMP1007",
+          "name_tr": "Bilgisayar ve Yazılım Mühendisliğine Giriş",
+          "name_en": "Introduction to Computer and Software Engineering",
+          "ects": 1,
+          "local_credit": 1,
+          "type": "mandatory"
+        },
+        {
+          "code": "COMP1111",
+          "name_tr": "Programlama Temelleri",
+          "name_en": "Fundamentals of Programming",
+          "ects": 6,
+          "local_credit": 4,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0101",
+          "name_tr": "Türkiye Cumhuriyeti Tarihi I",
+          "name_en": "History of Turkish Republic I",
+          "ects": 2,
+          "local_credit": 2,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0103",
+          "name_tr": "Türkçe I",
+          "name_en": "Turkish I",
+          "ects": 2,
+          "local_credit": 2,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0105",
+          "name_tr": "Oryantasyon",
+          "name_en": "Orientation",
+          "ects": 1,
+          "local_credit": 0,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0201",
+          "name_tr": "Doğa, Bilim, İnsan I",
+          "name_en": "Nature, Science, Human I",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0501",
+          "name_tr": "Sanat, Toplum, İnsan",
+          "name_en": "Art, Society, Human",
+          "ects": 3,
+          "local_credit": 2,
+          "type": "mandatory"
+        },
+        {
+          "code": "ENGL1101",
+          "name_tr": "Akademik İngilizce 1",
+          "name_en": "Academic English 1",
+          "ects": 4,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "MATH1111",
+          "name_tr": "Diferansiyel ve İntegral Hesap I",
+          "name_en": "Calculus I",
+          "ects": 5,
+          "local_credit": 4,
+          "type": "mandatory"
+        }
+      ]
+    },
+    "2": {
+      "semester_name_tr": "2. Yarıyıl",
+      "semester_name_en": "2nd Semester",
+      "total_ects": 31,
+      "total_credits": 21,
+      "courses": [
+        {
+          "code": "COMP1112",
+          "name_tr": "Nesne Yönelimli Programlama",
+          "name_en": "Object Oriented Programming",
+          "ects": 6,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0102",
+          "name_tr": "Türkiye Cumhuriyeti Tarihi II",
+          "name_en": "History of Turkish Republic II",
+          "ects": 2,
+          "local_credit": 2,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0104",
+          "name_tr": "Türkçe II",
+          "name_en": "Turkish II",
+          "ects": 2,
+          "local_credit": 2,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0106",
+          "name_tr": "Kariyer Planlama",
+          "name_en": "Career Planning",
+          "ects": 1,
+          "local_credit": 0,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0301",
+          "name_tr": "Sayılar, Formüller, İnsan I",
+          "name_en": "Numbers, Formulas, Human I",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "ENGL1102",
+          "name_tr": "Akademik İngilizce 2",
+          "name_en": "Academic English 2",
+          "ects": 4,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "MATH1112",
+          "name_tr": "Diferansiyel ve İntegral Hesap II",
+          "name_en": "Calculus II",
+          "ects": 5,
+          "local_credit": 4,
+          "type": "mandatory"
+        },
+        {
+          "code": "PHYS1112",
+          "name_tr": "Elektrik Ve Manyetizma",
+          "name_en": "Electricity and Magnetism",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "PHYS1114",
+          "name_tr": "Elektrik Ve Manyetizma Laboratuvarı",
+          "name_en": "Electricity and Magnetism Laboratory",
+          "ects": 1,
+          "local_credit": 1,
+          "type": "mandatory"
+        }
+      ]
+    },
+    "3": {
+      "semester_name_tr": "3. Yarıyıl",
+      "semester_name_en": "3rd Semester",
+      "total_ects": 31,
+      "total_credits": 19,
+      "courses": [
+        {
+          "code": "COMP2112",
+          "name_tr": "Veri Yapıları ve Algoritmalar",
+          "name_en": "Data Structures and Algorithms",
+          "ects": 7,
+          "local_credit": 4,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0107",
+          "name_tr": "Yaratıcı Düşünme ve Problem Çözme",
+          "name_en": "Creative Thinking and Problem Solving",
+          "ects": 3,
+          "local_credit": 2,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0108",
+          "name_tr": "Büyük Eserler",
+          "name_en": "Great Works",
+          "ects": 3,
+          "local_credit": 2,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0401",
+          "name_tr": "Toplum, Bilim ve İnsan",
+          "name_en": "Society, Science and Human",
+          "ects": 4,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "CORE0402",
+          "name_tr": "Etik, Hukuk, Toplum",
+          "name_en": "Ethics, Law, Society",
+          "ects": 3,
+          "local_credit": 2,
+          "type": "mandatory"
+        },
+        {
+          "code": "MATH2103",
+          "name_tr": "Ayrık Matematik",
+          "name_en": "Discrete Mathematics",
+          "ects": 6,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "SOFT2101",
+          "name_tr": "Yazılım Mühendisliğinin İlkeleri",
+          "name_en": "Principles of Software Engineering",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        }
+      ]
+    },
+    "4": {
+      "semester_name_tr": "4. Yarıyıl",
+      "semester_name_en": "4th Semester",
+      "total_ects": 29,
+      "total_credits": 17,
+      "courses": [
+        {
+          "code": "COMP2222",
+          "name_tr": "Veritabanı Sistemleri",
+          "name_en": "Database Systems",
+          "ects": 7,
+          "local_credit": 4,
+          "type": "mandatory"
+        },
+        {
+          "code": "COMP2502",
+          "name_tr": "İnsan-Bilgisayar Etkileşimine Giriş",
+          "name_en": "Introduction to Human Computer Interaction",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "ELEC1402",
+          "name_tr": "Mantık Devreleri Tasarımı Laboratuvarı",
+          "name_en": "Logic Design Laboratory",
+          "ects": 2,
+          "local_credit": 1,
+          "type": "mandatory"
+        },
+        {
+          "code": "ELEC1411",
+          "name_tr": "Mantık Devreleri Tasarımı",
+          "name_en": "Logic Design",
+          "ects": 4,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "MATH2201",
+          "name_tr": "Olasılık",
+          "name_en": "Probability",
+          "ects": 6,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "SOFT3511",
+          "name_tr": "Yazılım Gereksinimleri Mühendisliği",
+          "name_en": "Software Requirements Engineering",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        }
+      ]
+    },
+    "5": {
+      "semester_name_tr": "5. Yarıyıl",
+      "semester_name_en": "5th Semester",
+      "total_ects": 29,
+      "total_credits": 16,
+      "courses": [
+        {
+          "code": "COMP3112",
+          "name_tr": "Algoritma Analizi",
+          "name_en": "Analysis of Algorithms",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "COMP3401",
+          "name_tr": "Bilgisayar Organizasyonu",
+          "name_en": "Computer Organization",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "INDE2156",
+          "name_tr": "Mühendislik İstatistiği",
+          "name_en": "Engineering Statistics",
+          "ects": 6,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "MATH2104",
+          "name_tr": "Lineer Cebir",
+          "name_en": "Linear Algebra",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "SOFT3215",
+          "name_tr": "Yazılım Mimarisi",
+          "name_en": "Software Architecture",
+          "ects": 6,
+          "local_credit": 4,
+          "type": "mandatory"
+        },
+        {
+          "code": "SOFT3920",
+          "name_tr": "Yaz Stajı I",
+          "name_en": "Summer Practice I",
+          "ects": 2,
+          "local_credit": 0,
+          "type": "mandatory"
+        }
+      ]
+    },
+    "6": {
+      "semester_name_tr": "6. Yarıyıl",
+      "semester_name_en": "6th Semester",
+      "total_ects": 31,
+      "total_credits": 19,
+      "courses": [
+        {
+          "code": "BIOL1101",
+          "name_tr": "Biyoloji",
+          "name_en": "Biology",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "COMP3105",
+          "name_tr": "Özdevinirler ve Biçimsel Diller",
+          "name_en": "Automata and Formal Languages",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "COMP3334",
+          "name_tr": "Bilgisayar Ağları",
+          "name_en": "Computer Networks",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "COMP3432",
+          "name_tr": "İşletim Sistemleri",
+          "name_en": "Operating Systems",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "SOFT3416",
+          "name_tr": "Yazılım Sınama ve Doğrulama",
+          "name_en": "Software Verification and Validation",
+          "ects": 6,
+          "local_credit": 4,
+          "type": "mandatory"
+        },
+        {
+          "code": "SOFT-AE-I",
+          "name_tr": "Alan Seçmeli-I",
+          "name_en": "Area Elective-I",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "area_elective"
+        }
+      ]
+    },
+    "7": {
+      "semester_name_tr": "7. Yarıyıl",
+      "semester_name_en": "7th Semester",
+      "total_ects": 32,
+      "total_credits": 17,
+      "courses": [
+        {
+          "code": "ENGR4901",
+          "name_tr": "Tasarım Projelerine Giriş",
+          "name_en": "Introduction to Design Projects",
+          "ects": 1,
+          "local_credit": 1,
+          "type": "mandatory"
+        },
+        {
+          "code": "OHES4411",
+          "name_tr": "İş Sağlığı ve Güvenliği I",
+          "name_en": "Occupational Health and Safety I",
+          "ects": 2,
+          "local_credit": 0,
+          "type": "mandatory"
+        },
+        {
+          "code": "SOFT4314",
+          "name_tr": "Yazılım Proje Yönetimi",
+          "name_en": "Software Project Management",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "mandatory"
+        },
+        {
+          "code": "SOFT4920",
+          "name_tr": "Yaz Stajı II",
+          "name_en": "Summer Practice II",
+          "ects": 3,
+          "local_credit": 0,
+          "type": "mandatory"
+        },
+        {
+          "code": "SOFT-AE-II",
+          "name_tr": "Alan Seçmeli-II",
+          "name_en": "Area Elective-II",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "area_elective"
+        },
+        {
+          "code": "SOFT-AE-III",
+          "name_tr": "Alan Seçmeli-III",
+          "name_en": "Area Elective-III",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "area_elective"
+        },
+        {
+          "code": "SOFT-GE-I",
+          "name_tr": "Genel Seçmeli-I",
+          "name_en": "General Elective-I",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "general_elective"
+        },
+        {
+          "code": "SOFT-GE-II",
+          "name_tr": "Genel Seçmeli-II",
+          "name_en": "General Elective-II",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "general_elective"
+        }
+      ]
+    },
+    "8": {
+      "semester_name_tr": "8. Yarıyıl",
+      "semester_name_en": "8th Semester",
+      "total_ects": 29,
+      "total_credits": 16,
+      "courses": [
+        {
+          "code": "OHES4412",
+          "name_tr": "İş Sağlığı ve Güvenliği II",
+          "name_en": "Occupational Health and Safety II",
+          "ects": 2,
+          "local_credit": 0,
+          "type": "mandatory"
+        },
+        {
+          "code": "SOFT4912",
+          "name_tr": "Bitirme Tasarım Projesi",
+          "name_en": "Graduation Design Project",
+          "ects": 7,
+          "local_credit": 4,
+          "type": "mandatory"
+        },
+        {
+          "code": "SOFT-AE-IV",
+          "name_tr": "Alan Seçmeli-IV",
+          "name_en": "Area Elective-IV",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "area_elective"
+        },
+        {
+          "code": "SOFT-AE-V",
+          "name_tr": "Alan Seçmeli-V",
+          "name_en": "Area Elective-V",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "area_elective"
+        },
+        {
+          "code": "SOFT-GE-III",
+          "name_tr": "Genel Seçmeli-III",
+          "name_en": "General Elective-III",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "general_elective"
+        },
+        {
+          "code": "SOFT-GE-IV",
+          "name_tr": "Genel Seçmeli-IV",
+          "name_en": "General Elective-IV",
+          "ects": 5,
+          "local_credit": 3,
+          "type": "general_elective"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,237 @@
+@startuml SchedularV3_Algorithms
+!theme plain
+skinparam classBackgroundColor #F0F8FF
+skinparam classBorderColor #0018A8
+
+title SchedularV3 - Algorithm Architecture
+
+abstract class BaseScheduler {
+    +metadata: AlgorithmMetadata
+    +max_results: int
+    +max_ects: int
+    +allow_conflicts: bool
+    +max_conflicts: int
+    +scheduler_prefs: SchedulerPrefs
+    +timeout_seconds: int
+    +transcript: Optional[Transcript]
+    +enable_smart_filtering: bool
+    --
+    +{abstract} _run_algorithm(search: PreparedSearch): List[Schedule]
+    +generate_schedules(groups, mandatory, optional): List[Schedule]
+    --
+    #_prepare_search_space(): PreparedSearch
+    #_finalize_results(results): List[Schedule]
+    #_is_valid_partial_selection(courses): bool
+    #_is_valid_final_schedule(schedule): bool
+    #filter_courses_by_prerequisites(courses): List[Course]
+    #adjust_max_ects_by_gpa(): int
+    --
+    +last_run_stats: Dict <<property>>
+    +performance_history: List[Dict] <<property>>
+    +get_search_statistics(): Dict
+    +get_optimization_report(): Dict
+    +analyze_failure(groups): List[str]
+}
+
+class AlgorithmMetadata {
+    +name: str
+    +category: str
+    +complexity: str
+    +description: str
+    +optimal: bool
+    +supports_preferences: bool
+    +supports_constraints: bool
+    +supports_parallel: bool
+    +is_optimizer: bool
+}
+
+class PreparedSearch {
+    +group_keys: List[str]
+    +mandatory_keys: List[str]
+    +optional_keys: List[str]
+    +group_options: Dict
+    +valid_selections: Dict
+    +mandatory_codes: Set[str]
+    +optional_codes: Set[str]
+}
+
+' Search Algorithms
+class DFSScheduler {
+    +metadata: AlgorithmMetadata
+    --
+    #_run_algorithm(search): List[Schedule]
+    -_dfs_recursive(depth, current_courses, search): None
+}
+
+class BFSScheduler {
+    +metadata: AlgorithmMetadata
+    --
+    #_run_algorithm(search): List[Schedule]
+}
+
+class AStarScheduler {
+    +metadata: AlgorithmMetadata
+    --
+    #_run_algorithm(search): List[Schedule]
+    -_heuristic(partial_schedule): float
+}
+
+class DijkstraScheduler {
+    +metadata: AlgorithmMetadata
+    --
+    #_run_algorithm(search): List[Schedule]
+}
+
+class IDDFSScheduler {
+    +metadata: AlgorithmMetadata
+    +max_depth: int
+    --
+    #_run_algorithm(search): List[Schedule]
+    -_depth_limited_search(depth_limit, search): List[Schedule]
+}
+
+' Optimization Algorithms
+class GreedyScheduler {
+    +metadata: AlgorithmMetadata
+    --
+    #_run_algorithm(search): List[Schedule]
+}
+
+class GeneticAlgorithmScheduler {
+    +metadata: AlgorithmMetadata
+    +population_size: int
+    +generations: int
+    +mutation_rate: float
+    +crossover_rate: float
+    --
+    #_run_algorithm(search): List[Schedule]
+    -_initialize_population(search): List[Schedule]
+    -_evaluate_fitness(schedule): float
+    -_selection(population): List[Schedule]
+    -_crossover(parent1, parent2): Schedule
+    -_mutate(schedule): Schedule
+}
+
+class SimulatedAnnealingScheduler {
+    +metadata: AlgorithmMetadata
+    +initial_temperature: float
+    +cooling_rate: float
+    +min_temperature: float
+    --
+    #_run_algorithm(search): List[Schedule]
+    -_get_neighbor(schedule, search): Schedule
+    -_acceptance_probability(old_score, new_score, temp): float
+}
+
+class HillClimbingScheduler {
+    +metadata: AlgorithmMetadata
+    +max_iterations: int
+    --
+    #_run_algorithm(search): List[Schedule]
+    -_get_best_neighbor(schedule, search): Schedule
+}
+
+class TabuSearchScheduler {
+    +metadata: AlgorithmMetadata
+    +tabu_tenure: int
+    +max_iterations: int
+    --
+    #_run_algorithm(search): List[Schedule]
+}
+
+class ParticleSwarmScheduler {
+    +metadata: AlgorithmMetadata
+    +swarm_size: int
+    +max_iterations: int
+    +inertia_weight: float
+    +cognitive_weight: float
+    +social_weight: float
+    --
+    #_run_algorithm(search): List[Schedule]
+}
+
+class HybridGASAScheduler {
+    +metadata: AlgorithmMetadata
+    +ga_iterations: int
+    +sa_iterations: int
+    --
+    #_run_algorithm(search): List[Schedule]
+}
+
+class ConstraintProgrammingScheduler {
+    +metadata: AlgorithmMetadata
+    --
+    #_run_algorithm(search): List[Schedule]
+}
+
+' Support Classes
+class ConstraintUtils {
+    +{static} build_group_options(groups, mandatory): Tuple
+    +{static} validate_selection(courses, max_ects): bool
+    +{static} check_conflicts(courses): int
+}
+
+class Evaluator {
+    +evaluate_schedule(schedule, prefs): float
+    +calculate_metrics(schedule): Dict
+}
+
+class SchedulerPrefs {
+    +desired_free_days: Set[str]
+    +preferred_time_slots: Set[TimeSlot]
+    +avoid_time_slots: Set[TimeSlot]
+    +max_daily_hours: int
+    +prefer_morning: bool
+    +prefer_afternoon: bool
+    +prefer_same_campus: bool
+    +strict_free_days: bool
+}
+
+' Relationships
+BaseScheduler <|-- DFSScheduler
+BaseScheduler <|-- BFSScheduler
+BaseScheduler <|-- AStarScheduler
+BaseScheduler <|-- DijkstraScheduler
+BaseScheduler <|-- IDDFSScheduler
+BaseScheduler <|-- GreedyScheduler
+BaseScheduler <|-- GeneticAlgorithmScheduler
+BaseScheduler <|-- SimulatedAnnealingScheduler
+BaseScheduler <|-- HillClimbingScheduler
+BaseScheduler <|-- TabuSearchScheduler
+BaseScheduler <|-- ParticleSwarmScheduler
+BaseScheduler <|-- HybridGASAScheduler
+BaseScheduler <|-- ConstraintProgrammingScheduler
+
+BaseScheduler --> AlgorithmMetadata : has
+BaseScheduler --> PreparedSearch : uses
+BaseScheduler --> SchedulerPrefs : uses
+BaseScheduler ..> ConstraintUtils : depends
+BaseScheduler ..> Evaluator : depends
+
+note right of BaseScheduler
+  Abstract base class
+  Track performance decorator
+  Smart filtering (GPA-based ECTS)
+  Prerequisite filtering
+end note
+
+note left of GeneticAlgorithmScheduler
+  Population-based optimization
+  Tournament selection
+  Uniform crossover
+  Swap mutation
+end note
+
+note left of SimulatedAnnealingScheduler
+  Metaheuristic optimization
+  Temperature-based acceptance
+  Cooling schedule
+end note
+
+note bottom of ConstraintUtils
+  Static utility methods
+  Constraint validation
+  Group option building
+end note
+
+@enduml

@@ -15,22 +15,39 @@ benchmarked, auto-selected, and executed interchangeably.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 import functools
 import time
-from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Set
+from typing import TYPE_CHECKING, Any, Callable, Dict, Iterable, List, Optional, Sequence, Set
 
-from core.models import Course, CourseGroup, Schedule, Transcript
-from utils.schedule_metrics import SchedulerPrefs, score_schedule
+if TYPE_CHECKING:
+    from core.models import Course, CourseGroup, Schedule, Transcript
+    from utils.schedule_metrics import SchedulerPrefs
+
+# Runtime imports
+try:
+    from core.models import Course, CourseGroup, Schedule, Transcript
+except ImportError as e:
+    raise ImportError(f"Required module core.models not found: {e}")
+
+try:
+    from utils.schedule_metrics import SchedulerPrefs, score_schedule
+except ImportError as e:
+    raise ImportError(f"Required module utils.schedule_metrics not found: {e}")
+
 from .constraints import ConstraintUtils
 
-# Işık University smart filtering
+# Işık University smart filtering (optional)
+ISIK_FILTERING_AVAILABLE = False
+can_take_course = None
+get_prerequisites = None
+ECTS_LIMITS_BY_GPA: Dict[str, int] = {}
 try:
     from core.prerequisite_data import can_take_course, get_prerequisites
     from core.isik_university_data import ECTS_LIMITS_BY_GPA
     ISIK_FILTERING_AVAILABLE = True
 except ImportError:
-    ISIK_FILTERING_AVAILABLE = False
+    pass  # Işık University features will be disabled
 
 
 @dataclass(frozen=True)
@@ -114,10 +131,10 @@ class BaseScheduler(ABC):
         self.scheduler_prefs = scheduler_prefs or SchedulerPrefs()
         self.timeout_seconds = timeout_seconds
 
-        self._performance_history: List[Dict[str, Any]] = []
-        self._last_run_stats: Dict[str, Any] = {}
-        self._results: List[Schedule] = []
-        self._active_mandatory_codes: Set[str] = set()
+        self._performance_history = []  # type: List[Dict[str, Any]]
+        self._last_run_stats = {}  # type: Dict[str, Any]
+        self._results = []  # type: List[Schedule]
+        self._active_mandatory_codes = set()  # type: Set[str]
 
     # ------------------------------------------------------------------
     # Abstract behaviour
@@ -185,11 +202,17 @@ class BaseScheduler(ABC):
             return None
 
         all_keys = list(course_groups.keys())
-        if optional_codes is None:
-            optional_codes = set(all_keys) - set(mandatory_codes)
 
-        mandatory_keys = [key for key in all_keys if key in mandatory_codes]
-        optional_keys = [key for key in all_keys if key in optional_codes]
+        # If optional_codes is None, treat it as empty (no optional courses)
+        if optional_codes is None:
+            optional_codes = set()
+
+        # Filter out excluded courses (courses that are neither mandatory nor optional)
+        included_codes = mandatory_codes | optional_codes
+        filtered_keys = [key for key in all_keys if key in included_codes]
+
+        mandatory_keys = [key for key in filtered_keys if key in mandatory_codes]
+        optional_keys = [key for key in filtered_keys if key in optional_codes]
 
         mandatory_keys.sort(key=lambda k: len(group_options.get(k, [])))
         optional_keys.sort(key=lambda k: len(group_options.get(k, [])))
@@ -209,7 +232,7 @@ class BaseScheduler(ABC):
     def _finalize_results(self, results: Iterable[Schedule]) -> List[Schedule]:
         """Sort schedules based on preferences and apply result limits."""
 
-        filtered: List[Schedule] = []
+        filtered = []  # type: List[Schedule]
         for schedule in results:
             if not self._is_valid_final_schedule(schedule):
                 continue
@@ -225,55 +248,58 @@ class BaseScheduler(ABC):
 
         self._sort_schedules(filtered)
         return filtered
-    
+
     def filter_courses_by_prerequisites(
         self, courses: List[Course]
     ) -> List[Course]:
         """
         Filter courses based on prerequisites (Işık University smart filtering).
-        
+
         Args:
             courses: List of courses to filter
-            
+
         Returns:
             Filtered list of courses that prerequisites are met
         """
         if not self.enable_smart_filtering or not self.transcript or not ISIK_FILTERING_AVAILABLE:
             return courses
-        
+
         # Get completed courses from transcript
         completed = {grade.course_code for grade in self.transcript.grades}
-        
+
         # Filter courses
         available = []
         for course in courses:
-            if can_take_course(course.main_code, list(completed)):
+            if can_take_course(course.main_code, list(completed)) if can_take_course else True:
                 available.append(course)
-        
+
         return available
-    
+
     def adjust_max_ects_by_gpa(self) -> int:
         """
         Adjust max ECTS based on GPA (Işık University rules).
-        
+
         Returns:
             Adjusted max ECTS value
         """
         if not self.enable_smart_filtering or not self.transcript or not ISIK_FILTERING_AVAILABLE:
             return self.max_ects
-        
+
         # Calculate current GPA
-        from core.academic import GPACalculator
-        calculator = GPACalculator()
-        current_gpa = calculator.calculate_gpa(self.transcript.grades)
-        
+        try:
+            from core.academic import GPACalculator
+            calculator = GPACalculator()
+            current_gpa = calculator.calculate_gpa(self.transcript.grades)
+        except ImportError:
+            return self.max_ects
+
         # Apply Işık University rules
         if current_gpa >= 3.50:
-            return min(ECTS_LIMITS_BY_GPA["high"], self.max_ects)  # 43
+            return min(ECTS_LIMITS_BY_GPA.get("high", self.max_ects), self.max_ects)  # 43
         elif current_gpa >= 2.50:
-            return min(ECTS_LIMITS_BY_GPA["medium"], self.max_ects)  # 37
+            return min(ECTS_LIMITS_BY_GPA.get("medium", self.max_ects), self.max_ects)  # 37
         else:
-            return min(ECTS_LIMITS_BY_GPA["low"], self.max_ects)  # 31
+            return min(ECTS_LIMITS_BY_GPA.get("low", self.max_ects), self.max_ects)  # 31
 
     def _sort_schedules(self, schedules: List[Schedule]) -> None:
         if not schedules:
@@ -285,6 +311,7 @@ class BaseScheduler(ABC):
             schedules.sort(key=lambda s: (s.conflict_count, -s.total_credits))
 
     def _select_worst_schedule(self, schedules: Sequence[Schedule]) -> Schedule:
+        """Select the worst schedule from the given list based on quality metrics."""
         if self.scheduler_prefs:
             return min(schedules, key=lambda s: score_schedule(s, self.scheduler_prefs))
         return max(schedules, key=lambda s: (s.conflict_count, -s.total_credits))
@@ -310,16 +337,29 @@ class BaseScheduler(ABC):
         if total_ects > self.max_ects:
             return False
 
-        if self.allow_conflicts:
-            return True
-
         schedule = Schedule(courses)
+        if self.allow_conflicts:
+            return schedule.conflict_count <= self.max_conflicts
+
         return schedule.conflict_count == 0
 
     def _is_valid_final_schedule(self, schedule: Schedule) -> bool:
+        """
+        Validate that a schedule meets all hard constraints.
+
+        Args:
+            schedule: Schedule to validate
+
+        Returns:
+            True if schedule is valid, False otherwise
+        """
         if schedule.total_credits > self.max_ects:
             return False
-        if not self.allow_conflicts and schedule.conflict_count > 0:
+
+        if not self.allow_conflicts:
+            if schedule.conflict_count > 0:
+                return False
+        elif schedule.conflict_count > self.max_conflicts:
             return False
 
         if self._active_mandatory_codes:
@@ -333,12 +373,15 @@ class BaseScheduler(ABC):
             and self.scheduler_prefs.strict_free_days
             and self.scheduler_prefs.desired_free_days
         ):
-            from utils.schedule_metrics import meets_free_day_constraint
+            try:
+                from utils.schedule_metrics import meets_free_day_constraint as check_free_days
 
-            if not meets_free_day_constraint(
-                schedule, self.scheduler_prefs.desired_free_days, strict=True
-            ):
-                return False
+                if not check_free_days(
+                    schedule, self.scheduler_prefs.desired_free_days, strict=True
+                ):
+                    return False
+            except ImportError:
+                pass  # Skip free day constraint if not available
 
         return True
 
@@ -362,9 +405,9 @@ class BaseScheduler(ABC):
 
     def get_optimization_report(self) -> Dict[str, Any]:
         total = len(self._results)
-        credits = [schedule.total_credits for schedule in self._results]
+        credit_values = [schedule.total_credits for schedule in self._results]
         conflicts = [schedule.conflict_count for schedule in self._results]
-        preference_scores: List[float] = []
+        preference_scores = []  # type: List[float]
         if self.scheduler_prefs:
             preference_scores = [score_schedule(schedule, self.scheduler_prefs) for schedule in self._results]
 
@@ -379,15 +422,23 @@ class BaseScheduler(ABC):
 
         return {
             "total_schedules": total,
-            "credit_analysis": _summary([float(value) for value in credits]),
+            "credit_analysis": _summary([float(value) for value in credit_values]),
             "conflict_analysis": _summary([float(value) for value in conflicts]),
             "preference_scores": preference_scores,
         }
 
-    def analyze_failure(self, course_groups: Dict[str, CourseGroup]) -> List[str]:
-        """Provide generic failure diagnostics for subclasses to extend."""
+    def analyze_failure(self, course_groups: Optional[Dict[str, CourseGroup]] = None) -> List[str]:
+        """
+        Provide generic failure diagnostics for subclasses to extend.
 
-        issues: List[str] = []
+        Args:
+            course_groups: Optional course groups dictionary (for future use)
+
+        Returns:
+            List of diagnostic messages about why schedule generation failed
+        """
+        # Note: course_groups parameter is kept for API compatibility but not currently used
+        issues = []  # type: List[str]
         invalid = self._last_run_stats.get("invalid_mandatory", [])
         if invalid:
             issues.append(

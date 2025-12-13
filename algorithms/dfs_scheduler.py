@@ -5,13 +5,28 @@ This module provides a comprehensive DFS-based scheduling algorithm that systema
 explores all possible course combinations to find valid schedules while respecting
 constraints and user preferences.
 """
-from typing import Any, Dict, List, Optional, Set
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set
 import logging
 import time
 from collections import defaultdict
 
-from core.models import Course, Schedule, CourseGroup
-from utils.schedule_metrics import SchedulerPrefs, score_schedule
+if TYPE_CHECKING:
+    from core.models import Course, Schedule, CourseGroup
+    from utils.schedule_metrics import SchedulerPrefs
+
+# Runtime imports
+try:
+    from core.models import Course, Schedule, CourseGroup
+except ImportError as e:
+    raise ImportError(f"Required module core.models not found: {e}")
+
+try:
+    from utils.schedule_metrics import SchedulerPrefs, score_schedule
+except ImportError as e:
+    raise ImportError(f"Required module utils.schedule_metrics not found: {e}")
+
 from .base_scheduler import AlgorithmMetadata, BaseScheduler, PreparedSearch
 from . import register_scheduler
 
@@ -132,13 +147,7 @@ class DFSScheduler(BaseScheduler):
             return
 
         if group_index >= len(search.group_keys):
-            if current_courses:
-                schedule = Schedule(current_courses.copy())
-                if self._is_valid_final_schedule(schedule):
-                    if self.scheduler_prefs:
-                        score = score_schedule(schedule, self.scheduler_prefs)
-                        self._best_score = max(self._best_score, score)
-                    results.append(schedule)
+            self._handle_dfs_base_case(current_courses, results)
             return
 
         if len(results) >= self.max_results:
@@ -148,28 +157,55 @@ class DFSScheduler(BaseScheduler):
         options = search.group_options.get(group_key, [])
 
         for option in options:
-            if self._should_prune_branch(option, current_courses, current_ects, group_key):
-                self._pruned_branches += 1
-                continue
+            self._process_dfs_option(
+                search, current_courses, current_ects, group_index, results, group_key, option
+            )
 
-            if option is None:
-                self._dfs_search(
-                    search,
-                    current_courses=current_courses,
-                    current_ects=current_ects,
-                    group_index=group_index + 1,
-                    results=results,
-                )
-            else:
-                new_courses = current_courses + option
-                new_ects = current_ects + sum(course.ects for course in option)
-                self._dfs_search(
-                    search,
-                    current_courses=new_courses,
-                    current_ects=new_ects,
-                    group_index=group_index + 1,
-                    results=results,
-                )
+    def _handle_dfs_base_case(self, current_courses: List[Course], results: List[Schedule]) -> None:
+        """Handle the base case when all groups have been processed."""
+        if not current_courses:
+            return
+
+        schedule = Schedule(current_courses.copy())
+        if self._is_valid_final_schedule(schedule):
+            if self.scheduler_prefs:
+                score = score_schedule(schedule, self.scheduler_prefs)
+                self._best_score = max(self._best_score, score)
+            results.append(schedule)
+
+    def _process_dfs_option(
+        self,
+        search: PreparedSearch,
+        current_courses: List[Course],
+        current_ects: int,
+        group_index: int,
+        results: List[Schedule],
+        group_key: str,
+        option: Optional[List[Course]],
+    ) -> None:
+        """Process a single option for the current group."""
+        if self._should_prune_branch(option, current_courses, current_ects, group_key):
+            self._pruned_branches += 1
+            return
+
+        if option is None:
+            self._dfs_search(
+                search,
+                current_courses=current_courses,
+                current_ects=current_ects,
+                group_index=group_index + 1,
+                results=results,
+            )
+        else:
+            new_courses = current_courses + option
+            new_ects = current_ects + sum(course.ects for course in option)
+            self._dfs_search(
+                search,
+                current_courses=new_courses,
+                current_ects=new_ects,
+                group_index=group_index + 1,
+                results=results,
+            )
 
     def _should_prune_branch(
         self,
@@ -186,7 +222,6 @@ class DFSScheduler(BaseScheduler):
             current_courses: Current course selection
             current_ects: Current ECTS total
             group_key: Current group key
-            mandatory_codes: Set of mandatory codes
 
         Returns:
             True if branch should be pruned
@@ -194,7 +229,6 @@ class DFSScheduler(BaseScheduler):
         if option is None:
             return group_key in self._active_mandatory_codes
 
-        # Calculate new ECTS total
         new_ects = current_ects + sum(course.ects for course in option)
 
         # Prune if ECTS limit exceeded
@@ -205,31 +239,38 @@ class DFSScheduler(BaseScheduler):
         temp_schedule = Schedule(current_courses + option)
 
         if not self.allow_conflicts:
-            # Strict mode: no conflicts allowed
-            if temp_schedule.conflict_count > 0:
+            return temp_schedule.conflict_count > 0
+
+        if self.scheduler_prefs and self.scheduler_prefs.max_conflict_hours > 0:
+            if temp_schedule.conflict_count > self.scheduler_prefs.max_conflict_hours:
                 return True
-        else:
-            # Allow conflicts but check if within limits
-            if self.scheduler_prefs.max_conflict_hours > 0:
-                if temp_schedule.conflict_count > self.scheduler_prefs.max_conflict_hours:
-                    return True
 
         # Advanced pruning based on preferences
         if self.scheduler_prefs:
-            # Prune if hard constraints violated
-            if self.scheduler_prefs.max_weekly_slots < 60:  # 60 is effectively no limit
-                if len(set((day, slot) for course in temp_schedule.courses for day, slot in course.schedule)) > self.scheduler_prefs.max_weekly_slots:
-                    return True
+            return self._check_preference_constraints(temp_schedule)
 
-            if self.scheduler_prefs.max_daily_slots:
-                # Check daily slot limits
-                daily_slots = defaultdict(set)
-                for course in temp_schedule.courses:
-                    for day, slot in course.schedule:
-                        daily_slots[day].add(slot)
+        return False
 
-                if any(len(slots) > self.scheduler_prefs.max_daily_slots for slots in daily_slots.values()):
-                    return True
+    def _check_preference_constraints(self, temp_schedule: Schedule) -> bool:
+        """Check if schedule violates preference constraints."""
+        if not self.scheduler_prefs:
+            return False
+
+        # Prune if hard constraints violated
+        if self.scheduler_prefs.max_weekly_slots < 60:  # 60 is effectively no limit
+            weekly_slots = len({(day, slot) for course in temp_schedule.courses for day, slot in course.schedule})
+            if weekly_slots > self.scheduler_prefs.max_weekly_slots:
+                return True
+
+        if self.scheduler_prefs.max_daily_slots:
+            # Check daily slot limits
+            daily_slots = defaultdict(set)
+            for course in temp_schedule.courses:
+                for day, slot in course.schedule:
+                    daily_slots[day].add(slot)
+
+            if any(len(slots) > self.scheduler_prefs.max_daily_slots for slots in daily_slots.values()):
+                return True
 
         return False
 

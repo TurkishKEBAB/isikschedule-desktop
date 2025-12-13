@@ -29,7 +29,9 @@ class AnnealingOptimizer:
                  alpha: float = 0.95,
                  iterations: int = 1000,
                  max_ects: int = 31,
-                 scheduler_prefs: Optional[SchedulerPrefs] = None):
+                 scheduler_prefs: Optional[SchedulerPrefs] = None,
+                 enable_reheating: bool = True,
+                 stagnation_threshold: int = 50):
         """
         Initialize the annealing optimizer.
 
@@ -39,17 +41,21 @@ class AnnealingOptimizer:
             iterations: Maximum number of iterations
             max_ects: Maximum ECTS credits allowed
             scheduler_prefs: Advanced scheduler preferences
+            enable_reheating: Enable reheating when stuck
+            stagnation_threshold: Number of iterations without improvement before reheating
         """
         self.temp0 = temp0
         self.alpha = alpha
         self.iterations = iterations
         self.max_ects = max_ects
         self.scheduler_prefs = scheduler_prefs or SchedulerPrefs()
+        self.enable_reheating = enable_reheating
+        self.stagnation_threshold = stagnation_threshold
 
     def optimize(self,
-                schedule: Schedule,
-                group_keys: List[str],
-                group_options: Dict[str, List[Optional[List[Course]]]]) -> Schedule:
+                 schedule: Schedule,
+                 group_keys: List[str],
+                 group_options: Dict[str, List[Optional[List[Course]]]]) -> Schedule:
         """
         Optimize a schedule using simulated annealing.
 
@@ -62,7 +68,6 @@ class AnnealingOptimizer:
             Optimized schedule
         """
         current_schedule = schedule.courses.copy()
-        current_total = sum(c.ects for c in current_schedule)
 
         def fitness(sched: List[Course], total: int) -> float:
             """
@@ -75,111 +80,144 @@ class AnnealingOptimizer:
             Returns:
                 Fitness score (lower is better)
             """
-            temp_schedule = Schedule(sched)
+            return self._calculate_fitness(sched, total)
 
-            # If using advanced preferences, use the schedule_metrics scoring
-            if self.scheduler_prefs:
-                # Apply advanced scoring (higher score = better, so negate for lower=better)
-                base_score = -score_schedule(temp_schedule, self.scheduler_prefs)
-
-                # Add penalties for constraint violations
-                if self.scheduler_prefs.max_weekly_slots < 60:  # 60 is effectively no limit
-                    if not meets_weekly_hours_constraint(temp_schedule, self.scheduler_prefs.max_weekly_slots):
-                        return 10000.0  # Hard constraint violation
-
-                # Check daily hours constraint if set
-                if self.scheduler_prefs.max_daily_slots is not None:
-                    if not meets_daily_hours_constraint(temp_schedule, self.scheduler_prefs.max_daily_slots):
-                        return 10000.0  # Hard constraint violation
-
-                # Check free day constraint if strict mode is enabled
-                if (self.scheduler_prefs.compress_classes and
-                    self.scheduler_prefs.desired_free_days and
-                    self.scheduler_prefs.strict_free_days):
-                    if not meets_free_day_constraint(
-                        temp_schedule,
-                        self.scheduler_prefs.desired_free_days,
-                        strict=True
-                    ):
-                        return 10000.0  # Hard constraint violation
-
-                # Add penalty for deviation from target ECTS
-                ects_penalty = (self.max_ects - total) ** 2
-
-                # Add penalty for conflicts
-                conflict_penalty = temp_schedule.conflict_count * 100
-
-                return base_score + ects_penalty + conflict_penalty
-            else:
-                # Original fitness function for backward compatibility
-                # Penalty for deviation from target ECTS
-                ects_penalty = (self.max_ects - total) ** 2
-
-                # Penalty for conflicts
-                conflict_penalty = temp_schedule.conflict_count * 100
-
-                return ects_penalty + conflict_penalty
-
-        current_fitness = fitness(current_schedule, current_total)
+        current_fitness = fitness(current_schedule, sum(c.ects for c in current_schedule))
         best_schedule = current_schedule.copy()
         best_fitness = current_fitness
 
         T = self.temp0
-        for iteration in range(self.iterations):
-            # Randomly select a course group to modify
+        iterations_without_improvement = 0
+
+        for _ in range(self.iterations):
             if not group_keys:
                 break
 
-            group = random.choice(group_keys)
-            valid_options = group_options.get(group, [])
+            current_schedule, current_fitness, best_schedule, best_fitness, improved = self._annealing_step(
+                current_schedule, current_fitness, best_schedule, best_fitness,
+                group_keys, group_options, fitness, T
+            )
 
-            # Skip if there's only one or no options
-            if len(valid_options) <= 1:
-                continue
+            if improved:
+                iterations_without_improvement = 0
+            else:
+                iterations_without_improvement += 1
 
-            # Remove current courses of this group from schedule
-            new_schedule = [c for c in current_schedule if c.main_code != group]
+            # Reheating: if stuck for too long, increase temperature
+            if (self.enable_reheating and
+                iterations_without_improvement >= self.stagnation_threshold and
+                T < self.temp0 * 0.1):
+                T = self.temp0 * 0.5  # Reheat to 50% of initial temperature
+                iterations_without_improvement = 0
 
-            # Select a random new option (only from non-None options)
-            non_none_options = [opt for opt in valid_options if opt is not None]
-            if not non_none_options:
-                continue
-
-            new_option = random.choice(non_none_options)
-
-            # Add new option courses to schedule
-            new_schedule.extend(new_option)
-
-            # Calculate new credits and fitness
-            new_total = sum(c.ects for c in new_schedule)
-            new_fitness = fitness(new_schedule, new_total)
-
-            # Determine whether to accept the new solution
-            delta = new_fitness - current_fitness
-            if delta < 0 or random.random() < math.exp(-delta / T):
-                current_schedule = new_schedule
-                current_total = new_total
-                current_fitness = new_fitness
-
-                # Update best if this is an improvement
-                if current_fitness < best_fitness:
-                    best_schedule = current_schedule.copy()
-                    best_fitness = current_fitness
-
-            # Cool down temperature
             T *= self.alpha
 
             # Early termination if temperature is too low
-            if T < 1e-3:
+            if T < 1e-3 and iterations_without_improvement > 20:
                 break
 
         return Schedule(best_schedule)
 
+    def _calculate_fitness(self, sched: List[Course], total: int) -> float:
+        """Calculate fitness score for a schedule."""
+        temp_schedule = Schedule(sched)
+
+        if self.scheduler_prefs:
+            return self._calculate_prefs_fitness(temp_schedule, total)
+        else:
+            # Original fitness function for backward compatibility
+            ects_penalty = (self.max_ects - total) ** 2
+            conflict_penalty = temp_schedule.conflict_count * 100
+            return ects_penalty + conflict_penalty
+
+    def _calculate_prefs_fitness(self, temp_schedule: Schedule, total: int) -> float:
+        """Calculate fitness using preferences."""
+        base_score = -score_schedule(temp_schedule, self.scheduler_prefs)
+
+        # Add penalties for constraint violations
+        if self.scheduler_prefs.max_weekly_slots < 60:
+            if not meets_weekly_hours_constraint(temp_schedule, self.scheduler_prefs.max_weekly_slots):
+                return 10000.0
+
+        if self.scheduler_prefs.max_daily_slots is not None:
+            if not meets_daily_hours_constraint(temp_schedule, self.scheduler_prefs.max_daily_slots):
+                return 10000.0
+
+        if (self.scheduler_prefs.compress_classes and
+                self.scheduler_prefs.desired_free_days and
+                self.scheduler_prefs.strict_free_days and
+                not meets_free_day_constraint(
+                    temp_schedule,
+                    self.scheduler_prefs.desired_free_days,
+                    strict=True
+                )):
+            return 10000.0
+
+        # Add penalty for deviation from target ECTS
+        ects_penalty = (self.max_ects - total) ** 2
+
+        # Add penalty for conflicts
+        conflict_penalty = temp_schedule.conflict_count * 100
+
+        return base_score + ects_penalty + conflict_penalty
+
+    def _annealing_step(
+            self,
+            current_schedule: List[Course],
+            current_fitness: float,
+            best_schedule: List[Course],
+            best_fitness: float,
+            group_keys: List[str],
+            group_options: Dict[str, List[Optional[List[Course]]]],
+            fitness_fn,
+            temperature: float,
+    ) -> tuple:
+        """
+        Perform one simulated annealing step.
+
+        Returns:
+            Tuple of (current_schedule, current_fitness, best_schedule, best_fitness, improved)
+            where improved is True if best_fitness was improved
+        """
+        import random
+        import math
+
+        group = random.choice(group_keys)
+        valid_options = group_options.get(group, [])
+
+        if len(valid_options) <= 1:
+            return current_schedule, current_fitness, best_schedule, best_fitness, False
+
+        new_schedule = [c for c in current_schedule if c.main_code != group]
+        non_none_options = [opt for opt in valid_options if opt is not None]
+
+        if not non_none_options:
+            return current_schedule, current_fitness, best_schedule, best_fitness, False
+
+        new_option = random.choice(non_none_options)
+        new_schedule.extend(new_option)
+
+        new_total = sum(c.ects for c in new_schedule)
+        new_fitness = fitness_fn(new_schedule, new_total)
+
+        delta = new_fitness - current_fitness
+        improved = False
+
+        if delta < 0 or random.random() < math.exp(-delta / temperature):
+            current_schedule = new_schedule
+            current_fitness = new_fitness
+
+            if current_fitness < best_fitness:
+                best_schedule = current_schedule.copy()
+                best_fitness = current_fitness
+                improved = True
+
+        return current_schedule, current_fitness, best_schedule, best_fitness, improved
 
     def repair_schedule_with_priority(self,
-                                     schedule: Schedule,
-                                     group_valid_selections: Dict[str, List[List[Course]]],
-                                     priority_order: List[str]) -> Schedule:
+                                      schedule: Schedule,
+                                      group_valid_selections: Dict[str, List[List[Course]]],
+                                      priority_order: List[str]) -> Schedule:
         """
         Repair a schedule by prioritizing certain course types.
 
@@ -200,53 +238,79 @@ class AnnealingOptimizer:
 
         best_schedule = schedule.courses.copy()
         best_cost = schedule.conflict_count
-        improved = True
-        iteration = 0
-        max_iter = 10
 
-        while improved and iteration < max_iter:
-            improved = False
-
-            # Try improvements for each priority type
-            for p_type in priority_order:
-                for group in list(current.keys()):
-                    current_selection = current[group]
-
-                    # Skip if no courses of this type
-                    if not any(course.course_type == p_type for course in current_selection):
-                        continue
-
-                    # Try alternatives for this group
-                    alternatives = group_valid_selections.get(group, [])
-                    for alternative in alternatives:
-                        # Check if priority changed
-                        alt_has_priority = any(course.course_type == p_type for course in alternative)
-                        cur_has_priority = any(course.course_type == p_type for course in current_selection)
-
-                        if alt_has_priority == cur_has_priority:
-                            continue
-
-                        # Generate new schedule with this alternative
-                        new_schedule = []
-                        for g in current:
-                            if g == group:
-                                new_schedule.extend(alternative)
-                            else:
-                                new_schedule.extend(current[g])
-
-                        # Check if it's an improvement
-                        temp_schedule = Schedule(new_schedule)
-                        new_cost = temp_schedule.conflict_count
-
-                        if new_cost < best_cost:
-                            best_cost = new_cost
-                            best_schedule = new_schedule
-                            current[group] = alternative
-                            improved = True
-
-            iteration += 1
+        for _ in range(10):
+            improved = self._try_priority_improvements(
+                current, best_schedule, best_cost, group_valid_selections, priority_order
+            )
+            if not improved:
+                break
 
         return Schedule(best_schedule)
+
+    def _try_priority_improvements(
+            self,
+            current: Dict,
+            best_schedule: List[Course],
+            best_cost: int,
+            group_valid_selections: Dict[str, List[List[Course]]],
+            priority_order: List[str],
+    ) -> bool:
+        """Try improvements for priority types. Returns True if improved."""
+        for p_type in priority_order:
+            for group in current.keys():
+                current_selection = current[group]
+
+                # Skip if no courses of this type
+                if not any(course.course_type == p_type for course in current_selection):
+                    continue
+
+                # Try alternatives for this group
+                alternatives = group_valid_selections.get(group, [])
+                for alternative in alternatives:
+                    if self._try_alternative(
+                            current, group, alternative, current_selection,
+                            best_schedule, best_cost, p_type
+                    ):
+                        return True
+
+        return False
+
+    def _try_alternative(
+            self,
+            current: Dict,
+            group: str,
+            alternative: List[Course],
+            current_selection: List[Course],
+            best_schedule: List[Course],
+            best_cost: int,
+            p_type: str,
+    ) -> bool:
+        """Try an alternative course selection. Returns True if improved."""
+        alt_has_priority = any(course.course_type == p_type for course in alternative)
+        cur_has_priority = any(course.course_type == p_type for course in current_selection)
+
+        if alt_has_priority == cur_has_priority:
+            return False
+
+        # Generate new schedule with this alternative
+        new_schedule = []
+        for g in current:
+            if g == group:
+                new_schedule.extend(alternative)
+            else:
+                new_schedule.extend(current[g])
+
+        # Check if it's an improvement
+        temp_schedule = Schedule(new_schedule)
+        new_cost = temp_schedule.conflict_count
+
+        if new_cost < best_cost:
+            best_schedule[:] = new_schedule
+            current[group] = alternative
+            return True
+
+        return False
 
     def global_repair_schedule(self, schedule: Schedule, all_courses: List[Course]) -> Schedule:
         """
@@ -264,7 +328,7 @@ class AnnealingOptimizer:
 
         for i in range(len(best_schedule)):
             # Try removing one course
-            candidate_removed = best_schedule[:i] + best_schedule[i+1:]
+            candidate_removed = best_schedule[:i] + best_schedule[i + 1:]
 
             # Try substituting with each available course
             for course in all_courses:
@@ -287,10 +351,10 @@ class AnnealingOptimizer:
         return Schedule(best_schedule)
 
     def multi_objective_optimize(self,
-                                schedule: Schedule,
-                                group_keys: List[str],
-                                group_options: Dict[str, List[Optional[List[Course]]]],
-                                objectives: Dict[str, float]) -> Schedule:
+                                 schedule: Schedule,
+                                 group_keys: List[str],
+                                 group_options: Dict[str, List[Optional[List[Course]]]],
+                                 objectives: Dict[str, float]) -> Schedule:
         """
         Optimize schedule for multiple objectives with weights.
 
@@ -309,65 +373,21 @@ class AnnealingOptimizer:
 
         def multi_objective_fitness(sched: List[Course]) -> float:
             """Calculate weighted multi-objective fitness."""
-            temp_schedule = Schedule(sched)
-            stats = compute_schedule_stats(temp_schedule)
-            
-            fitness = 0.0
-            
-            # Conflict objective (lower is better)
-            if "conflicts" in objectives:
-                fitness += objectives["conflicts"] * temp_schedule.conflict_count * 100
-            
-            # ECTS objective (closer to max is better)
-            if "ects" in objectives:
-                ects_diff = abs(self.max_ects - temp_schedule.total_credits)
-                fitness += objectives["ects"] * ects_diff * 10
-            
-            # Gaps objective (fewer gaps is better)
-            if "gaps" in objectives:
-                total_gaps = sum(stats.gaps_per_day.values())
-                fitness += objectives["gaps"] * total_gaps * 50
-            
-            # Day compression objective (fewer days is better)
-            if "compression" in objectives:
-                fitness += objectives["compression"] * stats.days_used * 20
-            
-            return fitness
+            return self._calc_multi_objective_fitness(sched, objectives)
 
         current_fitness = multi_objective_fitness(current_schedule)
         best_schedule = current_schedule.copy()
         best_fitness = current_fitness
 
         T = self.temp0
-        for iteration in range(self.iterations):
+        for _ in range(self.iterations):
             if not group_keys:
                 break
 
-            group = random.choice(group_keys)
-            valid_options = group_options.get(group, [])
-
-            if len(valid_options) <= 1:
-                continue
-
-            new_schedule = [c for c in current_schedule if c.main_code != group]
-            non_none_options = [opt for opt in valid_options if opt is not None]
-            
-            if not non_none_options:
-                continue
-
-            new_option = random.choice(non_none_options)
-            new_schedule.extend(new_option)
-
-            new_fitness = multi_objective_fitness(new_schedule)
-
-            delta = new_fitness - current_fitness
-            if delta < 0 or random.random() < math.exp(-delta / T):
-                current_schedule = new_schedule
-                current_fitness = new_fitness
-
-                if current_fitness < best_fitness:
-                    best_schedule = current_schedule.copy()
-                    best_fitness = current_fitness
+            current_schedule, current_fitness, best_schedule, best_fitness = self._multi_obj_step(
+                current_schedule, current_fitness, best_schedule, best_fitness,
+                group_keys, group_options, multi_objective_fitness, T
+            )
 
             T *= self.alpha
 
@@ -375,3 +395,72 @@ class AnnealingOptimizer:
                 break
 
         return Schedule(best_schedule)
+
+    def _calc_multi_objective_fitness(self, sched: List[Course], objectives: Dict[str, float]) -> float:
+        """Calculate weighted multi-objective fitness."""
+        from utils.schedule_metrics import compute_schedule_stats
+
+        temp_schedule = Schedule(sched)
+        stats = compute_schedule_stats(temp_schedule)
+
+        fitness = 0.0
+
+        # Conflict objective (lower is better)
+        if "conflicts" in objectives:
+            fitness += objectives["conflicts"] * temp_schedule.conflict_count * 100
+
+        # ECTS objective (closer to max is better)
+        if "ects" in objectives:
+            ects_diff = abs(self.max_ects - temp_schedule.total_credits)
+            fitness += objectives["ects"] * ects_diff * 10
+
+        # Gaps objective (fewer gaps is better)
+        if "gaps" in objectives:
+            total_gaps = sum(stats.gaps_per_day.values())
+            fitness += objectives["gaps"] * total_gaps * 50
+
+        # Day compression objective (fewer days is better)
+        if "compression" in objectives:
+            fitness += objectives["compression"] * stats.days_used * 20
+
+        return fitness
+
+    def _multi_obj_step(
+            self,
+            current_schedule: List[Course],
+            current_fitness: float,
+            best_schedule: List[Course],
+            best_fitness: float,
+            group_keys: List[str],
+            group_options: Dict[str, List[Optional[List[Course]]]],
+            fitness_fn,
+            temperature: float,
+    ) -> tuple:
+        """Perform one multi-objective annealing step."""
+        group = random.choice(group_keys)
+        valid_options = group_options.get(group, [])
+
+        if len(valid_options) <= 1:
+            return current_schedule, current_fitness, best_schedule, best_fitness
+
+        new_schedule = [c for c in current_schedule if c.main_code != group]
+        non_none_options = [opt for opt in valid_options if opt is not None]
+
+        if not non_none_options:
+            return current_schedule, current_fitness, best_schedule, best_fitness
+
+        new_option = random.choice(non_none_options)
+        new_schedule.extend(new_option)
+
+        new_fitness = fitness_fn(new_schedule)
+
+        delta = new_fitness - current_fitness
+        if delta < 0 or random.random() < math.exp(-delta / temperature):
+            current_schedule = new_schedule
+            current_fitness = new_fitness
+
+            if current_fitness < best_fitness:
+                best_schedule = current_schedule.copy()
+                best_fitness = current_fitness
+
+        return current_schedule, current_fitness, best_schedule, best_fitness

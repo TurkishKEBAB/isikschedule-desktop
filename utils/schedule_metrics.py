@@ -12,6 +12,7 @@ user-defined preferences like day compression and free day requirements.
 """
 from typing import Dict, List, Optional, Any, NamedTuple
 from dataclasses import dataclass, field
+from functools import lru_cache
 from core.models import Schedule
 
 
@@ -161,53 +162,71 @@ def score_schedule(schedule: Schedule, prefs: SchedulerPrefs) -> float:
     score = 0.0
 
     # Free days score
-    if prefs.desired_free_days:
-        achieved_free_days = set(stats.free_days)
-        desired_free_days = set(prefs.desired_free_days)
-
-        if prefs.strict_free_days:
-            # Strict mode: only count perfectly free days
-            free_day_satisfaction = len(achieved_free_days.intersection(desired_free_days)) / len(desired_free_days)
-        else:
-            # Quasi-free mode: count days with minimal classes as partially free
-            quasi_free_days = set()
-            for day in prefs.desired_free_days:
-                if stats.daily_slot_counts.get(day, 0) <= 1:  # 0 or 1 class
-                    quasi_free_days.add(day)
-            free_day_satisfaction = len(quasi_free_days) / len(desired_free_days)
-
-        score += prefs.weight_free_days * free_day_satisfaction * 100
+    score += _calculate_free_days_score(stats, prefs)
 
     # Day compression score
     if prefs.compress_classes:
-        # Reward using fewer days
-        max_days = 7
-        compression_score = (max_days - stats.days_used) / max_days
-        score += prefs.weight_compression * compression_score * 100
+        score += _calculate_compression_score(stats, prefs)
 
     # Gap minimization score
+    score += _calculate_gap_score(stats, prefs)
+
+    # Consecutive blocks score
+    score += _calculate_consecutive_score(stats, prefs)
+
+    # Conflict penalty
+    score -= prefs.weight_conflicts * schedule.conflict_count * 10
+
+    return score
+
+
+def _calculate_free_days_score(stats: Any, prefs: SchedulerPrefs) -> float:
+    """Calculate score contribution from free days."""
+    if not prefs.desired_free_days:
+        return 0.0
+
+    achieved_free_days = set(stats.free_days)
+    desired_free_days = set(prefs.desired_free_days)
+
+    if prefs.strict_free_days:
+        # Strict mode: only count perfectly free days
+        free_day_satisfaction = len(achieved_free_days.intersection(desired_free_days)) / len(desired_free_days)
+    else:
+        # Quasi-free mode: count days with minimal classes as partially free
+        quasi_free_days = set()
+        for day in prefs.desired_free_days:
+            if stats.daily_slot_counts.get(day, 0) <= 1:  # 0 or 1 class
+                quasi_free_days.add(day)
+        free_day_satisfaction = len(quasi_free_days) / len(desired_free_days)
+
+    return prefs.weight_free_days * free_day_satisfaction * 100
+
+
+def _calculate_compression_score(stats: Any, prefs: SchedulerPrefs) -> float:
+    """Calculate score contribution from day compression."""
+    max_days = 7
+    compression_score = (max_days - stats.days_used) / max_days
+    return prefs.weight_compression * compression_score * 100
+
+
+def _calculate_gap_score(stats: Any, prefs: SchedulerPrefs) -> float:
+    """Calculate score contribution from gap minimization."""
     total_gaps = sum(stats.gaps_per_day.values())
     max_possible_gaps = stats.total_slots  # Worst case: one gap between each class
     if max_possible_gaps > 0:
         gap_score = (max_possible_gaps - total_gaps) / max_possible_gaps
-        score += prefs.weight_gaps * gap_score * 100
+        return prefs.weight_gaps * gap_score * 100
+    return 0.0
 
-    # Consecutive blocks score
+
+def _calculate_consecutive_score(stats: Any, prefs: SchedulerPrefs) -> float:
+    """Calculate score contribution from consecutive blocks."""
     total_consecutive = sum(stats.consecutive_blocks.values())
     max_possible_consecutive = stats.total_slots  # Best case: all classes consecutive
     if max_possible_consecutive > 0:
         consecutive_score = total_consecutive / max_possible_consecutive
-        score += prefs.weight_consecutive * consecutive_score * 100
-
-    # Conflict penalty score (if conflicts are allowed but should be minimized)
-    if prefs.allow_conflicts and schedule.conflict_count > 0:
-        # Penalize conflicts, but don't completely eliminate them if allowed
-        if prefs.max_conflict_hours > 0:
-            conflict_ratio = min(schedule.conflict_count, prefs.max_conflict_hours) / prefs.max_conflict_hours
-            conflict_penalty = prefs.weight_conflicts * conflict_ratio * 50
-            score -= conflict_penalty
-
-    return score
+        return prefs.weight_consecutive * consecutive_score * 100
+    return 0.0
 
 
 def meets_weekly_hours_constraint(schedule: Schedule, max_weekly_slots: int) -> bool:

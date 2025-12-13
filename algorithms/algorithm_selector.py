@@ -9,6 +9,16 @@ from .base_scheduler import AlgorithmMetadata, BaseScheduler
 
 
 def score_algorithm(metadata: AlgorithmMetadata, requirements: Dict[str, Any]) -> float:
+    """
+    Score an algorithm based on how well it matches the given requirements.
+
+    Args:
+        metadata: Algorithm metadata to evaluate
+        requirements: Dictionary of requirements to match
+
+    Returns:
+        Numeric score (higher is better)
+    """
     score = 0.0
 
     if requirements.get("optimal"):
@@ -33,8 +43,20 @@ def score_algorithm(metadata: AlgorithmMetadata, requirements: Dict[str, Any]) -
 
 
 def select_scheduler(requirements: Optional[Dict[str, Any]] = None) -> Type[BaseScheduler]:
-    """Pick the most suitable scheduler based on metadata heuristics."""
+    """
+    Pick the most suitable scheduler based on metadata heuristics.
 
+    Args:
+        requirements: Optional dictionary of requirements. Keys may include:
+            - optimal: bool - prefer optimal algorithms
+            - category: str - prefer specific algorithm category
+            - needs_preferences: bool - require preference support
+            - allow_parallel: bool - prefer parallel algorithms
+            - optimizer: bool - prefer optimizer-type algorithms
+
+    Returns:
+        A scheduler class that best matches the requirements
+    """
     requirements = requirements or {}
     best_score = float("-inf")
     best_cls: Optional[Type[BaseScheduler]] = None

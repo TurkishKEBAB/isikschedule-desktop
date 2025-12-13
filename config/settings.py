@@ -19,7 +19,7 @@ DOCS_DIR = BASE_DIR / "docs"
 
 # Default scheduler parameters
 # Işık University ECTS Limits (Official Academic Regulations):
-# - Freshmen: Maximum 30 ECTS
+# - Freshmen: Maximum 31 ECTS (minimum for all students)
 # - GPA < 2.49: Maximum 31 ECTS
 # - 2.50 ≤ GPA < 3.50: Maximum 37 ECTS
 # - GPA ≥ 3.50: Maximum 42 ECTS
@@ -29,10 +29,10 @@ DEFAULT_MIN_ECTS = 30  # Normal semester load (recommended)
 
 # GPA-based ECTS limits mapping
 ECTS_LIMITS_BY_GPA = {
-    "freshmen": 30,
-    "low": 31,        # GPA < 2.50
-    "medium": 37,     # 2.50 ≤ GPA < 3.50
-    "high": 42,       # GPA ≥ 3.50
+    "freshmen": 31,      # First year students (minimum 31 ECTS for all)
+    "low": 31,           # GPA < 2.50
+    "medium": 37,        # 2.50 ≤ GPA < 3.50
+    "high": 42,          # GPA ≥ 3.50
     "double_major": 45,
 }
 DEFAULT_ALLOW_CONFLICT = 1

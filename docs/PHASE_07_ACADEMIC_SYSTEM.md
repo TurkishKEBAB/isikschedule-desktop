@@ -692,3 +692,27 @@ else:
 **Phase 7 Durum:** 🟡 **85% TAMAMLANDI** (Phase 7.5 bekliyor)  
 **Sonraki:** Phase 7.5 (Transcript Import) → Phase 8 (Advanced GUI)
 
+---
+
+## 🏛️ Architecture
+
+### Class Diagram
+
+Academic system sınıf yapısı için bkz: `docs/CLASS_DIAGRAM.puml`
+
+**Ana Sınıflar:**
+- Grade
+- Transcript
+- GraduationRequirement
+- PrerequisiteChecker
+- GPACalculator
+- GraduationPlanner
+
+### Sequence Diagram
+
+Prerequisite checking sequence: `docs/SEQUENCE_GENERATE.puml`
+
+### State Diagram
+
+Transcript import states: `docs/STATE_DIAGRAM.puml`
+

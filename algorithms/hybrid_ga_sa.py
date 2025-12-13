@@ -2,10 +2,23 @@
 
 from __future__ import annotations
 
-from typing import Any, List, Optional, cast
+from typing import TYPE_CHECKING, Any, List, Optional, cast
 
-from core.models import Schedule
-from utils.schedule_metrics import SchedulerPrefs
+if TYPE_CHECKING:
+    from core.models import Schedule
+    from utils.schedule_metrics import SchedulerPrefs
+
+# Runtime imports
+try:
+    from core.models import Schedule
+except ImportError as e:
+    raise ImportError(f"Required module core.models not found: {e}")
+
+try:
+    from utils.schedule_metrics import SchedulerPrefs
+except ImportError as e:
+    raise ImportError(f"Required module utils.schedule_metrics not found: {e}")
+
 from . import register_scheduler
 from .base_scheduler import AlgorithmMetadata, BaseScheduler, PreparedSearch
 from .genetic_algorithm import GeneticAlgorithmScheduler

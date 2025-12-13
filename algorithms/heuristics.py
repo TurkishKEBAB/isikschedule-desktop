@@ -2,10 +2,22 @@
 
 from __future__ import annotations
 
-from typing import Dict, Iterable, List, Optional, Tuple
+from typing import TYPE_CHECKING, Iterable, List, Optional, Tuple
 
-from core.models import Course, Schedule
-from utils.schedule_metrics import SchedulerPrefs, compute_schedule_stats, score_schedule
+if TYPE_CHECKING:
+    from core.models import Course, Schedule
+    from utils.schedule_metrics import SchedulerPrefs
+
+# Runtime imports
+try:
+    from core.models import Course, Schedule
+except ImportError as e:
+    raise ImportError(f"Required module core.models not found: {e}")
+
+try:
+    from utils.schedule_metrics import SchedulerPrefs, compute_schedule_stats, score_schedule
+except ImportError as e:
+    raise ImportError(f"Required module utils.schedule_metrics not found: {e}")
 
 
 def estimate_conflict_penalty(schedule: Schedule) -> float:

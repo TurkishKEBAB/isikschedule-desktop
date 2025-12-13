@@ -2,10 +2,23 @@
 
 from __future__ import annotations
 
-from typing import List, Optional
+from typing import TYPE_CHECKING, List, Optional
 
-from core.models import Course, Schedule
-from utils.schedule_metrics import SchedulerPrefs
+if TYPE_CHECKING:
+    from core.models import Course, Schedule
+    from utils.schedule_metrics import SchedulerPrefs
+
+# Runtime imports
+try:
+    from core.models import Course, Schedule
+except ImportError as e:
+    raise ImportError(f"Required module core.models not found: {e}")
+
+try:
+    from utils.schedule_metrics import SchedulerPrefs
+except ImportError as e:
+    raise ImportError(f"Required module utils.schedule_metrics not found: {e}")
+
 from . import register_scheduler
 from .base_scheduler import AlgorithmMetadata, BaseScheduler, PreparedSearch
 from .heuristics import rank_options_by_score
@@ -44,7 +57,6 @@ class GreedyScheduler(BaseScheduler):
 
     def _run_algorithm(self, search: PreparedSearch) -> List[Schedule]:
         current_courses: List[Course] = []
-        current_ects = 0
 
         for group_key in search.group_keys:
             options = search.group_options.get(group_key, [])
@@ -66,7 +78,6 @@ class GreedyScheduler(BaseScheduler):
 
             if chosen:
                 current_courses.extend(chosen)
-                current_ects += sum(course.ects for course in chosen)
 
             self._last_run_stats["nodes_explored"] += 1
 

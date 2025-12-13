@@ -127,6 +127,34 @@ class AlgorithmSelector(QWidget):
         self.info_label.setStyleSheet("color: #616161; font-style: italic;")
         selection_layout.addRow("Info:", self.info_label)
 
+        # Lifestyle Mode selector
+        lifestyle_group = QGroupBox("🎯 Lifestyle Mode (Yaşam Tarzı)")
+        lifestyle_layout = QFormLayout(lifestyle_group)
+
+        self.lifestyle_combo = QComboBox()
+        self.lifestyle_combo.addItem("⚖️ Dengeli (Balanced)", "balanced")
+        self.lifestyle_combo.addItem("🌙 Hafif Yük (Minimal)", "minimal")
+        self.lifestyle_combo.addItem("🔥 Yoğun (Intensive)", "intensive")
+        self.lifestyle_combo.addItem("⚙️ Manuel (Custom)", "custom")
+        self.lifestyle_combo.setToolTip("Yaşam tarzına göre otomatik ayar seç")
+        self.lifestyle_combo.currentIndexChanged.connect(self._on_lifestyle_changed)
+
+        self.morning_checkbox = QCheckBox("🌅 Sabah İnsanıyım")
+        self.morning_checkbox.setToolTip("Sabah derslerini tercih et")
+        self.morning_checkbox.stateChanged.connect(self._emit_parameters)
+
+        self.free_day_combo = QComboBox()
+        self.free_day_combo.addItem("Boş Gün Yok", "")
+        self.free_day_combo.addItem("Pazartesi Boş", "Monday")
+        self.free_day_combo.addItem("Cuma Boş", "Friday")
+        self.free_day_combo.addItem("Cumartesi Boş", "Saturday")
+        self.free_day_combo.setToolTip("Boş bırakmak istediğin gün")
+        self.free_day_combo.currentIndexChanged.connect(self._emit_parameters)
+
+        lifestyle_layout.addRow("Mod:", self.lifestyle_combo)
+        lifestyle_layout.addRow("", self.morning_checkbox)
+        lifestyle_layout.addRow("Boş Gün:", self.free_day_combo)
+
         # Parameters group
         self.params_group = QGroupBox("Parameters")
         self.params_layout = QFormLayout(self.params_group)
@@ -153,6 +181,7 @@ class AlgorithmSelector(QWidget):
 
         # Add all groups
         layout.addWidget(selection_group)
+        layout.addWidget(lifestyle_group)
         layout.addWidget(self.params_group)
         layout.addWidget(common_group)
         layout.addStretch()
@@ -191,6 +220,31 @@ class AlgorithmSelector(QWidget):
         self.algorithm_changed.emit(algorithm_name)
         self._emit_parameters()
 
+    def _on_lifestyle_changed(self, index: int) -> None:
+        """Handle lifestyle mode change."""
+        mode = self.lifestyle_combo.currentData()
+
+        if mode == "minimal":
+            # Light load: fewer ECTS, prefer Greedy
+            self.max_ects_spin.setValue(25)
+            self.algorithm_combo.setCurrentText("Greedy")
+            self.params_group.setEnabled(False)
+        elif mode == "intensive":
+            # Heavy load: max ECTS, prefer Genetic for optimization
+            self.max_ects_spin.setValue(40)
+            self.algorithm_combo.setCurrentText("Genetic")
+            self.params_group.setEnabled(False)
+        elif mode == "balanced":
+            # Balanced: default settings
+            self.max_ects_spin.setValue(31)
+            self.algorithm_combo.setCurrentText("DFS")
+            self.params_group.setEnabled(False)
+        else:  # custom
+            # Enable full manual control
+            self.params_group.setEnabled(True)
+
+        self._emit_parameters()
+
     def _get_algorithm_metadata(self, name: str):
         """Get metadata for algorithm by name."""
         for scheduler_cls in iter_registered_schedulers():
@@ -204,7 +258,7 @@ class AlgorithmSelector(QWidget):
         # Clear existing widgets
         while self.params_layout.count():
             item = self.params_layout.takeAt(0)
-            if item.widget():
+            if item and item.widget():
                 item.widget().deleteLater()
 
         self._param_widgets.clear()
@@ -241,11 +295,15 @@ class AlgorithmSelector(QWidget):
             "max_ects": self.max_ects_spin.value(),
             "allow_conflicts": self.max_conflicts_spin.value() > 0,
             "max_conflicts": self.max_conflicts_spin.value(),
+            "lifestyle_mode": self.lifestyle_combo.currentData(),
+            "morning_person": self.morning_checkbox.isChecked(),
+            "free_day_preference": self.free_day_combo.currentData(),
         }
 
         # Add algorithm-specific parameters
         for param_name, widget in self._param_widgets.items():
-            params[param_name] = widget.value()
+            if isinstance(widget, (QSpinBox, QDoubleSpinBox)):
+                params[param_name] = widget.value()
 
         self._current_params = params
         self.parameters_changed.emit(params)
@@ -254,9 +312,46 @@ class AlgorithmSelector(QWidget):
         """Get currently selected algorithm name."""
         return self.algorithm_combo.currentText()
 
+    def set_algorithm(self, name: str) -> bool:
+        """Set the selected algorithm by name.
+
+        Args:
+            name: Algorithm name to select (e.g., 'DFS', 'Greedy', 'A*')
+
+        Returns:
+            True if algorithm was found and selected, False otherwise.
+        """
+        # Try exact match first
+        index = self.algorithm_combo.findText(name)
+        if index >= 0:
+            self.algorithm_combo.setCurrentIndex(index)
+            return True
+
+        # Try case-insensitive match
+        for i in range(self.algorithm_combo.count()):
+            if self.algorithm_combo.itemText(i).lower() == name.lower():
+                self.algorithm_combo.setCurrentIndex(i)
+                return True
+
+        # Try partial match (e.g., "Genetic" matches "Genetic Algorithm")
+        for i in range(self.algorithm_combo.count()):
+            if name.lower() in self.algorithm_combo.itemText(i).lower():
+                self.algorithm_combo.setCurrentIndex(i)
+                return True
+
+        return False
+
     def get_parameters(self) -> Dict[str, Any]:
         """Get current parameter configuration."""
         return self._current_params.copy()
+
+    def get_lifestyle_preferences(self) -> Dict[str, Any]:
+        """Get lifestyle-based preferences for scheduler."""
+        return {
+            "lifestyle_mode": self.lifestyle_combo.currentData(),
+            "morning_person": self.morning_checkbox.isChecked(),
+            "free_day_preference": self.free_day_combo.currentData(),
+        }
 
 
 __all__ = ["AlgorithmSelector"]

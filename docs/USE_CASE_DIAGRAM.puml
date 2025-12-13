@@ -1,0 +1,150 @@
+@startuml SchedularV3_Use_Cases
+!theme plain
+skinparam actorBackgroundColor #F0F8FF
+skinparam usecaseBackgroundColor #F0F8FF
+skinparam usecaseBorderColor #0018A8
+
+title SchedularV3 - Use Case Diagram
+
+left to right direction
+
+actor "Student" as Student
+actor "Academic Advisor" as Advisor
+actor "Administrator" as Admin
+
+rectangle "SchedularV3 System" {
+    ' File Management
+    usecase "Load Course Data" as UC1
+    usecase "Import Excel File" as UC1a
+    usecase "Import Transcript" as UC1b
+    
+    ' Course Management
+    usecase "Browse Courses" as UC2
+    usecase "Filter Courses" as UC2a
+    usecase "Search Courses" as UC2b
+    usecase "Delete Courses" as UC2c
+    
+    ' Course Selection
+    usecase "Select Mandatory Courses" as UC3
+    usecase "Select Optional Courses" as UC3a
+    usecase "Exclude Courses" as UC3b
+    
+    ' Schedule Generation
+    usecase "Configure Algorithm" as UC4
+    usecase "Set Parameters" as UC4a
+    usecase "Set Preferences" as UC4b
+    usecase "Generate Schedules" as UC5
+    usecase "View Schedules" as UC6
+    usecase "Check Conflicts" as UC6a
+    usecase "Compare Schedules" as UC6b
+    
+    ' Academic Features
+    usecase "Calculate GPA" as UC7
+    usecase "Simulate Grades" as UC7a
+    usecase "Check Prerequisites" as UC8
+    usecase "View Prerequisite Chain" as UC8a
+    usecase "Check Graduation Progress" as UC9
+    usecase "View Timeline" as UC9a
+    usecase "Get Recommendations" as UC9b
+    
+    ' Export & Reporting
+    usecase "Export Schedule" as UC10
+    usecase "Export to PDF" as UC10a
+    usecase "Export to Excel" as UC10b
+    usecase "Export to JPEG" as UC10c
+    
+    ' Data Management
+    usecase "Manage Transcripts" as UC11
+    usecase "Add Grades" as UC11a
+    usecase "Edit Grades" as UC11b
+    usecase "Delete Grades" as UC11c
+    
+    ' System Management
+    usecase "Configure Settings" as UC12
+    usecase "View Logs" as UC13
+    usecase "Benchmark Algorithms" as UC14
+}
+
+' Student relationships
+Student --> UC1
+Student --> UC2
+Student --> UC3
+Student --> UC5
+Student --> UC6
+Student --> UC7
+Student --> UC8
+Student --> UC9
+Student --> UC10
+
+' Advisor relationships
+Advisor --> UC1
+Advisor --> UC2
+Advisor --> UC5
+Advisor --> UC6
+Advisor --> UC9
+Advisor --> UC10
+Advisor --> UC14
+
+' Admin relationships
+Admin --> UC1
+Admin --> UC2
+Admin --> UC2c
+Admin --> UC12
+Admin --> UC13
+Admin --> UC14
+
+' Include relationships
+UC1 .> UC1a : <<include>>
+UC1 .> UC1b : <<include>>
+
+UC2 .> UC2a : <<include>>
+UC2 .> UC2b : <<include>>
+
+UC3 .> UC3a : <<extend>>
+UC3 .> UC3b : <<extend>>
+
+UC4 .> UC4a : <<include>>
+UC4 .> UC4b : <<include>>
+
+UC5 .> UC4 : <<include>>
+
+UC6 .> UC6a : <<include>>
+UC6 .> UC6b : <<extend>>
+
+UC7 .> UC7a : <<extend>>
+
+UC8 .> UC8a : <<include>>
+
+UC9 .> UC9a : <<include>>
+UC9 .> UC9b : <<include>>
+
+UC10 .> UC10a : <<extend>>
+UC10 .> UC10b : <<extend>>
+UC10 .> UC10c : <<extend>>
+
+UC11 .> UC11a : <<include>>
+UC11 .> UC11b : <<extend>>
+UC11 .> UC11c : <<extend>>
+
+note right of Student
+  Primary user
+  Creates schedules
+  Tracks academic progress
+  Plans graduation
+end note
+
+note right of Advisor
+  Assists students
+  Reviews schedules
+  Provides recommendations
+  Analyzes conflicts
+end note
+
+note right of Admin
+  System configuration
+  Data management
+  Performance monitoring
+  Algorithm benchmarking
+end note
+
+@enduml

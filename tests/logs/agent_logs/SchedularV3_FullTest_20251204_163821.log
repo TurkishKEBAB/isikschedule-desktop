@@ -1,0 +1,598 @@
+2025-12-04 16:38:22.211 - INFO - ================================================================================
+2025-12-04 16:38:22.291 - INFO - Test Session Started: SchedularV3_FullTest
+2025-12-04 16:38:22.295 - INFO - Timestamp: 2025-12-04 16:38:21.277696
+2025-12-04 16:38:22.298 - INFO - ================================================================================
+2025-12-04 16:38:23.300 - INFO - 🚀 Starting comprehensive test suite...
+2025-12-04 16:38:23.316 - INFO - 
+================================================================================
+2025-12-04 16:38:23.317 - INFO - PHASE 1: GUI TESTS
+2025-12-04 16:38:23.318 - INFO - ================================================================================
+2025-12-04 16:38:23.319 - INFO - Testing GUI elements and interactions...
+2025-12-04 16:38:23.462 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:23.467 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:23.469 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:23.470 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:23.926 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:38:24.438 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:24.443 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:24.444 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:24.446 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:24.980 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:38:25.492 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:25.630 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:25.698 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:25.700 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:26.282 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:38:26.797 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:26.804 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:26.805 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:26.807 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:27.326 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:38:27.839 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:27.846 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:27.848 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:27.850 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:28.453 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:38:28.968 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:28.976 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:28.978 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:28.981 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:29.510 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:38:30.196 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:38:30.360 - ERROR - ❌ [GUI] select: algorithm_selector | Expected: A* | Actual: ComboBox not found | ComboBox 'algorithm_selector' not found
+2025-12-04 16:38:30.876 - ERROR - ❌ [GUI] select: algorithm_selector | Expected: Greedy | Actual: ComboBox not found | ComboBox 'algorithm_selector' not found
+2025-12-04 16:38:31.382 - ERROR - ❌ [GUI] select: algorithm_selector | Expected: Backtracking | Actual: ComboBox not found | ComboBox 'algorithm_selector' not found
+2025-12-04 16:38:32.229 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:38:32.744 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:32.751 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:32.753 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:32.755 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:33.358 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:38:33.872 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:33.880 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:33.881 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:33.883 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:34.497 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:38:35.012 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:35.019 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:35.021 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:35.024 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:35.550 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:38:36.063 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:36.447 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:36.455 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:36.458 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:36.474 - INFO - ✅ GUI tests completed
+2025-12-04 16:38:36.486 - INFO - 
+================================================================================
+2025-12-04 16:38:36.489 - INFO - PHASE 2: TRANSCRIPT TESTS
+2025-12-04 16:38:36.492 - INFO - ================================================================================
+2025-12-04 16:38:36.494 - INFO - Testing transcript functionality...
+2025-12-04 16:38:37.068 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:38:37.596 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:37.603 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:37.605 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:37.607 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:37.611 - INFO - Testing GPA: 2.0
+2025-12-04 16:38:37.626 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:37.633 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:37.635 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:37.637 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:37.944 - INFO - Testing GPA: 2.5
+2025-12-04 16:38:37.953 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:37.958 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:37.960 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:37.963 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:38.269 - INFO - Testing GPA: 3.0
+2025-12-04 16:38:38.278 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:38.283 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:38.285 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:38.287 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:38.594 - INFO - Testing GPA: 3.5
+2025-12-04 16:38:38.601 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:38.607 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:38.608 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:38.609 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:38.915 - INFO - Testing GPA: 4.0
+2025-12-04 16:38:38.923 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:38.929 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:38.930 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:38.931 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:39.237 - INFO - ✅ Transcript tests completed
+2025-12-04 16:38:39.242 - INFO - 
+================================================================================
+2025-12-04 16:38:39.243 - INFO - PHASE 3: ALGORITHM TESTS
+2025-12-04 16:38:39.244 - INFO - ================================================================================
+2025-12-04 16:38:39.246 - INFO - Testing scheduling algorithms...
+2025-12-04 16:38:39.757 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:38:40.261 - INFO - Testing algorithm: A*
+2025-12-04 16:38:40.377 - ERROR - ❌ [GUI] select: algorithm_selector | Expected: A* | Actual: ComboBox not found | ComboBox 'algorithm_selector' not found
+2025-12-04 16:38:40.687 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:40.695 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:40.696 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:40.698 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:40.921 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:38:40.928 - INFO - Testing algorithm: Greedy
+2025-12-04 16:38:41.137 - ERROR - ❌ [GUI] select: algorithm_selector | Expected: Greedy | Actual: ComboBox not found | ComboBox 'algorithm_selector' not found
+2025-12-04 16:38:41.451 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:41.457 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:41.458 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:41.460 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:41.618 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:38:41.621 - INFO - Testing algorithm: Backtracking
+2025-12-04 16:38:41.756 - ERROR - ❌ [GUI] select: algorithm_selector | Expected: Backtracking | Actual: ComboBox not found | ComboBox 'algorithm_selector' not found
+2025-12-04 16:38:42.070 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:42.076 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:42.077 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:42.080 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:42.242 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:38:42.245 - INFO - Testing algorithm: BFS
+2025-12-04 16:38:42.409 - ERROR - ❌ [GUI] select: algorithm_selector | Expected: BFS | Actual: ComboBox not found | ComboBox 'algorithm_selector' not found
+2025-12-04 16:38:42.722 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:42.728 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:42.730 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:42.732 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:42.889 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:38:42.892 - INFO - Testing algorithm: DFS
+2025-12-04 16:38:43.047 - ERROR - ❌ [GUI] select: algorithm_selector | Expected: DFS | Actual: ComboBox not found | ComboBox 'algorithm_selector' not found
+2025-12-04 16:38:43.360 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:43.365 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:43.366 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:43.367 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:43.537 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:38:43.543 - INFO - ✅ Algorithm tests completed
+2025-12-04 16:38:43.548 - INFO - 
+================================================================================
+2025-12-04 16:38:43.549 - INFO - PHASE 4: INTEGRATION TESTS
+2025-12-04 16:38:43.550 - INFO - ================================================================================
+2025-12-04 16:38:43.552 - INFO - Testing end-to-end workflows...
+2025-12-04 16:38:44.038 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:38:44.695 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:38:45.191 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:38:45.702 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:45.709 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:45.711 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:45.713 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:46.315 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:38:46.830 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:46.840 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:46.842 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:46.845 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:47.475 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:38:48.145 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:38:48.740 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:38:49.251 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:49.258 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:49.260 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:49.261 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:49.267 - INFO - Testing ECTS constraints...
+2025-12-04 16:38:49.268 - INFO - Testing max ECTS: 31
+2025-12-04 16:38:49.279 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:49.284 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:49.287 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:49.289 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:49.595 - INFO - Testing max ECTS: 35
+2025-12-04 16:38:49.606 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:49.613 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:49.615 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:49.617 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:49.924 - INFO - Testing max ECTS: 40
+2025-12-04 16:38:49.934 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:49.941 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:49.942 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:49.944 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:50.251 - INFO - Testing max ECTS: 45
+2025-12-04 16:38:50.265 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:50.273 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:50.275 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:50.277 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:50.584 - INFO - ✅ Integration tests completed
+2025-12-04 16:38:50.590 - INFO - 
+================================================================================
+2025-12-04 16:38:50.590 - INFO - PHASE 5: STRESS TESTS (QUICK VERSION)
+2025-12-04 16:38:50.591 - INFO - ================================================================================
+2025-12-04 16:38:50.593 - INFO - Running stress tests for 60 seconds...
+2025-12-04 16:38:50.600 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:50.604 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:50.606 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:50.606 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:50.622 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:50.631 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:50.632 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:50.633 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:51.119 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:38:52.136 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:52.150 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:52.161 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:52.163 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:52.185 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:52.194 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:52.196 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:52.198 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:52.365 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:38:52.835 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:38:53.730 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:38:54.434 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:38:54.849 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:38:55.166 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:55.172 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:55.173 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:55.175 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:55.182 - INFO - Stress test: 10 actions completed
+2025-12-04 16:38:55.749 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:38:56.521 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:38:56.736 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:56.742 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:56.744 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:56.746 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:57.265 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:38:57.475 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:57.483 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:57.486 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:57.487 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:57.734 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:38:58.054 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:58.064 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:58.066 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:58.068 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:58.091 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:58.100 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:58.102 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:58.104 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:58.726 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:38:59.467 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:38:59.681 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:59.688 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:59.690 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:59.691 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:59.701 - INFO - Stress test: 20 actions completed
+2025-12-04 16:38:59.714 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:59.722 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:59.724 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:59.726 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:59.744 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:59.751 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:59.753 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:59.755 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:38:59.777 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:38:59.783 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:38:59.785 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:38:59.787 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:00.407 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:39:00.620 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:00.628 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:00.630 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:00.631 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:00.647 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:00.655 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:00.657 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:00.659 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:01.304 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:39:01.520 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:01.527 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:01.529 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:01.530 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:01.546 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:01.552 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:01.553 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:01.555 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:02.149 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:39:02.363 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:02.371 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:02.373 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:02.374 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:02.382 - INFO - Stress test: 30 actions completed
+2025-12-04 16:39:02.393 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:02.401 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:02.402 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:02.404 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:02.420 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:02.428 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:02.429 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:02.431 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:02.611 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:03.499 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:39:03.887 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:04.708 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:39:04.920 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:04.929 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:04.931 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:04.933 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:05.159 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:05.993 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:39:06.203 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:06.297 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:06.299 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:06.301 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:06.317 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:06.347 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:06.349 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:06.353 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:06.377 - INFO - Stress test: 40 actions completed
+2025-12-04 16:39:06.925 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:39:07.614 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:39:07.985 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:08.298 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:08.303 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:08.305 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:08.307 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:08.460 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:08.976 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:09.290 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:09.296 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:09.297 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:09.299 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:09.312 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:09.318 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:09.320 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:09.322 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:09.337 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:09.343 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:09.344 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:09.346 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:09.362 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:09.370 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:09.371 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:09.373 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:09.386 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:09.392 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:09.393 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:09.395 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:09.401 - INFO - Stress test: 50 actions completed
+2025-12-04 16:39:09.409 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:09.415 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:09.417 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:09.418 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:09.433 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:09.439 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:09.441 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:09.443 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:09.460 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:09.465 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:09.467 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:09.468 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:09.482 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:09.489 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:09.490 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:09.492 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:10.052 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:39:10.432 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:10.869 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:11.338 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:11.651 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:11.658 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:11.660 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:11.662 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:11.677 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:11.684 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:11.685 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:11.687 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:11.702 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:11.708 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:11.710 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:11.712 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:11.719 - INFO - Stress test: 60 actions completed
+2025-12-04 16:39:11.936 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:12.396 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:12.854 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:13.318 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:14.226 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:39:14.440 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:14.446 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:14.448 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:14.450 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:14.466 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:14.473 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:14.474 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:14.476 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:15.014 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:39:15.225 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:15.232 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:15.233 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:15.235 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:15.391 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:15.702 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:15.710 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:15.712 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:15.713 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:15.720 - INFO - Stress test: 70 actions completed
+2025-12-04 16:39:15.927 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:16.755 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:39:17.531 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:39:17.744 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:17.751 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:17.752 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:17.754 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:17.771 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:17.778 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:17.780 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:17.783 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:18.285 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:39:19.034 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:39:19.821 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:39:20.196 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:20.516 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:20.527 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:20.529 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:20.531 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:20.596 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:20.615 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:20.616 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:20.618 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:20.634 - INFO - Stress test: 80 actions completed
+2025-12-04 16:39:20.785 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:21.104 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:21.111 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:21.112 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:21.113 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:21.356 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:22.726 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:22.868 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:22.869 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:22.871 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:23.380 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:39:23.729 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:24.143 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:24.455 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:24.461 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:24.462 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:24.464 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:25.062 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:39:25.820 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:39:26.033 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:26.040 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:26.041 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:26.043 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:26.049 - INFO - Stress test: 90 actions completed
+2025-12-04 16:39:26.549 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:39:27.289 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:39:27.499 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:27.506 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:27.508 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:27.510 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:27.687 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:28.190 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:28.701 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:29.016 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:29.022 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:29.025 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:29.027 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:29.216 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:29.699 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:30.010 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:30.018 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:30.019 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:30.021 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:30.046 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:30.053 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:30.056 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:30.058 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:30.065 - INFO - Stress test: 100 actions completed
+2025-12-04 16:39:30.082 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:30.090 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:30.092 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:30.095 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:30.346 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:31.191 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:39:31.546 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:32.010 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:32.497 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:32.995 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:33.862 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:39:34.076 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:34.083 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:34.085 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:34.087 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:34.279 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:34.594 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:34.601 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:34.602 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:34.604 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:34.612 - INFO - Stress test: 110 actions completed
+2025-12-04 16:39:34.625 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:34.633 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:34.635 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:34.637 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:34.856 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:35.781 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:39:35.998 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:36.006 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:36.008 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:36.010 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:36.634 - INFO - ✅ [GUI] click: tab_0 | Expected: Switch to tab 0 | Actual: Switched to tab 0: 📁 File & Settings
+2025-12-04 16:39:36.902 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:36.952 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:36.958 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:36.960 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:37.160 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:37.636 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:38.073 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:38.385 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:38.390 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:38.392 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:38.393 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:38.407 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:38.413 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:38.414 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:38.415 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:38.420 - INFO - Stress test: 120 actions completed
+2025-12-04 16:39:38.431 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:38.437 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:38.438 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:38.439 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:38.924 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:39:39.654 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:39:40.035 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:40.350 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:40.356 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:40.356 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:40.358 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:40.371 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:40.377 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:40.378 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:40.380 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:40.393 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:40.399 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:40.402 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:40.402 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:40.893 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:39:41.248 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:42.119 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:39:42.328 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:42.335 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:42.337 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:42.338 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:42.344 - INFO - Stress test: 130 actions completed
+2025-12-04 16:39:42.353 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:42.359 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:42.360 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:42.362 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:42.376 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:42.381 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:42.383 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:42.384 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:42.944 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:39:43.158 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:43.167 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:43.170 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:43.173 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:43.743 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:39:44.125 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:44.613 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:44.926 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:44.934 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:44.937 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:44.939 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:45.102 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:45.564 - ERROR - ❌ [GUI] click: Load Sample Data | Expected: Button clicked | Actual: Button not found | Button 'Load Sample Data' not found in GUI
+2025-12-04 16:39:45.876 - ERROR - 🔍 STATE INCONSISTENCIES DETECTED (2):
+2025-12-04 16:39:45.883 - ERROR -    • CRITICAL: Max ECTS mismatch - Internal=31, UI Display=0
+2025-12-04 16:39:45.885 - ERROR -    • WARNING: GPA-based ECTS limit incorrect - GPA=0.0, Expected=30, Actual=31
+2025-12-04 16:39:45.887 - INFO - 📸 STATE SNAPSHOT: GPA=0.00, Credits=0/31, Courses=0, Conflicts=0
+2025-12-04 16:39:45.894 - INFO - Stress test: 140 actions completed
+2025-12-04 16:39:46.500 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:39:46.888 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:47.402 - ERROR - ❌ [GUI] click: Export | Expected: Button clicked | Actual: Button not found | Button 'Export' not found in GUI
+2025-12-04 16:39:48.292 - INFO - ✅ [GUI] click: tab_1 | Expected: Switch to tab 1 | Actual: Switched to tab 1: 📚 Course Browser
+2025-12-04 16:39:48.695 - ERROR - ❌ [GUI] click: Run Scheduler | Expected: Button clicked | Actual: Button not found | Button 'Run Scheduler' not found in GUI
+2025-12-04 16:39:49.564 - INFO - ✅ [GUI] click: tab_3 | Expected: Switch to tab 3 | Actual: Switched to tab 3: 📊 Schedule Viewer
+2025-12-04 16:39:50.314 - INFO - ✅ [GUI] click: tab_4 | Expected: Switch to tab 4 | Actual: Switched to tab 4: 🎓 Academic
+2025-12-04 16:39:51.075 - INFO - ✅ [GUI] click: tab_2 | Expected: Switch to tab 2 | Actual: Switched to tab 2: ✅ Course Selector
+2025-12-04 16:39:51.281 - INFO - ✅ Stress tests completed - 148 random actions executed
+2025-12-04 16:39:51.384 - INFO - 
+================================================================================
+2025-12-04 16:39:51.386 - INFO - FINALIZING TESTS AND GENERATING REPORTS
+2025-12-04 16:39:51.388 - INFO - ================================================================================
+2025-12-04 16:39:51.390 - INFO - ================================================================================
+2025-12-04 16:39:51.392 - INFO - Test Session Complete: SchedularV3_FullTest
+2025-12-04 16:39:51.394 - INFO - Duration: 0:01:30.112649
+2025-12-04 16:39:51.396 - INFO - Total Actions: 125
+2025-12-04 16:39:51.398 - INFO - Success: 61 | Failed: 64 | Warnings: 0
+2025-12-04 16:39:51.400 - INFO - Success Rate: 48.80%
+2025-12-04 16:39:51.403 - INFO - Total Issues: 260
+2025-12-04 16:39:51.405 - INFO - ================================================================================
+2025-12-04 16:39:51.425 - INFO - JSON log saved: C:\Users\PC\Downloads\SchedularDeprecatedV1\SchedularV3\tests\logs\agent_logs\SchedularV3_FullTest_20251204_163821.json
+2025-12-04 16:39:51.441 - INFO - Generating HTML report...
+2025-12-04 16:39:51.456 - INFO - ✅ HTML Report generated: C:\Users\PC\Downloads\SchedularDeprecatedV1\SchedularV3\tests\logs\reports\test_report.html
+2025-12-04 16:39:52.013 - INFO - ✅ JSON Log saved: C:\Users\PC\Downloads\SchedularDeprecatedV1\SchedularV3\tests\logs\agent_logs\SchedularV3_FullTest_20251204_163821.json
+2025-12-04 16:39:52.019 - INFO - ✅ Text Log saved: C:\Users\PC\Downloads\SchedularDeprecatedV1\SchedularV3\tests\logs\agent_logs\SchedularV3_FullTest_20251204_163821.log

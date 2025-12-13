@@ -1,0 +1,90 @@
+@startuml SchedularV3_Data_Flow
+!theme plain
+skinparam actorBackgroundColor #F0F8FF
+skinparam participantBackgroundColor #F0F8FF
+skinparam participantBorderColor #0018A8
+
+title SchedularV3 - Data Flow Diagram
+
+actor User
+participant "MainWindow" as MW
+participant "FileSettingsTab" as FST
+participant "ExcelLoader" as EL
+participant "Database" as DB
+participant "AlgorithmSelector" as AS
+participant "BaseScheduler" as SCHED
+participant "ScheduleViewerTab" as SVT
+participant "ReportExporter" as REP
+
+== Course Data Loading ==
+User -> MW : Open Excel File
+MW -> FST : Activate Tab
+FST -> EL : process_excel(file_path)
+EL -> EL : Read Excel
+EL -> EL : Normalize columns
+EL -> EL : Parse time slots
+EL -> EL : Create Course objects
+EL --> FST : List[Course]
+FST -> DB : save_courses(courses)
+DB -> DB : Insert/Update records
+DB --> FST : Success
+FST -> MW : file_selected signal
+MW -> MW : Update status
+
+== Course Selection ==
+User -> MW : Switch to Selector Tab
+MW -> MW : Load courses
+MW -> MW : Build course groups
+User -> MW : Select Mandatory/Optional
+MW -> MW : Update selection state
+
+== Schedule Generation ==
+User -> FST : Configure algorithm
+User -> FST : Click Generate
+FST -> AS : select_scheduler(requirements)
+AS -> AS : Score algorithms
+AS --> FST : Scheduler class
+FST -> SCHED : generate_schedules(groups, mandatory, optional)
+
+SCHED -> SCHED : prepare_search_space()
+SCHED -> SCHED : _run_algorithm()
+loop For each valid combination
+    SCHED -> SCHED : validate_selection()
+    SCHED -> SCHED : check_conflicts()
+    SCHED -> SCHED : check_ects_limit()
+end
+SCHED -> SCHED : finalize_results()
+SCHED -> SCHED : sort_by_preferences()
+SCHED --> FST : List[Schedule]
+
+FST -> MW : schedules_generated signal
+MW -> SVT : Display schedules
+SVT -> SVT : Create grid view
+SVT -> SVT : Highlight conflicts
+
+== Schedule Export ==
+User -> SVT : Click Export
+SVT -> REP : export_pdf(schedule)
+REP -> REP : Generate PDF
+REP -> REP : Add logo & styling
+REP --> SVT : PDF file
+SVT -> User : Download PDF
+
+note right of EL
+  Excel parsing:
+  - Turkish character support
+  - Time slot conversion
+  - Course type detection
+  - Main code extraction
+end note
+
+note right of SCHED
+  Algorithm execution:
+  - Search space preparation
+  - Constraint validation
+  - Conflict detection
+  - Preference scoring
+  - Result optimization
+end note
+
+@enduml
