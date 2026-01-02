@@ -9,16 +9,20 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     QWidget,
-    QGroupBox,
     QLabel,
     QPushButton,
     QFrame,
     QCheckBox,
     QProgressBar,
     QMessageBox,
+    QScrollArea,
 )
 
-from config.settings import ISIK_BLUE_PRIMARY
+try:
+    from config.settings import ISIK_BLUE_PRIMARY
+except ImportError:
+    ISIK_BLUE_PRIMARY = "#0018A8"
+
 from gui.widgets import AlgorithmSelector
 
 
@@ -45,7 +49,7 @@ ALGORITHM_HINTS: Dict[str, Dict[str, Any]] = {
         "use_case": "Minimum adımda çözüm",
         "color": "#e74c3c"
     },
-    "a_star": {
+    "a*": {
         "speed": "⚡ Fast",
         "quality": "⭐⭐⭐⭐",
         "description": "Akıllı arama ile hızlı ve kaliteli sonuç.",
@@ -59,35 +63,35 @@ ALGORITHM_HINTS: Dict[str, Dict[str, Any]] = {
         "use_case": "Karmaşık kısıtlamalar",
         "color": "#9b59b6"
     },
-    "simulated_annealing": {
+    "simulatedannealing": {
         "speed": "🔄 Variable",
         "quality": "⭐⭐⭐⭐",
         "description": "Yerel minimumlardan kaçınabilir. Kaliteli sonuçlar.",
         "use_case": "Optimization problemleri",
         "color": "#f39c12"
     },
-    "tabu_search": {
+    "tabusearch": {
         "speed": "⚡ Fast",
         "quality": "⭐⭐⭐⭐",
         "description": "Daha önce denenen çözümleri hatırlar.",
         "use_case": "Tekrarlı arama önleme",
         "color": "#1abc9c"
     },
-    "hill_climbing": {
+    "hillclimbing": {
         "speed": "⚡⚡ Very Fast",
         "quality": "⭐⭐⭐",
         "description": "Basit ve hızlı. Yerel optimuma takılabilir.",
         "use_case": "Hızlı sonuç gerektiğinde",
         "color": "#27ae60"
     },
-    "constraint_programming": {
+    "constraintprogramming": {
         "speed": "🔄 Variable",
         "quality": "⭐⭐⭐⭐⭐",
         "description": "Kısıtlama tabanlı çözüm. Tam optimal sonuç.",
         "use_case": "Karmaşık kısıtlamalar",
         "color": "#8e44ad"
     },
-    "hybrid_ga_sa": {
+    "hybridga+sa": {
         "speed": "🐢 Slow",
         "quality": "⭐⭐⭐⭐⭐",
         "description": "Genetik + SA kombinasyonu. En iyi sonuçlar.",
@@ -100,43 +104,61 @@ ALGORITHM_HINTS: Dict[str, Dict[str, Any]] = {
 class AlgorithmTab(QWidget):
     """Tab for algorithm selection and configuration with performance hints."""
 
-    algorithm_configured = pyqtSignal(str, dict)  # Algorithm name, parameters
-    auto_tune_requested = pyqtSignal()  # Request auto-tune based on course count
+    algorithm_configured = pyqtSignal(str, dict)
+    auto_tune_requested = pyqtSignal()
 
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self._simulation_mode = False
         self._setup_ui()
 
-    def _setup_ui(self) -> None:
-        """Initialize UI components."""
-        layout = QVBoxLayout(self)
-        layout.setSpacing(15)
-        layout.setContentsMargins(20, 20, 20, 20)
-
-        # Apply Işık University theme
-        self.setStyleSheet(f"""
-            QGroupBox {{
-                font-weight: bold;
+    def _create_card(self, title: str = None) -> tuple[QFrame, QVBoxLayout]:
+        """Create a styled card frame."""
+        card = QFrame()
+        card.setObjectName("algorithmCard")
+        card.setStyleSheet(f"""
+            QFrame#algorithmCard {{
+                background-color: palette(base);
                 border: 2px solid {ISIK_BLUE_PRIMARY};
-                border-radius: 5px;
-                margin-top: 10px;
-                padding-top: 10px;
-            }}
-            QGroupBox::title {{
-                color: {ISIK_BLUE_PRIMARY};
-                subcontrol-origin: margin;
-                left: 10px;
-                padding: 0 5px;
+                border-radius: 8px;
             }}
         """)
+        
+        layout = QVBoxLayout(card)
+        layout.setSpacing(12)
+        layout.setContentsMargins(16, 16, 16, 16)
+        
+        if title:
+            title_label = QLabel(title)
+            title_label.setStyleSheet(f"""
+                font-size: 15px;
+                font-weight: bold;
+                color: {ISIK_BLUE_PRIMARY};
+                padding-bottom: 8px;
+            """)
+            layout.addWidget(title_label)
+        
+        return card, layout
+
+    def _setup_ui(self) -> None:
+        """Initialize UI components."""
+        # Main scroll area for responsiveness
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setFrameShape(QFrame.Shape.NoFrame)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        
+        content_widget = QWidget()
+        layout = QVBoxLayout(content_widget)
+        layout.setSpacing(20)
+        layout.setContentsMargins(20, 20, 20, 20)
 
         # Description
         info_label = QLabel(
             "Select a scheduling algorithm and configure its parameters to generate your optimal schedule."
         )
         info_label.setWordWrap(True)
-        info_label.setStyleSheet("color: #555; font-size: 14px; margin-bottom: 10px;")
+        info_label.setStyleSheet("color: palette(text); font-size: 14px; margin-bottom: 10px;")
         layout.addWidget(info_label)
 
         # Algorithm Selector Widget
@@ -145,107 +167,68 @@ class AlgorithmTab(QWidget):
         self.algo_selector.parameters_changed.connect(self._on_params_changed)
         layout.addWidget(self.algo_selector)
 
-        # Performance Hints Section
-        layout.addWidget(self._create_performance_hints_section())
+        # Performance Hints Card
+        hints_card, hints_layout = self._create_card("📊 Performance Hints")
+        
+        self.speed_label = QLabel("Speed: Select an algorithm")
+        self.speed_label.setStyleSheet("font-size: 14px; font-weight: bold; padding: 4px;")
+        hints_layout.addWidget(self.speed_label)
 
-        # Auto-Tune & Simulation Section
-        layout.addWidget(self._create_auto_tune_section())
-
-        layout.addStretch()
-
-    def _create_performance_hints_section(self) -> QGroupBox:
-        """Create the performance hints panel."""
-        group = QGroupBox("📊 Performance Hints")
-        layout = QVBoxLayout(group)
-        layout.setSpacing(10)
-
-        # Hint display area
-        self.hint_frame = QFrame()
-        self.hint_frame.setStyleSheet("""
-            QFrame {
-                background-color: #f8f9fa;
-                border: 1px solid #dee2e6;
-                border-radius: 8px;
-                padding: 10px;
-            }
-        """)
-        hint_layout = QVBoxLayout(self.hint_frame)
-
-        # Speed indicator
-        self.speed_label = QLabel("Speed: -")
-        self.speed_label.setStyleSheet("font-size: 14px; font-weight: bold;")
-        hint_layout.addWidget(self.speed_label)
-
-        # Quality indicator
         self.quality_label = QLabel("Quality: -")
-        self.quality_label.setStyleSheet("font-size: 14px; font-weight: bold;")
-        hint_layout.addWidget(self.quality_label)
+        self.quality_label.setStyleSheet("font-size: 14px; font-weight: bold; padding: 4px;")
+        hints_layout.addWidget(self.quality_label)
 
-        # Description
         self.desc_label = QLabel("Select an algorithm to see performance hints.")
         self.desc_label.setWordWrap(True)
-        self.desc_label.setStyleSheet("color: #555; font-size: 12px; margin-top: 5px;")
-        hint_layout.addWidget(self.desc_label)
+        self.desc_label.setStyleSheet("color: palette(text); font-size: 13px; padding: 8px 4px;")
+        hints_layout.addWidget(self.desc_label)
 
-        # Use case
         self.usecase_label = QLabel("")
         self.usecase_label.setWordWrap(True)
-        self.usecase_label.setStyleSheet("color: #666; font-size: 11px; font-style: italic;")
-        hint_layout.addWidget(self.usecase_label)
+        self.usecase_label.setStyleSheet("color: palette(text); font-size: 12px; font-style: italic; padding: 4px;")
+        hints_layout.addWidget(self.usecase_label)
+        
+        layout.addWidget(hints_card)
 
-        layout.addWidget(self.hint_frame)
-
-        # Update hints for initial selection
-        self._update_performance_hints(self.algo_selector.get_selected_algorithm())
-
-        return group
-
-    def _create_auto_tune_section(self) -> QGroupBox:
-        """Create the auto-tune and simulation mode section."""
-        group = QGroupBox("🎯 Smart Configuration")
-        layout = QVBoxLayout(group)
-        layout.setSpacing(10)
-
-        # Auto-Tune Button
-        auto_tune_layout = QHBoxLayout()
-
+        # Smart Configuration Card
+        smart_card, smart_layout = self._create_card("🎯 Smart Configuration")
+        
+        buttons_row = QHBoxLayout()
+        
         self.auto_tune_btn = QPushButton("🔧 Auto-Tune Algorithm")
+        self.auto_tune_btn.setMinimumHeight(44)
+        self.auto_tune_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.auto_tune_btn.setStyleSheet(f"""
             QPushButton {{
                 background-color: {ISIK_BLUE_PRIMARY};
                 color: white;
-                padding: 10px 20px;
-                border-radius: 5px;
+                padding: 12px 24px;
+                border-radius: 6px;
                 font-weight: bold;
-                font-size: 13px;
+                font-size: 14px;
+                border: none;
             }}
             QPushButton:hover {{
-                background-color: #1a5276;
+                background-color: #0022CC;
             }}
             QPushButton:pressed {{
-                background-color: #154360;
+                background-color: #001080;
             }}
         """)
-        self.auto_tune_btn.setToolTip(
-            "Ders sayısına ve karmaşıklığa göre en uygun algoritmayı seçer"
-        )
+        self.auto_tune_btn.setToolTip("Ders sayısına göre en uygun algoritmayı seçer")
         self.auto_tune_btn.clicked.connect(self._on_auto_tune_clicked)
-        auto_tune_layout.addWidget(self.auto_tune_btn)
-
-        auto_tune_layout.addStretch()
-
-        # Simulation Mode Checkbox
+        buttons_row.addWidget(self.auto_tune_btn)
+        
+        buttons_row.addStretch()
+        
         self.simulation_checkbox = QCheckBox("🧪 Simulation Mode")
-        self.simulation_checkbox.setToolTip(
-            "Simülasyon modunda algoritma çalışır ama sonuçlar kaydedilmez.\n"
-            "Farklı algoritmaları karşılaştırmak için kullanın."
-        )
+        self.simulation_checkbox.setMinimumHeight(36)
+        self.simulation_checkbox.setToolTip("Simülasyon modunda sonuçlar kaydedilmez.")
         self.simulation_checkbox.stateChanged.connect(self._on_simulation_mode_changed)
-        auto_tune_layout.addWidget(self.simulation_checkbox)
+        buttons_row.addWidget(self.simulation_checkbox)
+        
+        smart_layout.addLayout(buttons_row)
 
-        layout.addLayout(auto_tune_layout)
-
-        # Progress bar for simulation
         self.simulation_progress = QProgressBar()
         self.simulation_progress.setVisible(False)
         self.simulation_progress.setStyleSheet(f"""
@@ -253,33 +236,44 @@ class AlgorithmTab(QWidget):
                 border: 1px solid #ccc;
                 border-radius: 5px;
                 text-align: center;
+                min-height: 20px;
             }}
             QProgressBar::chunk {{
                 background-color: {ISIK_BLUE_PRIMARY};
                 border-radius: 4px;
             }}
         """)
-        layout.addWidget(self.simulation_progress)
+        smart_layout.addWidget(self.simulation_progress)
 
-        # Recommendation label
         self.recommendation_label = QLabel("")
         self.recommendation_label.setWordWrap(True)
         self.recommendation_label.setStyleSheet("""
             color: #27ae60;
-            font-size: 12px;
-            padding: 5px;
-            background-color: #e8f8f0;
-            border-radius: 4px;
+            font-size: 13px;
+            padding: 10px;
+            background-color: rgba(39, 174, 96, 0.1);
+            border-radius: 6px;
         """)
         self.recommendation_label.setVisible(False)
-        layout.addWidget(self.recommendation_label)
+        smart_layout.addWidget(self.recommendation_label)
+        
+        layout.addWidget(smart_card)
+        
+        layout.addStretch()
+        
+        scroll.setWidget(content_widget)
+        
+        # Main layout
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.addWidget(scroll)
 
-        return group
+        # Initialize hints
+        self._update_performance_hints(self.algo_selector.get_selected_algorithm())
 
     def _update_performance_hints(self, algorithm: str) -> None:
         """Update performance hints for the selected algorithm."""
-        # Normalize algorithm name
-        algo_key = algorithm.lower().replace(" ", "_").replace("-", "_")
+        algo_key = algorithm.lower().replace(" ", "").replace("-", "").replace("_", "")
 
         hints = ALGORITHM_HINTS.get(algo_key, {
             "speed": "🔄 Variable",
@@ -294,16 +288,6 @@ class AlgorithmTab(QWidget):
         self.desc_label.setText(hints['description'])
         self.usecase_label.setText(f"🎯 Best for: {hints['use_case']}")
 
-        # Update hint frame border color
-        self.hint_frame.setStyleSheet(f"""
-            QFrame {{
-                background-color: #f8f9fa;
-                border: 2px solid {hints['color']};
-                border-radius: 8px;
-                padding: 10px;
-            }}
-        """)
-
     def _on_algorithm_changed(self, name: str) -> None:
         """Handle algorithm selection change."""
         self._update_performance_hints(name)
@@ -317,7 +301,6 @@ class AlgorithmTab(QWidget):
 
     def _on_auto_tune_clicked(self) -> None:
         """Handle auto-tune button click."""
-        # Show recommendation based on typical course load
         self._show_auto_tune_recommendation()
         self.auto_tune_requested.emit()
 
@@ -327,10 +310,10 @@ class AlgorithmTab(QWidget):
             recommended = "DFS"
             reason = "Az ders sayısı için optimal çözüm garantisi"
         elif course_count <= 6:
-            recommended = "A* Search"
+            recommended = "A*"
             reason = "Orta karmaşıklık için dengeli performans"
         elif course_count <= 8:
-            recommended = "Genetic Algorithm"
+            recommended = "Genetic"
             reason = "Çok sayıda ders için evrimsel yaklaşım"
         else:
             recommended = "Greedy"
@@ -341,7 +324,6 @@ class AlgorithmTab(QWidget):
         )
         self.recommendation_label.setVisible(True)
 
-        # Ask user if they want to apply
         reply = QMessageBox.question(
             self,
             "Auto-Tune",
