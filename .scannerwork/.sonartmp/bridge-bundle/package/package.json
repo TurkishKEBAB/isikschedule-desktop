@@ -138,7 +138,7 @@
     "semver": "7.7.3",
     "stylelint": "17.0.0",
     "stylelint-config-html": "1.1.0",
-    "tmp": "0.2.5",
+    "tmp": "0.2.6",
     "ts-api-utils": "2.4.0",
     "typescript": "5.9.3",
     "vue-eslint-parser": "10.2.0",
